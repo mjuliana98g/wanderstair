@@ -11,6 +11,7 @@ export type Mood =
 
 export type DoorStyle = 'arch' | 'round' | 'double' | 'iron' | 'starry';
 
+export type NewMemory = Omit<MutationRecordType, 'id'>;
 
 // --------------------------------------------------
 // INTERFACE
