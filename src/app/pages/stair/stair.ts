@@ -3,13 +3,14 @@ import { DatePipe } from '@angular/common';
 
 import { MemoriesService } from '../../services/memories';
 import { Memory } from '../../models/memory.model';
+import { RouterLink } from '@angular/router';
 
 // --------------------------------------------------
 // STAIR PAGE
 // --------------------------------------------------
 
 @Component({
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   selector: 'app-stair',
   styleUrl: './stair.css',
   templateUrl: './stair.html',
