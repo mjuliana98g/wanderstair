@@ -1,0 +1,32 @@
+<a routerLink="/">↑ Climb back up</a>
+
+@if (loading()) {
+  <p>Opening the door…</p>
+} @else if (error()) {
+  <p role="alert">{{ error() }}</p>
+} @else {
+  @if (memory(); as memory) {
+    <article>
+      <header>
+        <p>{{ memory.date | date: 'd MMMM y' }} · {{ memory.mood }}</p>
+        <h2>{{ memory.title }}</h2>
+      </header>
+
+      <section aria-labelledby="letter-title">
+        <h3 id="letter-title">The letter</h3>
+        <p>{{ memory.text }}</p>
+      </section>
+
+      <section aria-labelledby="exhibition-title">
+        <h3 id="exhibition-title">The exhibition</h3>
+        <ul>
+          @for (artworkId of memory.artworks; track artworkId) {
+            <li>Artwork #{{ artworkId }}</li>
+          } @empty {
+            <li>The walls are still empty…</li>
+          }
+        </ul>
+      </section>
+    </article>
+  }
+}
