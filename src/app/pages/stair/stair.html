@@ -1,0 +1,24 @@
+<section>
+  <h2>Your stair</h2>
+  <p>Mind your step… the deeper you go, the older the memory.</p>
+
+  @if (loading()) {
+    <p>Lighting the candles…</p>
+  } @else if (error()) {
+    <p role="alert">{{ error() }}</p>
+  } @else {
+    <ol>
+      @for (memory of memories(); track memory.id; let floor = $index) {
+        <li>
+          <article>
+            <p>Floor −{{ floor + 1 }} · {{ memory.date | date: 'd MMMM y' }}</p>
+            <h3>{{ memory.title }}</h3>
+            <p>{{ memory.mood }} · {{ memory.artworks.length }} artworks</p>
+          </article>
+        </li>
+      } @empty {
+        <li>No doors yet. Write your first memory.</li>
+      }
+    </ol>
+  }
+</section>
