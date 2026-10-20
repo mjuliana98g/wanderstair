@@ -25,7 +25,9 @@
       "mood": "happy",
       "door": "arch",
       "text": "I nearly turned back at the door. Then someone sat next to me and we became friends.",
-      "artworks": [142734]
+      "artworks": [
+        142734
+      ]
     },
     {
       "id": "4",
@@ -36,5 +38,6 @@
       "text": "Our last swim of the year. The water was cold and the sun was already low.",
       "artworks": []
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

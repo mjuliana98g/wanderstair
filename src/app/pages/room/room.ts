@@ -6,6 +6,7 @@ import { MemoriesService } from '../../services/memories';
 import { MuseumService } from '../../services/museum';
 import { Memory } from '../../models/memory.model';
 import { Artwork } from '../../models/artwork.model';
+import { Frame } from '../../components/frame/frame';
 
 // --------------------------------------------------
 // ROOM PAGE
@@ -13,7 +14,7 @@ import { Artwork } from '../../models/artwork.model';
 
 @Component({
   selector: 'app-room',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, Frame],
   templateUrl: './room.html',
   styleUrl: './room.css'
 })
@@ -65,6 +66,19 @@ export class Room implements OnInit {
         this.artworksError.set('The paintings are asleep. The museum did not answer.');
         this.artworksLoading.set(false);
       }
+    });
+  }
+
+    takeOffWall(artwork: Artwork): void {
+    const memory = this.memory();
+    if (!memory) return;
+    const updated = { ...memory, artworks: memory.artworks.filter((id) => id !== artwork.id) };
+    this.memoriesService.update(updated).subscribe({
+      next: (saved) => {
+        this.memory.set(saved);
+        this.artworks.update((list) => list.filter((item) => item.id !== artwork.id));
+      },
+      error: () => this.artworksError.set('The painting is stuck to the wall. Try again.')
     });
   }
 }
