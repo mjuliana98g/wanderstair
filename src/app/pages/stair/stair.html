@@ -1,3 +1,13 @@
+<section aria-labelledby="portrait-title">
+    <h2 id="portrait-title">Portrait of the day</h2>
+    @if (portraitLoading()) {
+    <p>The portrait is waking up…</p>
+    } @else if (portrait(); as portrait) {
+    <app-frame [artwork]="portrait" />
+    } @else {
+    <p>The portrait is sleeping today. Come back tomorrow.</p>
+    }
+</section>
 <section>
     <h2>Your stair</h2>
     <p>Mind your step… the deeper you go, the older the memory.</p>
