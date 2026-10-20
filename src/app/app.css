@@ -1,0 +1,45 @@
+/* --------------------------------------------------
+   HEADER
+   -------------------------------------------------- */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  border-bottom: 1px solid rgba(217, 164, 65, 0.3);
+}
+
+h1 {
+  font-size: 36px;
+  letter-spacing: 0.08em;
+}
+
+/* --------------------------------------------------
+   MENU
+   -------------------------------------------------- */
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+nav a {
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  font-family: var(--title-font);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+nav a.active {
+  border-bottom-color: var(--gold);
+  color: var(--parchment);
+}
