@@ -7,7 +7,11 @@
       "mood": "angry",
       "door": "iron",
       "text": "Three hours stuck on an error in my @for. In the end I only had to restart ng serve.",
-      "artworks": []
+      "artworks": [
+        144732,
+        106088,
+        118157
+      ]
     },
     {
       "id": "2",
@@ -16,7 +20,9 @@
       "mood": "calm",
       "door": "round",
       "text": "Tea, a blanket and a book. The rain did not stop all day and I did not mind at all.",
-      "artworks": [136510]
+      "artworks": [
+        136510
+      ]
     },
     {
       "id": "3",
