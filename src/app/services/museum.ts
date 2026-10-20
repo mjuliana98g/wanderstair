@@ -9,8 +9,7 @@ import { ApiResponse, Artwork } from '../models/artwork.model';
 // --------------------------------------------------
 
 const API_URL = 'https://openaccess-api.clevelandart.org/api/artworks';
-const FIELDS = 'id,title,creation_date,type,creators,images';
-
+const FIELDS = 'id,title,creation_date,type,technique,department,description,url,creators,images';
 // --------------------------------------------------
 // MUSEUM SERVICE
 // --------------------------------------------------

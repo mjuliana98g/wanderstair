@@ -15,6 +15,10 @@ export interface Artwork {
   title: string;
   creation_date: string;
   type: string;
+  technique: string;
+  department: string;
+  description: string | null;
+  url: string;
   creators: Creator[];
   images: ArtworkImages | null;
 }

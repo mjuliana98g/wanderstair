@@ -1,0 +1,36 @@
+<a routerLink="/">↑ Climb back to the stair</a>
+
+@if (loading()) {
+  <p>Unrolling the canvas…</p>
+} @else if (error()) {
+  <p role="alert">{{ error() }}</p>
+} @else {
+  @if (artwork(); as artwork) {
+    <article>
+      <h2>{{ artwork.title }}</h2>
+
+      @if (artwork.images) {
+        <img [src]="artwork.images.web.url" [alt]="artwork.title" width="600">
+      }
+
+      <dl>
+        <dt>Artist</dt>
+        <dd>{{ artistName(artwork) }}</dd>
+        <dt>Date</dt>
+        <dd>{{ artwork.creation_date }}</dd>
+        <dt>Type</dt>
+        <dd>{{ artwork.type }}</dd>
+        <dt>Technique</dt>
+        <dd>{{ artwork.technique }}</dd>
+        <dt>Department</dt>
+        <dd>{{ artwork.department }}</dd>
+      </dl>
+
+      @if (artwork.description) {
+        <p>{{ artwork.description }}</p>
+      }
+
+      <a [href]="artwork.url" target="_blank" rel="noopener">See it on the museum website</a>
+    </article>
+  }
+}
