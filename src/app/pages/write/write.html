@@ -1,6 +1,9 @@
 <h2>Write a new memory</h2>
 
-<form [formGroup]="form">
+@if (error()) {
+<p role="alert">{{ error() }}</p>
+}
+<form [formGroup]="form" (ngSubmit)="save()">
     <p>
         <label for="title">Title</label>
         <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam">
@@ -70,6 +73,8 @@
 
     <p>
         <a routerLink="/">Cancel</a>
-        <button type="submit" [disabled]="form.invalid">Open the door</button>
+        <button type="submit" [disabled]="form.invalid || saving()">
+            @if (saving()) { Opening… } @else { Open the door }
+        </button>
     </p>
 </form>
