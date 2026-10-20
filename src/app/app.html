@@ -1,9 +1,9 @@
 <header>
   <h1>{{ title }}</h1>
   <nav aria-label="Main navigation">
-    <a routerLink="/">The stair</a>
-    <a routerLink="/find">Find artworks</a>
-    <a routerLink="/write">New memory</a>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">The stair</a>
+    <a routerLink="/find" routerLinkActive="active">Find artworks</a>
+    <a routerLink="/write" routerLinkActive="active">New memory</a>
   </nav>
 </header>
 
