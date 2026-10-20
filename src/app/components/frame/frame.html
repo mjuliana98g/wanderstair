@@ -6,7 +6,7 @@
     }
     <figcaption>
         <strong>{{ artistName() }}</strong>
-        <cite>{{ artwork.title }}</cite>
+        <cite><a [routerLink]="['/artwork', artwork.id]">{{ artwork.title }}</a></cite>
         {{ artwork.creation_date }}
     </figcaption>
     @if (actionLabel) {

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Artwork } from '../../models/artwork.model';
+import { RouterLink } from '@angular/router';
 
 // --------------------------------------------------
 // FRAME COMPONENT
@@ -9,7 +10,8 @@ import { Artwork } from '../../models/artwork.model';
 @Component({
   selector: 'app-frame',
   templateUrl: './frame.html',
-  styleUrl: './frame.css'
+  styleUrl: './frame.css',
+  imports: [RouterLink]
 })
 export class Frame {
   @Input({ required: true }) artwork!: Artwork;
