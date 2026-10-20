@@ -1,12 +1,15 @@
 <figure>
-  @if (artwork.images) {
+    @if (artwork.images) {
     <img [src]="artwork.images.web.url" [alt]="artwork.title" width="300">
-  } @else {
+    } @else {
     <p>No image for this artwork</p>
-  }
-  <figcaption>
-    <strong>{{ artistName() }}</strong>
-    <cite>{{ artwork.title }}</cite>
-    {{ artwork.creation_date }}
-  </figcaption>
+    }
+    <figcaption>
+        <strong>{{ artistName() }}</strong>
+        <cite>{{ artwork.title }}</cite>
+        {{ artwork.creation_date }}
+    </figcaption>
+    @if (actionLabel) {
+    <button type="button" (click)="emitAction()">{{ actionLabel }}</button>
+    }
 </figure>

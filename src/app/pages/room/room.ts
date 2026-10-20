@@ -68,4 +68,17 @@ export class Room implements OnInit {
       }
     });
   }
+
+    takeOffWall(artwork: Artwork): void {
+    const memory = this.memory();
+    if (!memory) return;
+    const updated = { ...memory, artworks: memory.artworks.filter((id) => id !== artwork.id) };
+    this.memoriesService.update(updated).subscribe({
+      next: (saved) => {
+        this.memory.set(saved);
+        this.artworks.update((list) => list.filter((item) => item.id !== artwork.id));
+      },
+      error: () => this.artworksError.set('The painting is stuck to the wall. Try again.')
+    });
+  }
 }

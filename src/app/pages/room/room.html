@@ -28,7 +28,7 @@
         <ul>
             @for (artwork of artworks(); track artwork.id) {
             <li>
-                <app-frame [artwork]="artwork" />
+                <app-frame [artwork]="artwork" actionLabel="Take off the wall" (action)="takeOffWall($event)" />
             </li>
             } @empty {
             <li>The walls are still empty…</li>
