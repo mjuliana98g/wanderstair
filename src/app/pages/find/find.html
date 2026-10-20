@@ -1,27 +1,37 @@
 <h2>Find artworks</h2>
+@if (room(); as room) {
+<p>
+    Choosing art for <strong>{{ room.title }}</strong> · {{ room.artworks.length }} on the wall ·
+    <a [routerLink]="['/room', room.id]">Back to the room</a>
+</p>
+}
 
 <form role="search" (ngSubmit)="search()">
-  <label for="search-term">Search by title, artist or theme</label>
-  <input id="search-term" name="term" type="search" placeholder="Monet, water, cats…" [(ngModel)]="term">
-  <button type="submit">Search</button>
+    <label for="search-term">Search by title, artist or theme</label>
+    <input id="search-term" name="term" type="search" placeholder="Monet, water, cats…" [(ngModel)]="term">
+    <button type="submit">Search</button>
 </form>
 
 @if (term) {
-  <p>Looking for: {{ term }}</p>
+<p>Looking for: {{ term }}</p>
 }
 
 @if (loading()) {
-  <p>Searching the castle archives…</p>
+<p>Searching the castle archives…</p>
 } @else if (error()) {
-  <p role="alert">{{ error() }}</p>
+<p role="alert">{{ error() }}</p>
 } @else if (searched()) {
-  <ul>
+<ul>
     @for (artwork of results(); track artwork.id) {
-      <li>
-        <app-frame [artwork]="artwork" />
-      </li>
+    <li>
+        <app-frame [artwork]="artwork" [actionLabel]="room() && !isHung(artwork) ? 'Hang here' : ''"
+            (action)="hang($event)" />
+        @if (isHung(artwork)) {
+        <p>✓ On the wall</p>
+        }
+    </li>
     } @empty {
-      <li>No artworks found. Try another word.</li>
+    <li>No artworks found. Try another word.</li>
     }
-  </ul>
+</ul>
 }
