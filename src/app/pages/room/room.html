@@ -1,32 +1,52 @@
 <a routerLink="/">↑ Climb back up</a>
 
 @if (loading()) {
-  <p>Opening the door…</p>
+<p>Opening the door…</p>
 } @else if (error()) {
-  <p role="alert">{{ error() }}</p>
+<p role="alert">{{ error() }}</p>
 } @else {
-  @if (memory(); as memory) {
-    <article>
-      <header>
+@if (memory(); as memory) {
+<article>
+    <header>
         <p>{{ memory.date | date: 'd MMMM y' }} · {{ memory.mood }}</p>
         <h2>{{ memory.title }}</h2>
-      </header>
+    </header>
 
-      <section aria-labelledby="letter-title">
+    <section aria-labelledby="letter-title">
         <h3 id="letter-title">The letter</h3>
         <p>{{ memory.text }}</p>
-      </section>
+    </section>
 
-      <section aria-labelledby="exhibition-title">
+    <section aria-labelledby="exhibition-title">
         <h3 id="exhibition-title">The exhibition</h3>
+
+        @if (artworksLoading()) {
+        <p>Hanging the paintings…</p>
+        } @else if (artworksError()) {
+        <p role="alert">{{ artworksError() }}</p>
+        } @else {
         <ul>
-          @for (artworkId of memory.artworks; track artworkId) {
-            <li>Artwork #{{ artworkId }}</li>
-          } @empty {
+            @for (artwork of artworks(); track artwork.id) {
+            <li>
+                <figure>
+                    @if (artwork.images) {
+                    <img [src]="artwork.images.web.url" [alt]="artwork.title" width="300">
+                    } @else {
+                    <p>No image for this artwork</p>
+                    }
+                    <figcaption>
+                        <strong>{{ artwork.creators[0]?.description ?? 'Unknown artist' }}</strong>
+                        <cite>{{ artwork.title }}</cite>
+                        {{ artwork.creation_date }}
+                    </figcaption>
+                </figure>
+            </li>
+            } @empty {
             <li>The walls are still empty…</li>
-          }
+            }
         </ul>
-      </section>
-    </article>
-  }
+        }
+    </section>
+</article>
+}
 }
