@@ -1,1 +1,123 @@
-/* You can add global styles to this file, and also import other style files */
+/* --------------------------------------------------
+   COLOURS AND FONTS
+   -------------------------------------------------- */
+
+:root {
+  --night: #14121f;
+  --stone: #232034;
+  --parchment: #f3e9d2;
+  --ink: #e8dfc8;
+  --ink-soft: #b4aa92;
+  --gold: #d9a441;
+  --danger: #e8806f;
+  --title-font: 'Cinzel', serif;
+  --text-font: 'EB Garamond', serif;
+}
+
+/* --------------------------------------------------
+   RESET
+   -------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, h1, h2, h3, p, figure, ul, ol, dl, dd, fieldset {
+  margin: 0;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* --------------------------------------------------
+   PAGE
+   -------------------------------------------------- */
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #2c2645, var(--night) 60%);
+  color: var(--ink);
+  font-family: var(--text-font);
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+h1, h2, h3 {
+  font-family: var(--title-font);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--parchment);
+}
+
+h2 {
+  margin-bottom: 24px;
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+a {
+  color: var(--gold);
+}
+
+a:hover {
+  color: var(--parchment);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------
+   BUTTONS AND FIELDS
+   -------------------------------------------------- */
+
+button {
+  padding: 8px 20px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--gold);
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--gold);
+  color: var(--night);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+input, select, textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--ink-soft);
+  border-radius: 4px;
+  background: var(--stone);
+  color: var(--ink);
+  font: inherit;
+}
+
+[role="alert"] {
+  color: var(--danger);
+}
