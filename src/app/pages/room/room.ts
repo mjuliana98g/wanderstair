@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 import { MemoriesService } from '../../services/memories';
@@ -20,6 +20,7 @@ import { Frame } from '../../components/frame/frame';
 })
 export class Room implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private memoriesService = inject(MemoriesService);
   private museumService = inject(MuseumService);
 
@@ -30,6 +31,7 @@ export class Room implements OnInit {
   artworks = signal<Artwork[]>([]);
   artworksLoading = signal(false);
   artworksError = signal('');
+  deleteError = signal('');
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
@@ -69,7 +71,7 @@ export class Room implements OnInit {
     });
   }
 
-    takeOffWall(artwork: Artwork): void {
+  takeOffWall(artwork: Artwork): void {
     const memory = this.memory();
     if (!memory) return;
     const updated = { ...memory, artworks: memory.artworks.filter((id) => id !== artwork.id) };
@@ -79,6 +81,20 @@ export class Room implements OnInit {
         this.artworks.update((list) => list.filter((item) => item.id !== artwork.id));
       },
       error: () => this.artworksError.set('The painting is stuck to the wall. Try again.')
+    });
+  }
+
+  // --------------------------------------------------
+  // DELETING
+  // --------------------------------------------------
+
+  deleteMemory(): void {
+    const memory = this.memory();
+    if (!memory) return;
+    if (!confirm(`Close the door "${memory.title}" forever?`)) return;
+    this.memoriesService.remove(memory.id).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: () => this.deleteError.set('The door is stuck. Try again.')
     });
   }
 }

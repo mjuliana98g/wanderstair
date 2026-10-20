@@ -36,7 +36,13 @@
         </ul>
         }
     </section>
-          <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
+    <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
+    <p>
+        <button type="button" (click)="deleteMemory()">Close this door forever</button>
+    </p>
+    @if (deleteError()) {
+    <p role="alert">{{ deleteError() }}</p>
+    }
 </article>
 }
 }
