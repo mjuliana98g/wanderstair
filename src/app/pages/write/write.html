@@ -1,64 +1,75 @@
 <h2>Write a new memory</h2>
 
 <form [formGroup]="form">
-  <p>
-    <label for="title">Title</label>
-    <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam">
-    @if (hasError('title', 'required')) {
-      <span role="alert">Every door needs a title.</span>
-    } @else if (hasError('title', 'minlength')) {
-      <span role="alert">The title needs at least 3 letters.</span>
-    }
-  </p>
+    <p>
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam">
+        @if (hasError('title', 'required')) {
+        <span role="alert">Every door needs a title.</span>
+        } @else if (hasError('title', 'minlength')) {
+        <span role="alert">The title needs at least 3 letters.</span>
+        }
+    </p>
 
-  <p>
-    <label for="date">When did it happen?</label>
-    <input id="date" type="date" formControlName="date">
-    @if (hasError('date', 'required')) {
-      <span role="alert">Choose the day it happened.</span>
-    }
-  </p>
+    <p>
+        <label for="date">When did it happen?</label>
+        <input id="date" type="date" formControlName="date">
+        @if (hasError('date', 'required')) {
+        <span role="alert">Choose the day it happened.</span>
+        }
+    </p>
 
-  <p>
-    <label for="mood">How did it feel?</label>
-    <select id="mood" formControlName="mood">
-      <option value="" disabled>Choose a feeling</option>
-      @for (family of moodFamilies; track family.name) {
-        <optgroup [label]="family.name">
-          @for (mood of family.moods; track mood) {
-            <option [value]="mood">{{ mood }}</option>
-          }
-        </optgroup>
-      }
-    </select>
-    @if (hasError('mood', 'required')) {
-      <span role="alert">Choose a feeling. It gives the room its colour.</span>
-    }
-  </p>
+    <p>
+        <label for="mood">How did it feel?</label>
+        <select id="mood" formControlName="mood">
+            <option value="" disabled>Choose a feeling</option>
+            @for (family of moodFamilies; track family.name) {
+            <optgroup [label]="family.name">
+                @for (mood of family.moods; track mood) {
+                <option [value]="mood">{{ mood }}</option>
+                }
+            </optgroup>
+            }
+        </select>
+        @if (hasError('mood', 'required')) {
+        <span role="alert">Choose a feeling. It gives the room its colour.</span>
+        }
+    </p>
 
-  <fieldset>
-    <legend>Choose a door</legend>
-    @for (door of doorStyles; track door) {
-      <label>
-        <input type="radio" formControlName="door" [value]="door">
-        {{ door }}
-      </label>
-    }
-  </fieldset>
+    <fieldset>
+        <legend>Choose a door</legend>
+        @for (door of doorStyles; track door) {
+        <label>
+            <input type="radio" formControlName="door" [value]="door">
+            {{ door }}
+        </label>
+        }
+    </fieldset>
 
-  <p>
-    <label for="text">What happened?</label>
-    <textarea id="text" rows="6" formControlName="text" placeholder="Write it down. Good or bad, it is yours."></textarea>
-    <small>🔒 Only you can read this.</small>
-    @if (hasError('text', 'required')) {
-      <span role="alert">Write what happened.</span>
-    } @else if (hasError('text', 'minlength')) {
-      <span role="alert">Write at least 10 characters.</span>
-    }
-  </p>
+    <p>
+        @switch (form.controls.door.value) {
+        @case ('arch') { A tall arched door of old oak. }
+        @case ('round') { A small round door hidden in the wall. }
+        @case ('double') { Two heavy doors that open together. }
+        @case ('iron') { An iron door with rivets and a heavy lock. }
+        @case ('starry') { A midnight-blue door covered in stars. }
+        }
+    </p>
 
-  <p>
-    <a routerLink="/">Cancel</a>
-    <button type="submit" [disabled]="form.invalid">Open the door</button>
-  </p>
+    <p>
+        <label for="text">What happened?</label>
+        <textarea id="text" rows="6" formControlName="text"
+            placeholder="Write it down. Good or bad, it is yours."></textarea>
+        <small>🔒 Only you can read this.</small>
+        @if (hasError('text', 'required')) {
+        <span role="alert">Write what happened.</span>
+        } @else if (hasError('text', 'minlength')) {
+        <span role="alert">Write at least 10 characters.</span>
+        }
+    </p>
+
+    <p>
+        <a routerLink="/">Cancel</a>
+        <button type="submit" [disabled]="form.invalid">Open the door</button>
+    </p>
 </form>
