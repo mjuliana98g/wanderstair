@@ -31,6 +31,21 @@
       }
 
       <a [href]="artwork.url" target="_blank" rel="noopener">See it on the museum website</a>
+
+      <form (ngSubmit)="hang(artwork)">
+        <label for="room">Hang it in a room</label>
+        <select id="room" name="room" [(ngModel)]="roomId">
+          <option value="" disabled>Choose a memory</option>
+          @for (memory of memories(); track memory.id) {
+            <option [value]="memory.id">{{ memory.title }}</option>
+          }
+        </select>
+        <button type="submit" [disabled]="!roomId">Hang here</button>
+      </form>
+
+      @if (message()) {
+        <p role="status">{{ message() }}</p>
+      }
     </article>
   }
 }
