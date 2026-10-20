@@ -3,7 +3,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 import { MemoriesService } from '../../services/memories';
+import { MuseumService } from '../../services/museum';
 import { Memory } from '../../models/memory.model';
+import { Artwork } from '../../models/artwork.model';
 
 // --------------------------------------------------
 // ROOM PAGE
@@ -18,10 +20,15 @@ import { Memory } from '../../models/memory.model';
 export class Room implements OnInit {
   private route = inject(ActivatedRoute);
   private memoriesService = inject(MemoriesService);
+  private museumService = inject(MuseumService);
 
   memory = signal<Memory | null>(null);
   loading = signal(true);
   error = signal('');
+
+  artworks = signal<Artwork[]>([]);
+  artworksLoading = signal(false);
+  artworksError = signal('');
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
@@ -33,10 +40,30 @@ export class Room implements OnInit {
       next: (memory) => {
         this.memory.set(memory);
         this.loading.set(false);
+        this.loadArtworks(memory.artworks);
       },
       error: () => {
         this.error.set('This door does not exist.');
         this.loading.set(false);
+      }
+    });
+  }
+
+  // --------------------------------------------------
+  // ARTWORKS
+  // --------------------------------------------------
+
+  loadArtworks(ids: number[]): void {
+    if (ids.length === 0) return;
+    this.artworksLoading.set(true);
+    this.museumService.getByIds(ids).subscribe({
+      next: (artworks) => {
+        this.artworks.set(artworks);
+        this.artworksLoading.set(false);
+      },
+      error: () => {
+        this.artworksError.set('The paintings are asleep. The museum did not answer.');
+        this.artworksLoading.set(false);
       }
     });
   }
