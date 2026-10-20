@@ -6,6 +6,7 @@ import { MemoriesService } from '../../services/memories';
 import { MuseumService } from '../../services/museum';
 import { Memory } from '../../models/memory.model';
 import { Artwork } from '../../models/artwork.model';
+import { Frame } from '../../components/frame/frame';
 
 // --------------------------------------------------
 // ROOM PAGE
@@ -13,7 +14,7 @@ import { Artwork } from '../../models/artwork.model';
 
 @Component({
   selector: 'app-room',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, Frame],
   templateUrl: './room.html',
   styleUrl: './room.css'
 })
