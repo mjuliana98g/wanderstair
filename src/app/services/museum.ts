@@ -36,4 +36,19 @@ export class MuseumService {
       .get<ApiResponse<Artwork[]>>(API_URL, { params })
       .pipe(map((response) => response.data));
   }
+
+  // --------------------------------------------------
+  // PORTRAIT OF THE DAY
+  // --------------------------------------------------
+
+  getPortraitOfTheDay(): Observable<Artwork | undefined> {
+    const params = { q: 'portrait', type: 'Painting', has_image: 1, cc0: 1, limit: 1, skip: this.dayOfYear() % 100, fields: FIELDS };
+    return this.http.get<ApiResponse<Artwork[]>>(API_URL, { params }).pipe(map((r) => r.data[0]));
+  }
+
+  private dayOfYear(): number {
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), 0, 0);
+    return Math.floor((today.getTime() - firstDay.getTime()) / 86400000);
+  }
 }
