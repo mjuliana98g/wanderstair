@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Memory, NewMemory } from '../models/memory.model';
 // MEMORIES SERVICE
 // --------------------------------------------------
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class MemoriesService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/memories';
