@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 
@@ -14,7 +14,7 @@ const FIELDS = 'id,title,creation_date,type,technique,department,description,url
 // MUSEUM SERVICE
 // --------------------------------------------------
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class MuseumService {
   private http = inject(HttpClient);
 
