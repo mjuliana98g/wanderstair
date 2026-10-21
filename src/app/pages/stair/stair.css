@@ -1,0 +1,210 @@
+/* --------------------------------------------------
+   PORTRAIT
+   -------------------------------------------------- */
+
+.portrait {
+    margin-bottom: 56px;
+    text-align: center;
+}
+
+/* --------------------------------------------------
+   MOOD FAMILY COLOURS
+   -------------------------------------------------- */
+
+.landing[data-family="bright"] {
+    --family: #e8b23a;
+}
+
+.landing[data-family="quiet"] {
+    --family: #2f9c8a;
+}
+
+.landing[data-family="heavy"] {
+    --family: #3d5fa8;
+}
+
+.landing[data-family="stormy"] {
+    --family: #b0243c;
+}
+
+.landing[data-family="mixed"] {
+    --family: #8a4fb3;
+}
+
+/* --------------------------------------------------
+   STAIR
+   -------------------------------------------------- */
+
+.stair {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.landing {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 28px;
+    width: min(100%, 560px);
+    padding-bottom: 0;
+    border-bottom: 12px solid var(--step);
+    box-shadow: 0 14px 0 var(--step-edge), 0 17px 0 var(--step-shadow);
+}
+
+.landing.right {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+/* --------------------------------------------------
+   LANDING TEXT
+   -------------------------------------------------- */
+
+.landing hgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding-bottom: 14px;
+}
+
+.floor {
+    color: var(--gold);
+    font-size: 18px;
+    font-style: italic;
+}
+
+.landing h3 {
+    font-size: 28px;
+    overflow-wrap: anywhere;
+}
+
+.landing h3 a {
+    color: var(--parchment);
+    text-decoration: none;
+}
+
+.landing h3 a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.mood {
+    color: var(--family);
+    font-style: italic;
+}
+
+/* --------------------------------------------------
+   DOORS
+   -------------------------------------------------- */
+
+.door {
+    --planks: linear-gradient(color-mix(in srgb, var(--family) 70%, var(--wood)), color-mix(in srgb, var(--family) 55%, var(--wood)));
+    --lines: repeating-linear-gradient(90deg, transparent 0 22px, rgba(0, 0, 0, 0.35) 22px 24px);
+    position: relative;
+    flex: none;
+    width: clamp(110px, 20vw, 150px);
+    aspect-ratio: 3 / 4.6;
+    border: 8px solid var(--family);
+    border-bottom: none;
+    border-radius: 999px 999px 0 0;
+    background:
+        radial-gradient(circle, var(--iron) 0 2.5px, transparent 3px) 0 0 / 100% 25% repeat-y,
+        var(--lines),
+        var(--planks);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--family) 40%, transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.landing:hover .door,
+.landing:focus-within .door {
+    transform: translateY(-4px);
+    box-shadow: 0 0 46px var(--family);
+}
+
+.door::after {
+    content: "";
+    position: absolute;
+    top: 58%;
+    right: 14px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--gold-light), var(--gold-dark));
+}
+
+.landing.right .door::after {
+    right: auto;
+    left: 14px;
+}
+
+/* --------------------------------------------------
+   DOOR STYLES
+   -------------------------------------------------- */
+
+.door[data-door="round"] {
+    aspect-ratio: 1;
+    border-bottom: 8px solid var(--family);
+    border-radius: 50%;
+}
+
+.door[data-door="round"]::after {
+    top: 50%;
+}
+
+.door[data-door="double"] {
+    background:
+        linear-gradient(90deg, transparent calc(50% - 2px), var(--iron) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
+        var(--lines),
+        var(--planks);
+}
+
+.door[data-door="double"]::before {
+    content: "";
+    position: absolute;
+    top: 58%;
+    right: calc(50% + 6px);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--gold-light), var(--gold-dark));
+}
+
+.door[data-door="double"]::after,
+.landing.right .door[data-door="double"]::after {
+    right: auto;
+    left: calc(50% + 6px);
+    width: 10px;
+    height: 10px;
+}
+
+.door[data-door="iron"] {
+    border-radius: 10px 10px 0 0;
+    background:
+        linear-gradient(transparent 16%, var(--iron) 16% 20%, transparent 20% 76%, var(--iron) 76% 80%, transparent 80%),
+        radial-gradient(circle, var(--gold) 0 2.5px, transparent 3px) 6px 0 / 18px 100% repeat-x,
+        var(--lines),
+        var(--planks);
+}
+
+.door[data-door="starry"] {
+    border-color: var(--gold);
+    background:
+        radial-gradient(var(--gold-light) 1px, transparent 1.8px) 0 0 / 20px 20px,
+        radial-gradient(var(--gold-light) 0.8px, transparent 1.4px) 10px 12px / 20px 20px,
+        linear-gradient(color-mix(in srgb, var(--family) 35%, #1b2556), #0f0b1c);
+    box-shadow: 0 0 40px rgba(243, 217, 139, 0.35), inset 0 0 30px rgba(243, 217, 139, 0.25);
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .landing.right {
+        align-self: stretch;
+    }
+}

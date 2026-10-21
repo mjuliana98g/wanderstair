@@ -1,4 +1,4 @@
-<section aria-labelledby="portrait-title">
+<section aria-labelledby="portrait-title" class="portrait">
     <h2 id="portrait-title">Portrait of the day</h2>
     @if (portraitLoading()) {
     <p>The portrait is waking up…</p>
@@ -8,26 +8,27 @@
     <p>The portrait is sleeping today. Come back tomorrow.</p>
     }
 </section>
-<section>
-    <h2>Your stair</h2>
-    <p>Mind your step… the deeper you go, the older the memory.</p>
 
+<section aria-labelledby="stair-title">
+    <h2 id="stair-title">Your stair</h2>
     @if (loading()) {
     <p>Lighting the candles…</p>
     } @else if (error()) {
     <p role="alert">{{ error() }}</p>
     } @else {
-    <ol>
+    <ol class="stair">
         @for (memory of memories(); track memory.id; let floor = $index) {
-        <li>
-            <article>
-                <p>Floor −{{ floor + 1 }} · {{ memory.date | date: 'd MMMM y' }}</p>
+        <li class="landing" [class.right]="floor % 2 === 1" [attr.data-family]="familyOf(memory.mood)">
+            <span class="door" [attr.data-door]="memory.door" aria-hidden="true"></span>
+            <hgroup>
+                <p class="floor">Floor −{{ floor + 1 }} · {{ memory.date | date: 'd MMMM y' }}</p>
                 <h3><a [routerLink]="['/room', memory.id]">{{ memory.title }}</a></h3>
-                <p>{{ memory.mood }} · {{ memory.artworks.length }} artworks</p>
-            </article>
+                <p class="mood">{{ memory.mood }} · {{ memory.artworks.length }} {{ memory.artworks.length === 1 ?
+                    'artwork' : 'artworks' }}</p>
+            </hgroup>
         </li>
         } @empty {
-        <li>No doors yet. Write your first memory.</li>
+        <li>No doors yet. <a routerLink="/write">Write your first memory.</a></li>
         }
     </ol>
     }

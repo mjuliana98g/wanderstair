@@ -14,3 +14,8 @@ export const MOOD_FAMILIES: MoodFamily[] = [
 ];
 
 export const DOOR_STYLES: DoorStyle[] = ['arch', 'round', 'double', 'iron', 'starry'];
+
+export function familyOf(mood: Mood): string {
+  const family = MOOD_FAMILIES.find((family) => family.moods.includes(mood));
+  return family ? family.name.toLowerCase() : 'mixed';
+}

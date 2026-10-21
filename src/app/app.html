@@ -1,9 +1,12 @@
 <header>
   <h1>{{ title }}</h1>
   <nav aria-label="Main navigation">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">The stair</a>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My stair</a>
     <a routerLink="/find" routerLinkActive="active">Find artworks</a>
     <a routerLink="/write" routerLinkActive="active">New memory</a>
+    <button class="theme" type="button" (click)="toggleTheme()" aria-label="Switch between day and night">
+      @if (isNight()) { ☾ Night } @else { ☀︎ Day }
+    </button>
   </nav>
 </header>
 

@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 import { MuseumService } from '../../services/museum';
 import { Artwork } from '../../models/artwork.model';
 import { Frame } from '../../components/frame/frame';
+import { familyOf } from '../../models/moods';
 
 // --------------------------------------------------
 // STAIR PAGE
@@ -27,6 +28,7 @@ export class Stair implements OnInit {
   portrait = signal<Artwork | null>(null);
   portraitLoading = signal(true);
   error = signal('');
+  familyOf = familyOf;
 
   ngOnInit(): void {
     this.loadPortrait();
