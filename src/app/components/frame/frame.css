@@ -1,0 +1,66 @@
+/* --------------------------------------------------
+   FRAME
+   -------------------------------------------------- */
+
+:host {
+  display: block;
+}
+
+figure {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+img,
+figure > p {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 9%;
+  border: 12px solid transparent;
+  border-image: conic-gradient(from 45deg, var(--frame-a), var(--frame-b), var(--frame-a), var(--frame-b), var(--frame-a)) 1;
+  background: var(--mat);
+  box-shadow: 0 16px 32px var(--shadow);
+  object-fit: contain;
+}
+
+figure > p {
+  display: grid;
+  place-items: center;
+  color: #6c6658;
+  font-style: italic;
+  text-align: center;
+}
+
+/* --------------------------------------------------
+   LABEL
+   -------------------------------------------------- */
+
+figcaption {
+  display: flex;
+  flex-direction: column;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+strong {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--title);
+}
+
+cite a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+cite a:hover {
+  text-decoration: underline;
+}
+
+button {
+  align-self: flex-start;
+}

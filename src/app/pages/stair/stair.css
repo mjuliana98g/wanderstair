@@ -1,0 +1,257 @@
+/* --------------------------------------------------
+   PAGE
+   -------------------------------------------------- */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+}
+
+/* --------------------------------------------------
+   PORTRAIT OF THE DAY
+   -------------------------------------------------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.hero-text h2 {
+  font-size: clamp(38px, 5.6vw, 58px);
+}
+
+.hero-text p {
+  max-width: 30em;
+  color: var(--ink-soft);
+}
+
+.see {
+  align-self: flex-start;
+  padding: 16px 26px 16px 22px;
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--title);
+  font-family: var(--display);
+  font-size: 24px;
+  text-decoration: none;
+  box-shadow: 0 10px 24px var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.see:hover {
+  color: var(--title);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px var(--shadow);
+}
+
+/* --------------------------------------------------
+   STAIR TITLE
+   -------------------------------------------------- */
+
+.stair-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.stair-head > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.lead {
+  max-width: 36em;
+  color: var(--ink-soft);
+}
+
+.write {
+  padding: 8px 22px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.write:hover {
+  background: var(--surface);
+}
+
+/* --------------------------------------------------
+   STAIR
+   -------------------------------------------------- */
+
+.stair {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+  padding-bottom: 20px;
+}
+
+.stair::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  bottom: -20px;
+  left: 50%;
+  width: 70px;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--pillar-a), var(--pillar-b) 50%, var(--pillar-a));
+  opacity: 0.6;
+}
+
+.landing {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  width: min(100%, 540px);
+  border-bottom: 12px solid var(--step);
+  box-shadow: 0 14px 0 var(--step-edge), 0 17px 0 var(--step-shadow);
+}
+
+.landing.right {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.landing:hover .door,
+.landing:focus-within .door {
+  transform: translateY(-4px);
+  box-shadow: 0 0 60px color-mix(in srgb, var(--family) 70%, transparent), inset 0 0 0 3px rgba(10, 13, 20, 0.45);
+}
+
+/* --------------------------------------------------
+   LANDING TEXT
+   -------------------------------------------------- */
+
+.landing hgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding-bottom: 18px;
+}
+
+.landing h3 {
+  font-size: 28px;
+  overflow-wrap: anywhere;
+}
+
+.landing h3 a {
+  color: var(--title);
+  text-decoration: none;
+}
+
+.landing h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.when {
+  color: var(--ink-soft);
+  font-size: 17px;
+}
+
+.mood {
+  color: var(--family);
+  font-style: italic;
+}
+
+/* --------------------------------------------------
+   STEPS BETWEEN DOORS
+   -------------------------------------------------- */
+
+.flight {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 0;
+}
+
+.flight span {
+  --i: 0;
+  display: block;
+  width: 90px;
+  height: 14px;
+  margin-bottom: 12px;
+  margin-left: calc(50% - 45px + (var(--i) - 2.5) * 30px);
+  background: var(--step);
+  box-shadow: 0 6px 0 var(--step-edge), 0 8px 0 var(--step-shadow);
+}
+
+.flight.right span {
+  margin-left: calc(50% - 45px - (var(--i) - 2.5) * 30px);
+}
+
+.flight span:nth-child(2) { --i: 1; }
+.flight span:nth-child(3) { --i: 2; }
+.flight span:nth-child(4) { --i: 3; }
+.flight span:nth-child(5) { --i: 4; }
+.flight span:nth-child(6) { --i: 5; }
+
+.stair-end {
+  padding-top: 40px;
+  color: var(--ink-soft);
+  font-style: italic;
+  text-align: center;
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS AND MOTION
+   -------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .stair::before,
+  .flight {
+    display: none;
+  }
+
+  .stair {
+    gap: 56px;
+  }
+
+  .landing.right {
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing {
+    gap: 16px;
+  }
+
+  .landing h3 {
+    font-size: 23px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .see {
+    transition: none;
+  }
+}
