@@ -78,6 +78,6 @@ export class Write implements OnInit {
     const moodId = this.moods().find((option) => option.name === mood)?.id;
     const doorId = this.doors().find((option) => option.name === door)?.id;
     if (!moodId || !doorId) return null;
-    return { title: title.trim(), date, text, moodId, doorId };
+    return { title: title.trim(), date, text, moodIds: [moodId], doorId };
   }
 }
