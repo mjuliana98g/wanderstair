@@ -39,7 +39,96 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      doors: {
+        Row: {
+          created_at: string
+          description: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      memories: {
+        Row: {
+          artworks: number[]
+          created_at: string
+          date: string
+          door_id: number
+          id: number
+          mood_id: number
+          text: string
+          title: string
+        }
+        Insert: {
+          artworks?: number[]
+          created_at?: string
+          date: string
+          door_id: number
+          id?: number
+          mood_id: number
+          text: string
+          title: string
+        }
+        Update: {
+          artworks?: number[]
+          created_at?: string
+          date?: string
+          door_id?: number
+          id?: number
+          mood_id?: number
+          text?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memories_door_id_fkey"
+            columns: ["door_id"]
+            isOneToOne: false
+            referencedRelation: "doors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memories_mood_id_fkey"
+            columns: ["mood_id"]
+            isOneToOne: false
+            referencedRelation: "moods"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      moods: {
+        Row: {
+          created_at: string
+          family: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          family: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          family?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
