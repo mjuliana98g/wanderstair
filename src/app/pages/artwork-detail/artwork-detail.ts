@@ -63,21 +63,20 @@ export class ArtworkDetail implements OnInit {
   // HANGING
   // --------------------------------------------------
 
-  hang(artwork: Artwork): void {
-    const room = this.memories().find((memory) => memory.id === this.roomId);
+    hang(artwork: Artwork): void {
+    const room = this.memories().find((memory) => memory.id === Number(this.roomId));
     if (!room) return;
     if (room.artworks.includes(artwork.id)) {
       this.message.set('This painting is already in that room.');
       return;
     }
-    const updated = { ...room, artworks: [...room.artworks, artwork.id] };
-    this.memoriesService.update(updated).subscribe({
+    this.memoriesService.updateArtworks(room.id, [...room.artworks, artwork.id]).subscribe({
       next: (saved) => this.saveRoom(saved),
       error: () => this.message.set('The painting could not be hung. Try again.')
     });
   }
 
-  private saveRoom(saved: Memory): void {
+    private saveRoom(saved: Memory): void {
     this.memories.update((list) => list.map((memory) => (memory.id === saved.id ? saved : memory)));
     this.message.set(`Hung in "${saved.title}".`);
   }

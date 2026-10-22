@@ -11,18 +11,32 @@ export type Mood =
 
 export type DoorStyle = 'arch' | 'round' | 'double' | 'iron' | 'starry';
 
-export type NewMemory = Omit<Memory, 'id'>;
-
-// --------------------------------------------------
-// INTERFACE
-// --------------------------------------------------
-
 export interface Memory {
-    readonly id: string;
-    title: string;
-    date: string;
-    mood: Mood;
-    door: DoorStyle;
-    text: string;
-    artworks: number[];
+  readonly id: number;
+  title: string;
+  date: string;
+  mood: Mood;
+  door: DoorStyle;
+  text: string;
+  artworks: number[];
+}
+
+export interface NewMemory {
+  title: string;
+  date: string;
+  text: string;
+  moodId: number;
+  doorId: number;
+}
+
+export interface MoodOption {
+  id: number;
+  name: string;
+  family: string;
+}
+
+export interface DoorOption {
+  id: number;
+  name: string;
+  description: string;
 }
