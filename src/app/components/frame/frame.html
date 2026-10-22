@@ -7,7 +7,7 @@
     <figcaption>
         <strong>{{ artistName() }}</strong>
         <cite><a [routerLink]="['/artwork', artwork.id]">{{ artwork.title }}</a></cite>
-        {{ artwork.creation_date }}
+        <small>{{ artwork.creation_date }}</small>
     </figcaption>
     @if (actionLabel) {
     <button type="button" (click)="emitAction()">{{ actionLabel }}</button>
