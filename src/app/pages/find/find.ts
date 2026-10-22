@@ -32,10 +32,10 @@ export class Find implements OnInit {
 
   ngOnInit(): void {
     const roomId = this.route.snapshot.queryParamMap.get('room');
-    if (roomId) this.loadRoom(roomId);
+    if (roomId) this.loadRoom(Number(roomId));
   }
 
-  loadRoom(id: string): void {
+  loadRoom(id: number): void {
     this.memoriesService.getById(id).subscribe({
       next: (memory) => this.room.set(memory),
       error: () => this.error.set('This room does not exist.')
@@ -71,8 +71,7 @@ export class Find implements OnInit {
   hang(artwork: Artwork): void {
     const room = this.room();
     if (!room || this.isHung(artwork)) return;
-    const updated = { ...room, artworks: [...room.artworks, artwork.id] };
-    this.memoriesService.update(updated).subscribe({
+    this.memoriesService.updateArtworks(room.id, [...room.artworks, artwork.id]).subscribe({
       next: (saved) => this.room.set(saved),
       error: () => this.error.set('The painting could not be hung. Try again.')
     });

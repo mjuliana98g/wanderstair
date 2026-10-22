@@ -34,11 +34,11 @@ export class Room implements OnInit {
   deleteError = signal('');
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id') ?? '';
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     this.loadMemory(id);
   }
 
-  loadMemory(id: string): void {
+  loadMemory(id: number): void {
     this.memoriesService.getById(id).subscribe({
       next: (memory) => {
         this.memory.set(memory);
@@ -74,8 +74,8 @@ export class Room implements OnInit {
   takeOffWall(artwork: Artwork): void {
     const memory = this.memory();
     if (!memory) return;
-    const updated = { ...memory, artworks: memory.artworks.filter((id) => id !== artwork.id) };
-    this.memoriesService.update(updated).subscribe({
+    const artworks = memory.artworks.filter((id) => id !== artwork.id);
+    this.memoriesService.updateArtworks(memory.id, artworks).subscribe({
       next: (saved) => {
         this.memory.set(saved);
         this.artworks.update((list) => list.filter((item) => item.id !== artwork.id));
