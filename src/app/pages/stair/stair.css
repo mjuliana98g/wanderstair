@@ -170,9 +170,8 @@
   font-size: 17px;
 }
 
-.mood {
-  color: var(--family);
-  font-style: italic;
+.landing.right .pills {
+  justify-content: flex-end;
 }
 
 /* --------------------------------------------------

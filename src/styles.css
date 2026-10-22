@@ -473,3 +473,23 @@ label {
     transition: none;
   }
 }
+
+/* --------------------------------------------------
+   MOOD PILLS
+   -------------------------------------------------- */
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pills span {
+  padding: 1px 12px;
+  border: 1px solid var(--family);
+  border-radius: 999px;
+    background: color-mix(in srgb, var(--family) 14%, transparent);
+  color: var(--title);
+  font-size: 16px;
+  font-style: italic;
+}

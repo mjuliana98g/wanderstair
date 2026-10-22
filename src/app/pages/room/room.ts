@@ -7,6 +7,7 @@ import { MuseumService } from '../../services/museum';
 import { Memory } from '../../models/memory.model';
 import { Artwork } from '../../models/artwork.model';
 import { Frame } from '../../components/frame/frame';
+import { familyOf } from '../../models/moods';
 
 // --------------------------------------------------
 // ROOM PAGE
@@ -27,6 +28,7 @@ export class Room implements OnInit {
   memory = signal<Memory | null>(null);
   loading = signal(true);
   error = signal('');
+  familyOf = familyOf;
 
   artworks = signal<Artwork[]>([]);
   artworksLoading = signal(false);
