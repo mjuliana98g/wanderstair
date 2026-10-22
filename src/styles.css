@@ -30,6 +30,12 @@
   --danger: #a8331f;
   --ok: #2f7d5a;
   --shadow: rgba(60, 50, 30, 0.22);
+  --plate-a: #f6dc95;
+  --plate-b: #b9862f;
+  --plate-c: #8a5e17;
+  --plate-ink: #3b2708;
+  --plate-light: rgba(255, 248, 220, 0.7);
+  --screw: #6e4a12;
   --display: 'Marcellus', Georgia, serif;
   --body: 'Alegreya', Georgia, serif;
 }
@@ -67,6 +73,12 @@
     --danger: #f2a0a0;
     --ok: #8fd6b4;
     --shadow: rgba(0, 0, 0, 0.5);
+    --plate-a: #f1f4f9;
+    --plate-b: #a9b2c2;
+    --plate-c: #6c7587;
+    --plate-ink: #1d2433;
+    --plate-light: rgba(255, 255, 255, 0.8);
+    --screw: #4c5466;
     color-scheme: dark;
   }
 }
@@ -99,6 +111,12 @@
   --danger: #f2a0a0;
   --ok: #8fd6b4;
   --shadow: rgba(0, 0, 0, 0.5);
+  --plate-a: #f1f4f9;
+  --plate-b: #a9b2c2;
+  --plate-c: #6c7587;
+  --plate-ink: #1d2433;
+  --plate-light: rgba(255, 255, 255, 0.8);
+  --screw: #4c5466;
   color-scheme: dark;
 }
 
@@ -106,15 +124,28 @@
    RESET
    -------------------------------------------------- */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body, h1, h2, h3, p, figure, ul, ol, dl, dd, fieldset {
+body,
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol,
+dl,
+dd,
+fieldset {
   margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
   padding: 0;
   list-style: none;
 }
@@ -155,7 +186,9 @@ main {
   padding: 40px 16px 80px;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--display);
   font-weight: 400;
   line-height: 1.12;
@@ -215,7 +248,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--line);
@@ -225,7 +260,8 @@ input, select, textarea {
   font: inherit;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
   width: auto;
 }
 
@@ -246,11 +282,25 @@ label {
    MOOD FAMILY COLOURS
    -------------------------------------------------- */
 
-[data-family="bright"] { --family: #e8b23a; }
-[data-family="quiet"] { --family: #2f9c8a; }
-[data-family="heavy"] { --family: #3d5fa8; }
-[data-family="stormy"] { --family: #b0243c; }
-[data-family="mixed"] { --family: #8a4fb3; }
+[data-family="bright"] {
+  --family: #e8b23a;
+}
+
+[data-family="quiet"] {
+  --family: #2f9c8a;
+}
+
+[data-family="heavy"] {
+  --family: #3d5fa8;
+}
+
+[data-family="stormy"] {
+  --family: #b0243c;
+}
+
+[data-family="mixed"] {
+  --family: #8a4fb3;
+}
 
 /* --------------------------------------------------
    DOORS
@@ -401,12 +451,25 @@ label {
    -------------------------------------------------- */
 
 @media (max-width: 480px) {
-  body { font-size: 18px; }
-  .door { width: 104px; }
-  .door[data-door="round"] { width: 110px; }
-  .door[data-door="double"] { width: 120px; }
+  body {
+    font-size: 18px;
+  }
+
+  .door {
+    width: 104px;
+  }
+
+  .door[data-door="round"] {
+    width: 110px;
+  }
+
+  .door[data-door="double"] {
+    width: 120px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .door { transition: none; }
+  .door {
+    transition: none;
+  }
 }
