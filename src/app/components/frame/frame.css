@@ -18,8 +18,7 @@ figure>p {
   width: 100%;
   aspect-ratio: 1;
   padding: 9%;
-  border: 12px solid transparent;
-  border-image: conic-gradient(from 45deg, var(--frame-a), var(--frame-b), var(--frame-a), var(--frame-b), var(--frame-a)) 1;
+  border: 12px solid var(--frame-b);
   background: var(--mat);
   box-shadow: 0 16px 32px var(--shadow);
   object-fit: contain;
@@ -66,8 +65,13 @@ figcaption::after {
   background: radial-gradient(circle at 35% 35%, var(--plate-light), var(--screw));
 }
 
-figcaption::before { left: 6px; }
-figcaption::after { right: 6px; }
+figcaption::before {
+  left: 6px;
+}
+
+figcaption::after {
+  right: 6px;
+}
 
 strong {
   font-family: var(--display);
@@ -82,7 +86,7 @@ cite {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-    font-size: 15px;
+  font-size: 15px;
   line-height: 1.25;
 }
 
