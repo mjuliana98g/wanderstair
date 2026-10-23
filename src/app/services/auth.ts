@@ -35,4 +35,5 @@ export class AuthService {
     hasSession(): Promise<boolean> {
     return this.supabase.auth.getSession().then(({ data }) => !!data.session);
   }
+  
 }
