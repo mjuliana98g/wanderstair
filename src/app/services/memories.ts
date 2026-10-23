@@ -1,10 +1,15 @@
 import { Service, inject } from '@angular/core';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, switchMap } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
 import { DoorOption, DoorStyle, Memory, Mood, MoodOption, NewMemory } from '../models/memory.model';
 
-const COLUMNS = 'id, title, date, text, artworks, mood:moods(name), door:doors(name)'
+const COLUMNS = 'id, title, date, text, artworks, door:doors(name), moods:memory_moods(position, mood:moods(name))';
+
+interface MoodLink {
+  position: number;
+  mood: { name: string };
+}
 
 interface MemoryRow {
   id: number;
@@ -12,7 +17,7 @@ interface MemoryRow {
   date: string;
   text: string;
   artworks: number[];
-  mood: { name: string };
+  moods: MoodLink[];
   door: { name: string };
 }
 
@@ -35,9 +40,19 @@ export class MemoriesService {
   }
 
   create(memory: NewMemory): Observable<Memory> {
-    const row = { title: memory.title, date: memory.date, text: memory.text, mood_id: memory.moodId, door_id: memory.doorId };
-    const request = this.supabase.from('memories').insert(row).select(COLUMNS).single();
-    return this.send(request).pipe(map(toMemory));
+    const row = { title: memory.title, date: memory.date, text: memory.text, door_id: memory.doorId };
+    const request = this.supabase.from('memories').insert(row).select('id').single();
+
+    return this.send(request).pipe(
+      switchMap((saved) => this.saveMoods(saved.id, memory.moodIds)),
+      switchMap((id) => this.getById(id))
+    );
+  }
+
+  private saveMoods(memoryId: number, moodIds: number[]): Observable<number> {
+    const rows = moodIds.map((moodId, index) => ({ memory_id: memoryId, mood_id: moodId, position: index + 1 }));
+    const request = this.supabase.from('memory_moods').insert(rows).select('memory_id');
+    return this.send(request).pipe(map(() => memoryId));
   }
 
   updateArtworks(id: number, artworks: number[]): Observable<Memory> {
@@ -85,7 +100,13 @@ function toMemory(row: MemoryRow): Memory {
     date: row.date,
     text: row.text,
     artworks: row.artworks,
-    mood: row.mood.name as Mood,
+    moods: sortMoods(row.moods),
     door: row.door.name as DoorStyle
   };
+}
+
+function sortMoods(links: MoodLink[]): Mood[] {
+  return [...links]
+    .sort((a, b) => a.position - b.position)
+    .map((link) => link.mood.name as Mood)
 }

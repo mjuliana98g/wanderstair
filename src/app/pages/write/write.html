@@ -22,22 +22,39 @@
         }
     </p>
 
-    <p>
-        <label for="mood">How did it feel?</label>
-        <select id="mood" formControlName="mood">
-            <option value="" disabled>Choose a feeling</option>
-            @for (family of moodFamilies; track family.name) {
-            <optgroup [label]="family.name">
-                @for (mood of family.moods; track mood) {
-                <option [value]="mood">{{ mood }}</option>
-                }
-            </optgroup>
+    <fieldset>
+        <legend>How did it feel?</legend>
+        <p>Choose every feeling that was there, from the strongest to the weakest. The first one colours the door.</p>
+        <ol>
+            @for (mood of form.controls.moods.value; track mood; let i = $index, first = $first, last = $last) {
+            <li [attr.data-family]="familyOf(mood)">
+                {{ mood }}
+                @if (first) { <small>colours the door</small> }
+                <button type="button" (click)="moveMood(i, -1)" [disabled]="first"
+                    [attr.aria-label]="'Move ' + mood + ' up'">↑</button>
+                <button type="button" (click)="moveMood(i, 1)" [disabled]="last"
+                    [attr.aria-label]="'Move ' + mood + ' down'">↓</button>
+                <button type="button" (click)="removeMood(i)" [attr.aria-label]="'Remove ' + mood">✕</button>
+            </li>
+            } @empty {
+            <li>Pick one or more feelings below. Put the strongest first.</li>
             }
-        </select>
-        @if (hasError('mood', 'required')) {
-        <span role="alert">Choose a feeling. It gives the room its colour.</span>
+        </ol>
+        @for (family of moodFamilies; track family.name) {
+        <details name="families" [attr.data-family]="family.name.toLowerCase()">
+            <summary>
+                {{ family.name }}
+                @if (countIn(family) > 0) { <span>{{ countIn(family) }}</span> }
+            </summary>
+            @for (mood of family.moods; track mood) {
+            <button type="button" [attr.aria-pressed]="isChosen(mood)" (click)="toggleMood(mood)">{{ mood }}</button>
+            }
+        </details>
         }
-    </p>
+        @if (hasError('moods', 'required')) {
+        <span role="alert">Choose at least one feeling.</span>
+        }
+    </fieldset>
 
     <fieldset>
         <legend>Choose a door</legend>

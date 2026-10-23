@@ -67,7 +67,6 @@ export type Database = {
           date: string
           door_id: number
           id: number
-          mood_id: number
           text: string
           title: string
         }
@@ -77,7 +76,6 @@ export type Database = {
           date: string
           door_id: number
           id?: number
-          mood_id: number
           text: string
           title: string
         }
@@ -87,7 +85,6 @@ export type Database = {
           date?: string
           door_id?: number
           id?: number
-          mood_id?: number
           text?: string
           title?: string
         }
@@ -99,8 +96,37 @@ export type Database = {
             referencedRelation: "doors"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      memory_moods: {
+        Row: {
+          id: number
+          memory_id: number
+          mood_id: number
+          position: number
+        }
+        Insert: {
+          id?: number
+          memory_id: number
+          mood_id: number
+          position: number
+        }
+        Update: {
+          id?: number
+          memory_id?: number
+          mood_id?: number
+          position?: number
+        }
+        Relationships: [
           {
-            foreignKeyName: "memories_mood_id_fkey"
+            foreignKeyName: "memory_moods_memory_id_fkey"
+            columns: ["memory_id"]
+            isOneToOne: false
+            referencedRelation: "memories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memory_moods_mood_id_fkey"
             columns: ["mood_id"]
             isOneToOne: false
             referencedRelation: "moods"
