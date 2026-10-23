@@ -31,14 +31,14 @@ jobs:
 
         - name: Create environment file
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASEURL: ${{ secrets.SUPABASEURL }}
+          SUPABASEKEY: ${{ secrets.SUPABASEKEY }}
         run: |
           mkdir -p src/environments
           cat > src/environments/environment.ts <<EOF
           export const environment = {
-            supabaseUrl: '${SUPABASE_URL}',
-            supabaseKey: '${SUPABASE_KEY}',
+            supabaseURL: '${SUPABASEURL}',
+            supabaseKey: '${SUPABASEKEY}',
           };
           EOF
 
