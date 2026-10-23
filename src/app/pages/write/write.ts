@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 
 import { MemoriesService } from '../../services/memories';
 import { DoorOption, DoorStyle, Mood, MoodOption, NewMemory } from '../../models/memory.model';
-import { DOOR_STYLES, MOOD_FAMILIES } from '../../models/moods';
+import { DOOR_STYLES, MOOD_FAMILIES, MoodFamily, familyOf } from '../../models/moods';
 
 // --------------------------------------------------
 // WRITE A NEW MEMORY PAGE
@@ -22,26 +22,27 @@ export class Write implements OnInit {
 
   moodFamilies = MOOD_FAMILIES;
   doorStyles = DOOR_STYLES;
-  moods = signal<MoodOption[]>([]);
-  doors = signal<DoorOption[]>([]);
+  moodOptions = signal<MoodOption[]>([]);
+  doorOptions = signal<DoorOption[]>([]);
   saving = signal(false);
   error = signal('');
+  familyOf = familyOf;
 
   form = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
     date: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    mood: new FormControl<Mood | ''>('', { nonNullable: true, validators: [Validators.required] }),
+    moods: new FormControl<Mood[]>([], { nonNullable: true, validators: [Validators.required] }),
     door: new FormControl<DoorStyle>('arch', { nonNullable: true }),
     text: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] })
   });
 
   ngOnInit(): void {
     this.memoriesService.getMoods().subscribe({
-      next: (moods) => this.moods.set(moods),
+      next: (moods) => this.moodOptions.set(moods),
       error: () => this.error.set('The feelings could not be loaded. Try again later.')
     });
     this.memoriesService.getDoors().subscribe({
-      next: (doors) => this.doors.set(doors),
+      next: (doors) => this.doorOptions.set(doors),
       error: () => this.error.set('The doors could not be loaded. Try again later.')
     });
   }
@@ -74,10 +75,44 @@ export class Write implements OnInit {
   }
 
   private toMemory(): NewMemory | null {
-    const { title, date, mood, door, text } = this.form.getRawValue();
-    const moodId = this.moods().find((option) => option.name === mood)?.id;
-    const doorId = this.doors().find((option) => option.name === door)?.id;
-    if (!moodId || !doorId) return null;
-    return { title: title.trim(), date, text, moodIds: [moodId], doorId };
+    const { title, date, moods, door, text } = this.form.getRawValue();
+    const moodIds = moods.map((name) => this.moodOptions().find((option) => option.name === name)?.id);
+    const doorId = this.doorOptions().find((option) => option.name === door)?.id;
+    if (moodIds.includes(undefined) || !doorId) return null;
+    return { title: title.trim(), date, text, moodIds: moodIds as number[], doorId };
+  }
+
+  // --------------------------------------------------
+  // MOODS
+  // --------------------------------------------------
+
+  isChosen(mood: Mood): boolean {
+    return this.form.controls.moods.value.includes(mood);
+  }
+
+  countIn(family: MoodFamily): number {
+    return family.moods.filter((mood) => this.isChosen(mood)).length;
+  }
+
+  private setMoods(moods: Mood[]): void {
+    this.form.controls.moods.setValue(moods);
+    this.form.controls.moods.markAsTouched();
+  }
+
+  toggleMood(mood: Mood): void {
+    const moods = this.form.controls.moods.value;
+    const updated = this.isChosen(mood) ? moods.filter((item) => item !== mood) : [...moods, mood];
+    this.setMoods(updated);
+  }
+
+  moveMood(index: number, step: number): void {
+    const moods = [...this.form.controls.moods.value];
+    const [mood] = moods.splice(index, 1);
+    moods.splice(index + step, 0, mood);
+    this.setMoods(moods);
+  }
+
+  removeMood(index: number): void {
+    this.setMoods(this.form.controls.moods.value.filter((_, i) => i !== index));
   }
 }
