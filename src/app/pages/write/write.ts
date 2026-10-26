@@ -138,4 +138,9 @@ export class Write implements OnInit {
   removeMood(index: number): void {
     this.setMoods(this.form.controls.moods.value.filter((_, i) => i !== index));
   }
+
+  doorFamily(): string {
+    const first = this.form.controls.moods.value[0];
+    return first ? familyOf(first) : 'mixed';
+  }
 }

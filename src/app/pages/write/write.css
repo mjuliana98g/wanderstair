@@ -1,0 +1,289 @@
+/* --------------------------------------------------
+   PAGE
+   -------------------------------------------------- */
+
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 28px clamp(16px, 4vw, 32px);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
+    box-shadow: 0 20px 44px var(--shadow);
+}
+
+/* --------------------------------------------------
+   FIELDS
+   -------------------------------------------------- */
+
+.pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field small,
+.hint {
+    color: var(--ink-soft);
+    font-size: 17px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+legend {
+    margin-bottom: 4px;
+    font-family: var(--display);
+    color: var(--title);
+}
+
+/* --------------------------------------------------
+   CHOSEN MOODS
+   -------------------------------------------------- */
+
+.chosen {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chosen li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 6px 4px 16px;
+    border: 1px solid var(--family);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--family) 14%, transparent);
+}
+
+.number {
+    min-width: 1.2em;
+    color: var(--ink-soft);
+}
+
+.name {
+    flex: 1;
+    color: var(--title);
+    font-style: italic;
+}
+
+.chosen small {
+    color: var(--ink-soft);
+    font-size: 14px;
+}
+
+.chosen button {
+    width: 34px;
+    min-height: 0;
+    height: 34px;
+    padding: 0;
+    border-color: var(--line);
+    background: var(--surface-solid);
+    color: var(--title);
+    font-size: 16px;
+}
+
+.chosen .empty {
+    padding: 10px 16px;
+    border: 1px dashed var(--line);
+    background: none;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* --------------------------------------------------
+   FAMILIES
+   -------------------------------------------------- */
+
+.families {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+details {
+    position: relative;
+}
+
+summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 4px 16px;
+    border: 1px solid var(--family);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--family) 10%, transparent);
+    color: var(--title);
+    list-style: none;
+    cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: "▾";
+    color: var(--ink-soft);
+    font-size: 13px;
+}
+
+details[open] summary {
+    background: color-mix(in srgb, var(--family) 22%, transparent);
+}
+
+details[open] summary::after {
+    content: "▴";
+}
+
+.count {
+    display: grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--family);
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.choices {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: max-content;
+    max-width: min(320px, 80vw);
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface-solid);
+    box-shadow: 0 16px 34px var(--shadow);
+}
+
+.choices::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+}
+
+.choices button {
+    min-height: 32px;
+    padding: 2px 14px;
+    border-color: var(--family);
+    background: transparent;
+    color: var(--title);
+    font-size: 16px;
+}
+
+.choices button[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--family) 30%, transparent);
+}
+
+/* --------------------------------------------------
+   DOORS
+   -------------------------------------------------- */
+
+.door-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.door-options label {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 124px;
+    height: 196px;
+    padding: 18px 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-solid);
+    color: var(--ink-soft);
+    font-family: var(--body);
+    font-size: 16px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.door-options label:has(input:checked) {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+    color: var(--title);
+}
+
+.door-options label:has(input:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.door-options input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.door-options .door {
+    zoom: 0.5;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+   -------------------------------------------------- */
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.buttons a {
+    color: var(--ink-soft);
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 640px) {
+    .pair {
+        grid-template-columns: 1fr;
+    }
+}
