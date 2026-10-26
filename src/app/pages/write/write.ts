@@ -1,10 +1,30 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+  ValidationErrors
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 import { MemoriesService } from '../../services/memories';
 import { DoorOption, DoorStyle, Mood, MoodOption, NewMemory } from '../../models/memory.model';
 import { DOOR_STYLES, MOOD_FAMILIES, MoodFamily, familyOf } from '../../models/moods';
+
+// --------------------------------------------------
+// DATES
+// --------------------------------------------------
+
+function todayText(): string {
+  return formatDate(new Date(), 'yyyy-MM-dd', 'en');
+}
+
+function notInFuture(control: AbstractControl): ValidationErrors | null {
+  return control.value > todayText() ? { future: true } : null;
+}
 
 // --------------------------------------------------
 // WRITE A NEW MEMORY PAGE
@@ -16,7 +36,9 @@ import { DOOR_STYLES, MOOD_FAMILIES, MoodFamily, familyOf } from '../../models/m
   templateUrl: './write.html',
   styleUrl: './write.css'
 })
+
 export class Write implements OnInit {
+
   private memoriesService = inject(MemoriesService);
   private router = inject(Router);
 
@@ -27,10 +49,11 @@ export class Write implements OnInit {
   saving = signal(false);
   error = signal('');
   familyOf = familyOf;
+  today = todayText;
 
   form = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),
-    date: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    date: new FormControl(todayText(), { nonNullable: true, validators: [Validators.required, notInFuture] }),
     moods: new FormControl<Mood[]>([], { nonNullable: true, validators: [Validators.required] }),
     door: new FormControl<DoorStyle>('arch', { nonNullable: true }),
     text: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] })

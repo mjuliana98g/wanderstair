@@ -16,9 +16,12 @@
 
     <p>
         <label for="date">When did it happen?</label>
-        <input id="date" type="date" formControlName="date">
+        <input id="date" type="date" formControlName="date" [max]="today">
         @if (hasError('date', 'required')) {
         <span role="alert">Choose the day it happened.</span>
+        }
+        @if (form.controls.date.hasError('future')) {
+            <p role="alert">The date cannot be in the future.</p>
         }
     </p>
 
