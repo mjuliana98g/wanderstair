@@ -8,8 +8,8 @@
 
 <form role="search" (ngSubmit)="search()">
     <label for="search-term">Search by title, artist or theme</label>
-    <input id="search-term" name="term" type="search" placeholder="Monet, water, cats…" [(ngModel)]="term">
-    <button type="submit">Search</button>
+    <input id="search-term" name="term" type="search" placeholder="Monet, water, cats…" [(ngModel)]="term"
+        (ngModelChange)="onTyping($event)"> <button type="submit">Search</button>
 </form>
 
 @if (term) {

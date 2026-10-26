@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -18,7 +19,9 @@ import { Frame } from '../../components/frame/frame';
   templateUrl: './find.html',
   styleUrl: './find.css'
 })
-export class Find implements OnInit {
+
+export class Find implements OnInit, OnDestroy {
+
   private route = inject(ActivatedRoute);
   private museumService = inject(MuseumService);
   private memoriesService = inject(MemoriesService);
@@ -30,9 +33,23 @@ export class Find implements OnInit {
   searched = signal(false);
   room = signal<Memory | null>(null);
 
+  private typedTerms = new Subject<String>();
+  private typing!: Subscription;
+
   ngOnInit(): void {
     const roomId = this.route.snapshot.queryParamMap.get('room');
     if (roomId) this.loadRoom(Number(roomId));
+    this.typing = this.typedTerms
+      .pipe(debounceTime(800), distinctUntilChanged())
+      .subscribe(() => this.search());
+  }
+
+  onTyping(term: string): void {
+    this.typedTerms.next(term.trim());
+  }
+
+  ngOnDestroy(): void {
+    this.typing.unsubscribe();
   }
 
   loadRoom(id: number): void {
