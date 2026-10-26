@@ -1,0 +1,48 @@
+<section class="account">
+    <h2>Create account</h2>
+    <p>Build the first step of your stair.</p>
+
+    <form [formGroup]="form" (ngSubmit)="createAccount()">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name" autocomplete="name" placeholder="Maria Silva">
+        @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <p role="alert">Enter your name.</p>
+        }
+        @if (form.controls.name.touched && form.controls.name.hasError('pattern')) {
+        <p role="alert">The name needs at least one letter.</p>
+        }
+        @if (form.controls.name.hasError('maxlength')) {
+        <p role="alert">Use at most 30 characters.</p>
+        }
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" autocomplete="email" placeholder="name@example.com">
+        @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+        <p role="alert">Enter your email.</p>
+        }
+        @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+        <p role="alert">Enter a valid email.</p>
+        }
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" autocomplete="new-password">
+        @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+        <p role="alert">Enter a password.</p>
+        }
+        @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+        <p role="alert">Use at least 6 characters.</p>
+        }
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" type="password" formControlName="confirmPassword" autocomplete="new-password">
+        @if (form.controls.confirmPassword.touched && form.controls.confirmPassword.hasError('required')) {
+        <p role="alert">Repeat your password.</p>
+        }
+        @if (form.controls.confirmPassword.touched && form.hasError('passwordsDiffer')) {
+        <p role="alert">The passwords are not the same.</p>
+        }
+        @if (error()) {
+        <p role="alert">{{ error() }}</p>
+        }
+        <button type="submit" [disabled]="form.invalid || sending()">Create account</button>
+    </form>
+
+    <p>Already have an account? <a routerLink="/sign-in">Sign in</a></p>
+</section>

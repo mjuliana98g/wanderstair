@@ -1,0 +1,60 @@
+import { Component, inject, signal } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthError } from '@supabase/supabase-js';
+import { AuthService } from '../../services/auth';
+
+// --------------------------------------------------
+// VALIDATORS
+// --------------------------------------------------
+
+function passwordsMatch(form: AbstractControl): ValidationErrors | null {
+  const password = form.get('password')?.value;
+  const confirmPassword = form.get('confirmPassword')?.value;
+  return password === confirmPassword ? null : { passwordDiffer: true };
+
+}
+
+@Component({
+  imports: [ReactiveFormsModule, RouterLink],
+  selector: 'app-create-account',
+  styleUrl: './create-account.css',
+  templateUrl: './create-account.html',
+})
+
+export class CreateAccount {
+
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  sending = signal(false);
+  error = signal('');
+
+  form = new FormGroup({
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/\S/), Validators.maxLength(30)] }), email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
+    confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  }, { validators: passwordsMatch });
+
+  createAccount(): void {
+
+    if (this.form.invalid) return;
+
+    const { name, email, password } = this.form.getRawValue();
+    this.sending.set(true);
+    this.error.set('');
+
+    this.auth.signUp(name.trim(), email, password).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (error: AuthError) => {
+        this.error.set(this.messageFor(error));
+        this.sending.set(false);
+      },
+    });
+  }
+
+  private messageFor(error: AuthError): string {
+    if (error.code === 'user_already_exists') return 'There is already an account with this email.';
+    return 'The account could not be created. Try again.';
+  }
+}

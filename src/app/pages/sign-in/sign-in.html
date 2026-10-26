@@ -4,7 +4,7 @@
 
   <form [formGroup]="form" (ngSubmit)="signIn()">
     <label for="email">Email</label>
-    <input id="email" type="email" formControlName="email" autocomplete="email">
+    <input id="email" type="email" formControlName="email" autocomplete="email" placeholder="name@example.com">
     @if (form.controls.email.touched && form.controls.email.hasError('required')) {
       <p role="alert">Enter your email.</p>
     }
