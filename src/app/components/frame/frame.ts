@@ -22,8 +22,8 @@ export class Frame {
   @Input() still = false;
   @Output() action = new EventEmitter<Artwork>();
 
-  artistName(): string {
-    return this.artwork.creators[0]?.description ?? 'Unknown artist';
+    artistName(): string {
+    return (this.artwork.creators[0]?.description ?? 'Unknown artist').split(' (')[0];
   }
 
   emitAction(): void {

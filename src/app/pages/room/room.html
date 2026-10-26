@@ -1,4 +1,4 @@
-<a routerLink="/">↑ Climb back to the stair</a>
+<a class="back" routerLink="/">↑ Climb back to the stair</a>
 
 @if (loading()) {
   <p>Opening the door…</p>
@@ -17,38 +17,39 @@
         </p>
       </header>
 
-      <section>
+      <section class="letter">
         <h3>The letter</h3>
         <p>{{ memory.text }}</p>
       </section>
 
-      <section>
-        <h3>The exhibition</h3>
+      <section class="exhibition">
+        <div class="section-head">
+          <h3>The exhibition</h3>
+          <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
+        </div>
         @if (artworksLoading()) {
           <p>Hanging the paintings…</p>
         } @else if (artworksError()) {
           <p role="alert">{{ artworksError() }}</p>
         } @else {
-          <ul>
+          <ul class="wall">
             @for (artwork of artworks(); track artwork.id) {
               <li>
                 <app-frame [artwork]="artwork" actionLabel="Take off the wall" (action)="takeOffWall($event)" />
               </li>
             } @empty {
-              <li>The walls are empty. Choose a few artworks that feel like this day.</li>
+              <li class="empty">The walls are empty. Choose a few artworks that feel like this day.</li>
             }
           </ul>
         }
       </section>
 
-      <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
-
-      <p>
+      <footer class="actions">
         <button type="button" (click)="deleteMemory()">Close this door forever</button>
-      </p>
-      @if (deleteError()) {
-        <p role="alert">{{ deleteError() }}</p>
-      }
+        @if (deleteError()) {
+          <p role="alert">{{ deleteError() }}</p>
+        }
+      </footer>
     </article>
   }
 }
