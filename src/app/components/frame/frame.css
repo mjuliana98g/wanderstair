@@ -13,7 +13,7 @@ figure {
 }
 
 img,
-figure>p {
+.painting p {
   display: block;
   width: 100%;
   aspect-ratio: 1;
@@ -24,12 +24,31 @@ figure>p {
   object-fit: contain;
 }
 
-figure>p {
+.painting p {
   display: grid;
   place-items: center;
   color: #6c6658;
   font-style: italic;
   text-align: center;
+}
+
+.painting {
+  display: block;
+  width: 100%;
+}
+
+img,
+.painting p,
+figcaption {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+figure:has(.painting:hover) :is(img, .painting p, figcaption) {
+  transform: translateY(-6px);
+}
+
+figure:has(.painting:hover) :is(img, .painting p) {
+  box-shadow: 0 26px 44px var(--shadow);
 }
 
 /* --------------------------------------------------
@@ -90,15 +109,6 @@ cite {
   line-height: 1.25;
 }
 
-cite a {
-  color: inherit;
-  text-decoration: none;
-}
-
-cite a:hover {
-  text-decoration: underline;
-}
-
 small {
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -107,4 +117,16 @@ small {
 
 button {
   margin-top: 12px;
+}
+
+/* --------------------------------------------------
+   MOTION
+   -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  img,
+  .painting p,
+  figcaption {
+    transition: none;
+  }
 }

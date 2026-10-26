@@ -13,9 +13,12 @@ import { RouterLink } from '@angular/router';
   styleUrl: './frame.css',
   imports: [RouterLink]
 })
+
 export class Frame {
+
   @Input({ required: true }) artwork!: Artwork;
   @Input() actionLabel = '';
+  @Input() detailLink: (string | number) [] | null = null;
   @Output() action = new EventEmitter<Artwork>();
 
   artistName(): string {
@@ -24,5 +27,9 @@ export class Frame {
 
   emitAction(): void {
     this.action.emit(this.artwork);
+  }
+
+  linkToDetail(): (string | number) [] {
+    return this.detailLink ?? ['/artwork', this.artwork.id];
   }
 }
