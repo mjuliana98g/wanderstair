@@ -9,9 +9,8 @@ header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px 28px;
-  padding: 14px max(16px, calc((100% - 1028px) / 2));
+  gap: 10px 36px;
+  padding: 14px max(16px, calc((100% - 1200px) / 2));
   border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--sky) 78%, transparent);
   backdrop-filter: blur(8px);
@@ -45,10 +44,37 @@ nav a.active {
   color: var(--title);
 }
 
-.theme {
-  min-height: 40px;
-  padding: 4px 14px;
+/* --------------------------------------------------
+   TOOLS
+   -------------------------------------------------- */
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 14px;
+  border-right: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 17px;
+}
+
+.who strong {
+  color: var(--title);
+  font-weight: 500;
+}
+
+.tools button {
+  min-height: 34px;
+  padding: 3px 14px;
   border-color: var(--line);
   background: var(--surface);
   color: var(--title);
+  font-size: 16px;
 }

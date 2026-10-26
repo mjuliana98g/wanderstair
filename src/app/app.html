@@ -1,13 +1,27 @@
 <header>
   <h1>{{ title }}</h1>
   <nav aria-label="Main navigation">
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My stair</a>
-    <a routerLink="/find" routerLinkActive="active">Find artworks</a>
-    <a routerLink="/write" routerLinkActive="active">New memory</a>
-    <button class="theme" type="button" (click)="toggleTheme()" aria-label="Switch between day and night">
+    @if (user()) {
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My stair</a>
+      <a routerLink="/find" routerLinkActive="active">Find artworks</a>
+      <a routerLink="/write" routerLinkActive="active">New memory</a>
+    } @else {
+      <a routerLink="/sign-in" routerLinkActive="active">Sign in</a>
+      <a routerLink="/create-account" routerLinkActive="active">Create account</a>
+    }
+  </nav>
+
+  <div class="tools">
+    @if (user()) {
+      <div class="who">
+        <p>Hello, <strong>{{ userName() }}</strong></p>
+        <button type="button" (click)="signOut()">Sign out</button>
+      </div>
+    }
+    <button type="button" (click)="toggleTheme()" aria-label="Switch between day and night">
       @if (isNight()) { ☾ Night } @else { ☀︎ Day }
     </button>
-  </nav>
+  </div>
 </header>
 
 <main>

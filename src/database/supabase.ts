@@ -67,6 +67,7 @@ export type Database = {
           date: string
           door_id: number
           id: number
+          owner_id: string
           text: string
           title: string
         }
@@ -76,6 +77,7 @@ export type Database = {
           date: string
           door_id: number
           id?: number
+          owner_id?: string
           text: string
           title: string
         }
@@ -85,6 +87,7 @@ export type Database = {
           date?: string
           door_id?: number
           id?: number
+          owner_id?: string
           text?: string
           title?: string
         }
