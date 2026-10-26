@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 
 import { MuseumService } from '../../services/museum';
 import { MemoriesService } from '../../services/memories';
@@ -15,7 +15,7 @@ import { Frame } from '../../components/frame/frame';
 
 @Component({
   selector: 'app-find',
-  imports: [FormsModule, RouterLink, Frame],
+  imports: [FormsModule, RouterLink, Frame, RouterOutlet],
   templateUrl: './find.html',
   styleUrl: './find.css'
 })
@@ -32,6 +32,7 @@ export class Find implements OnInit, OnDestroy {
   error = signal('');
   searched = signal(false);
   room = signal<Memory | null>(null);
+  detailOpen = signal(false);
 
   private typedTerms = new Subject<String>();
   private typing!: Subscription;
