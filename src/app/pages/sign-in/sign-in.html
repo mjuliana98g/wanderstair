@@ -1,0 +1,31 @@
+<section>
+  <h2>Sign in</h2>
+  <p>Open the door to your stair.</p>
+
+  <form [formGroup]="form" (ngSubmit)="signIn()">
+    <label for="email">Email</label>
+    <input id="email" type="email" formControlName="email" autocomplete="email">
+    @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+      <p role="alert">Enter your email.</p>
+    }
+    @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+      <p role="alert">Enter a valid email.</p>
+    }
+
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" autocomplete="current-password">
+    @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+      <p role="alert">Enter your password.</p>
+    }
+    @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+      <p role="alert">The password has at least 6 characters.</p>
+    }
+
+    @if (error()) {
+      <p role="alert">{{ error() }}</p>
+    }
+    <button type="submit" [disabled]="form.invalid || sending()">Sign in</button>
+  </form>
+
+  <p>No account yet? <a routerLink="/create-account">Create one</a></p>
+</section>
