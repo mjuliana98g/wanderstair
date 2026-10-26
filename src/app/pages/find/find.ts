@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterOutlet, Router } from '@angular/router';
 
 import { MuseumService } from '../../services/museum';
 import { MemoriesService } from '../../services/memories';
@@ -23,6 +23,7 @@ import { Frame } from '../../components/frame/frame';
 export class Find implements OnInit, OnDestroy {
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private museumService = inject(MuseumService);
   private memoriesService = inject(MemoriesService);
 
@@ -51,6 +52,23 @@ export class Find implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.typing.unsubscribe();
+  }
+
+  // --------------------------------------------------
+  // DETAIL MODAL
+  // --------------------------------------------------
+
+  closeDetail(): void {
+    this.router.navigate(['/find'], { queryParamsHandling: 'preserve' });
+  }
+
+  closeOnBackdrop(event: MouseEvent): void {
+    if (event.target === event.currentTarget) this.closeDetail();
+  }
+
+  @HostListener('document:keydown.escape')
+  closeOnEscape(): void {
+    if (this.detailOpen()) this.closeDetail();
   }
 
   loadRoom(id: number): void {

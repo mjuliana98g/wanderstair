@@ -35,8 +35,9 @@
     }
 </ul>
 }
-<section class="modal" [hidden]="!detailOpen()">
+<section class="modal" [hidden]="!detailOpen()" (click)="closeOnBackdrop($event)">
     <div class="dialog" role="dialog" aria-modal="true" aria-label="Artwork details">
+        <button class="close" type="button" (click)="closeDetail()" aria-label="Close">✕</button>
         <router-outlet (activate)="detailOpen.set(true)" (deactivate)="detailOpen.set(false)" />
     </div>
 </section>

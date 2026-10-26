@@ -77,3 +77,19 @@ li p {
   background: var(--surface-solid);
   box-shadow: 0 30px 60px var(--shadow);
 }
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  width: 40px;
+  min-height: 0;
+  height: 40px;
+  padding: 0;
+  border-color: var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--title);
+  font-size: 18px;
+}
