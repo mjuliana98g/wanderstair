@@ -18,7 +18,8 @@ export class Frame {
 
   @Input({ required: true }) artwork!: Artwork;
   @Input() actionLabel = '';
-  @Input() detailLink: (string | number) [] | null = null;
+  @Input() detailLink: (string | number)[] | null = null;
+  @Input() still = false;
   @Output() action = new EventEmitter<Artwork>();
 
   artistName(): string {
@@ -29,7 +30,8 @@ export class Frame {
     this.action.emit(this.artwork);
   }
 
-  linkToDetail(): (string | number) [] {
+  linkToDetail(): (string | number)[] | null {
+    if (this.still) return null;
     return this.detailLink ?? ['/artwork', this.artwork.id];
   }
 }

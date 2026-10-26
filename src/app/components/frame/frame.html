@@ -1,6 +1,7 @@
 <figure>
     <a class="painting" [routerLink]="linkToDetail()" queryParamsHandling="preserve"
-        [attr.aria-label]="'Open ' + artwork.title"> @if (artwork.images) {
+        [attr.aria-label]="still ? null : 'Open ' + artwork.title">
+        @if (artwork.images) {
         <img [src]="artwork.images.web.url" [alt]="artwork.title" width="300">
         } @else {
         <p>No image for this artwork</p>

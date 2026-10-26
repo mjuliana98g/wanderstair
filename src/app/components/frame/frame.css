@@ -43,11 +43,11 @@ figcaption {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-figure:has(.painting:hover) :is(img, .painting p, figcaption) {
+figure:has(.painting[href]:hover) :is(img, .painting p, figcaption) {
   transform: translateY(-6px);
 }
 
-figure:has(.painting:hover) :is(img, .painting p) {
+figure:has(.painting[href]:hover) :is(img, .painting p) {
   box-shadow: 0 26px 44px var(--shadow);
 }
 
