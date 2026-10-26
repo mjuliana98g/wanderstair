@@ -23,6 +23,11 @@ export class SignIn {
   sending = signal(false);
   error = signal('');
 
+  showPassword = signal(false);
+  togglePassword(): void {
+    this.showPassword.update((shown) => !shown);
+  }
+
   signIn(): void {
     if (this.form.invalid) return;
     const { email, password } = this.form.getRawValue();

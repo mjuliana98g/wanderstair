@@ -30,6 +30,17 @@ export class CreateAccount {
   sending = signal(false);
   error = signal('');
 
+  showPassword = signal(false);
+  showConfirmPassword = signal(false);
+
+  togglePassword(): void {
+    this.showPassword.update((shown) => !shown);
+  }
+
+  toggleConfirmPassword(): void {
+    this.showConfirmPassword.update((shown) => !shown);
+  }
+
   form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/\S/), Validators.maxLength(30)] }), email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
