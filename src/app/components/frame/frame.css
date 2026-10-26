@@ -13,7 +13,7 @@ figure {
 }
 
 img,
-figure>p {
+.painting p {
   display: block;
   width: 100%;
   aspect-ratio: 1;
@@ -24,12 +24,31 @@ figure>p {
   object-fit: contain;
 }
 
-figure>p {
+.painting p {
   display: grid;
   place-items: center;
   color: #6c6658;
   font-style: italic;
   text-align: center;
+}
+
+.painting {
+  display: block;
+  width: 100%;
+}
+
+img,
+.painting p,
+figcaption {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+figure:has(.painting[href]:hover) :is(img, .painting p, figcaption) {
+  transform: translateY(-6px);
+}
+
+figure:has(.painting[href]:hover) :is(img, .painting p) {
+  box-shadow: 0 26px 44px var(--shadow);
 }
 
 /* --------------------------------------------------
@@ -40,7 +59,7 @@ figcaption {
   position: relative;
   z-index: 1;
   width: 84%;
-  height: 84px;
+  height: 100px;
   margin-top: -22px;
   display: flex;
   flex-direction: column;
@@ -74,10 +93,15 @@ figcaption::after {
 }
 
 strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   font-family: var(--display);
   font-weight: 400;
   font-size: 11px;
-  letter-spacing: 0.16em;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -90,15 +114,6 @@ cite {
   line-height: 1.25;
 }
 
-cite a {
-  color: inherit;
-  text-decoration: none;
-}
-
-cite a:hover {
-  text-decoration: underline;
-}
-
 small {
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -107,4 +122,16 @@ small {
 
 button {
   margin-top: 12px;
+}
+
+/* --------------------------------------------------
+   MOTION
+   -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  img,
+  .painting p,
+  figcaption {
+    transition: none;
+  }
 }

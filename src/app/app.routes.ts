@@ -19,7 +19,11 @@ export const routes: Routes = [
     children: [
       { path: '', component: Stair },
       { path: 'room/:id', component: Room },
-      { path: 'find', component: Find },
+      {
+        path: 'find',
+        component: Find,
+        children: [{ path: 'artwork/:id', component: ArtworkDetail }],
+      },
       { path: 'write', component: Write },
       { path: 'artwork/:id', component: ArtworkDetail },
     ],

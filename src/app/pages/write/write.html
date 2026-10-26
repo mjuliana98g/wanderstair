@@ -3,35 +3,41 @@
 @if (error()) {
 <p role="alert">{{ error() }}</p>
 }
+
 <form [formGroup]="form" (ngSubmit)="save()">
-    <p>
-        <label for="title">Title</label>
-        <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam">
-        @if (hasError('title', 'required')) {
-        <span role="alert">Every door needs a title.</span>
-        } @else if (hasError('title', 'minlength')) {
-        <span role="alert">The title needs at least 3 letters.</span>
-        }
-    </p>
+    <div class="pair">
+        <div class="field">
+            <label for="title">Title</label>
+            <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam">
+            @if (hasError('title', 'required')) {
+            <span role="alert">Every door needs a title.</span>
+            } @else if (hasError('title', 'minlength')) {
+            <span role="alert">The title needs at least 3 letters.</span>
+            }
+        </div>
 
-    <p>
-        <label for="date">When did it happen?</label>
-        <input id="date" type="date" formControlName="date" [max]="today">
-        @if (hasError('date', 'required')) {
-        <span role="alert">Choose the day it happened.</span>
-        }
-        @if (form.controls.date.hasError('future')) {
-            <p role="alert">The date cannot be in the future.</p>
-        }
-    </p>
+        <div class="field">
+            <label for="date">When did it happen?</label>
+            <input id="date" type="date" formControlName="date" [max]="today">
+            @if (hasError('date', 'required')) {
+            <span role="alert">Choose the day it happened.</span>
+            }
+            @if (form.controls.date.hasError('future')) {
+            <span role="alert">The date cannot be in the future.</span>
+            }
+        </div>
+    </div>
 
-    <fieldset>
+    <fieldset class="moods">
         <legend>How did it feel?</legend>
-        <p>Choose every feeling that was there, from the strongest to the weakest. The first one colours the door.</p>
-        <ol>
+        <p class="hint">Choose every feeling that was there, from the strongest to the weakest. The first one colours
+            the door.</p>
+
+        <ol class="chosen">
             @for (mood of form.controls.moods.value; track mood; let i = $index, first = $first, last = $last) {
             <li [attr.data-family]="familyOf(mood)">
-                {{ mood }}
+                <span class="number">{{ i + 1 }}</span>
+                <span class="name">{{ mood }}</span>
                 @if (first) { <small>colours the door</small> }
                 <button type="button" (click)="moveMood(i, -1)" [disabled]="first"
                     [attr.aria-label]="'Move ' + mood + ' up'">↑</button>
@@ -40,46 +46,56 @@
                 <button type="button" (click)="removeMood(i)" [attr.aria-label]="'Remove ' + mood">✕</button>
             </li>
             } @empty {
-            <li>Pick one or more feelings below. Put the strongest first.</li>
+            <li class="empty">Pick one or more feelings below. Put the strongest first.</li>
             }
         </ol>
-        @for (family of moodFamilies; track family.name) {
-        <details name="families" [attr.data-family]="family.name.toLowerCase()">
-            <summary>
-                {{ family.name }}
-                @if (countIn(family) > 0) { <span>{{ countIn(family) }}</span> }
-            </summary>
-            @for (mood of family.moods; track mood) {
-            <button type="button" [attr.aria-pressed]="isChosen(mood)" (click)="toggleMood(mood)">{{ mood }}</button>
+
+        <div class="families">
+            @for (family of moodFamilies; track family.name) {
+            <details #box name="families" [attr.data-family]="family.name.toLowerCase()" (mouseenter)="box.open = true"
+                (mouseleave)="box.open = false">
+                <summary>
+                    {{ family.name }}
+                    @if (countIn(family) > 0) { <span class="count">{{ countIn(family) }}</span> }
+                </summary>
+                <div class="choices">
+                    @for (mood of family.moods; track mood) {
+                    <button type="button" [attr.aria-pressed]="isChosen(mood)" (click)="toggleMood(mood)">{{ mood
+                        }}</button>
+                    }
+                </div>
+            </details>
             }
-        </details>
-        }
+        </div>
+
         @if (hasError('moods', 'required')) {
         <span role="alert">Choose at least one feeling.</span>
         }
     </fieldset>
 
-    <fieldset>
+    <fieldset class="doors">
         <legend>Choose a door</legend>
-        @for (door of doorStyles; track door) {
-        <label>
-            <input type="radio" formControlName="door" [value]="door">
-            {{ door }}
-        </label>
-        }
+        <div class="door-options">
+            @for (door of doorStyles; track door) {
+            <label>
+                <input type="radio" formControlName="door" [value]="door">
+                <span class="door" [attr.data-door]="door" [attr.data-family]="doorFamily()"></span>
+                {{ door }}
+            </label>
+            }
+        </div>
+        <p class="hint">
+            @switch (form.controls.door.value) {
+            @case ('arch') { A tall arched door of old oak. }
+            @case ('round') { A small round door hidden in the wall. }
+            @case ('double') { Two heavy doors that open together. }
+            @case ('iron') { An iron door with rivets and a heavy lock. }
+            @case ('starry') { A midnight-blue door covered in stars. }
+            }
+        </p>
     </fieldset>
 
-    <p>
-        @switch (form.controls.door.value) {
-        @case ('arch') { A tall arched door of old oak. }
-        @case ('round') { A small round door hidden in the wall. }
-        @case ('double') { Two heavy doors that open together. }
-        @case ('iron') { An iron door with rivets and a heavy lock. }
-        @case ('starry') { A midnight-blue door covered in stars. }
-        }
-    </p>
-
-    <p>
+    <div class="field">
         <label for="text">What happened?</label>
         <textarea id="text" rows="6" formControlName="text"
             placeholder="Write it down. Good or bad, it is yours."></textarea>
@@ -89,12 +105,12 @@
         } @else if (hasError('text', 'minlength')) {
         <span role="alert">Write at least 10 characters.</span>
         }
-    </p>
+    </div>
 
-    <p>
+    <div class="buttons">
         <a routerLink="/">Cancel</a>
         <button type="submit" [disabled]="form.invalid || saving()">
             @if (saving()) { Opening… } @else { Open the door }
         </button>
-    </p>
+    </div>
 </form>

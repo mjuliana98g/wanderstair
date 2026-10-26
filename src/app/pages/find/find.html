@@ -24,8 +24,8 @@
 <ul>
     @for (artwork of results(); track artwork.id) {
     <li>
-        <app-frame [artwork]="artwork" [actionLabel]="room() && !isHung(artwork) ? 'Hang here' : ''"
-            (action)="hang($event)" />
+        <app-frame [artwork]="artwork" [detailLink]="['/find/artwork', artwork.id]"
+            [actionLabel]="room() && !isHung(artwork) ? 'Hang here' : ''" (action)="hang($event)" />
         @if (isHung(artwork)) {
         <p>✓ On the wall</p>
         }
@@ -35,3 +35,9 @@
     }
 </ul>
 }
+<section class="modal" [hidden]="!detailOpen()" (click)="closeOnBackdrop($event)">
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="Artwork details">
+        <button class="close" type="button" (click)="closeDetail()" aria-label="Close">✕</button>
+        <router-outlet (activate)="detailOpen.set(true)" (deactivate)="detailOpen.set(false)" />
+    </div>
+</section>

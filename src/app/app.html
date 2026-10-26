@@ -1,6 +1,6 @@
 <header>
   <h1>{{ title }}</h1>
-  <nav aria-label="Main navigation">
+  <nav aria-label="Main navigation" [class.guest]="!user()">
     @if (user()) {
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My stair</a>
       <a routerLink="/find" routerLinkActive="active">Find artworks</a>

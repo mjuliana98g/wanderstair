@@ -44,6 +44,14 @@ nav a.active {
   color: var(--title);
 }
 
+nav.guest {
+  margin-left: auto;
+}
+
+nav.guest + .tools {
+  margin-left: 0;
+}
+
 /* --------------------------------------------------
    TOOLS
    -------------------------------------------------- */

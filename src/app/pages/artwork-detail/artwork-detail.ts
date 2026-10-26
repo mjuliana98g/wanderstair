@@ -1,11 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MuseumService } from '../../services/museum';
 import { MemoriesService } from '../../services/memories';
 import { Artwork } from '../../models/artwork.model';
 import { Memory } from '../../models/memory.model';
+import { Location } from '@angular/common';
+import { Frame } from '../../components/frame/frame';
 
 // --------------------------------------------------
 // ARTWORK DETAIL PAGE
@@ -13,14 +15,17 @@ import { Memory } from '../../models/memory.model';
 
 @Component({
   selector: 'app-artwork-detail',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, Frame],
   templateUrl: './artwork-detail.html',
   styleUrl: './artwork-detail.css'
 })
 export class ArtworkDetail implements OnInit {
+
   private route = inject(ActivatedRoute);
   private museumService = inject(MuseumService);
   private memoriesService = inject(MemoriesService);
+  private router = inject(Router);
+  private location = inject(Location);
 
   artwork = signal<Artwork | null>(null);
   loading = signal(true);
@@ -28,9 +33,11 @@ export class ArtworkDetail implements OnInit {
   memories = signal<Memory[]>([]);
   roomId = '';
   message = signal('');
+  inModal = this.router.url.startsWith('/find');
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.roomId = this.route.snapshot.queryParamMap.get('room') ?? '';
     this.loadArtwork(id);
     this.loadMemories();
   }
@@ -51,12 +58,20 @@ export class ArtworkDetail implements OnInit {
   loadMemories(): void {
     this.memoriesService.getAll().subscribe({
       next: (memories) => this.memories.set(memories),
-      error: () => this.message.set('Your rooms could not be loaded. Is the API running?')
+            error: () => this.message.set('Your rooms could not be loaded. Try again later.')
     });
   }
 
   artistName(artwork: Artwork): string {
     return artwork.creators[0]?.description ?? 'Unknown artist';
+  }
+
+  shortName(artwork: Artwork): string {
+    return this.artistName(artwork).split(' (')[0];
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   // --------------------------------------------------

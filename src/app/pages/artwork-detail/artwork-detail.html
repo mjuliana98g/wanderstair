@@ -1,4 +1,6 @@
-<a routerLink="/">↑ Climb back to the stair</a>
+@if (!inModal) {
+  <button class="back" type="button" (click)="goBack()">← Go back</button>
+}
 
 @if (loading()) {
   <p>Unrolling the canvas…</p>
@@ -7,45 +9,48 @@
 } @else {
   @if (artwork(); as artwork) {
     <article>
-      <h2>{{ artwork.title }}</h2>
+      <header>
+        <h2>{{ artwork.title }}</h2>
+        <p>{{ shortName(artwork) }}, {{ artwork.creation_date }}</p>
+      </header>
 
-      @if (artwork.images) {
-        <img [src]="artwork.images.web.url" [alt]="artwork.title" width="600">
-      }
+      <app-frame [artwork]="artwork" [still]="true" />
 
-      <dl>
-        <dt>Artist</dt>
-        <dd>{{ artistName(artwork) }}</dd>
-        <dt>Date</dt>
-        <dd>{{ artwork.creation_date }}</dd>
-        <dt>Type</dt>
-        <dd>{{ artwork.type }}</dd>
-        <dt>Technique</dt>
-        <dd>{{ artwork.technique }}</dd>
-        <dt>Department</dt>
-        <dd>{{ artwork.department }}</dd>
-      </dl>
+      <div class="info">
+        @if (artwork.description) {
+          <div class="about" [innerHTML]="artwork.description"></div>
+        }
 
-      @if (artwork.description) {
-        <p>{{ artwork.description }}</p>
-      }
+        <dl>
+          <div><dt>Artist</dt><dd>{{ artistName(artwork) }}</dd></div>
+          <div><dt>Date</dt><dd>{{ artwork.creation_date }}</dd></div>
+          <div><dt>Type</dt><dd>{{ artwork.type }}</dd></div>
+          <div><dt>Technique</dt><dd>{{ artwork.technique }}</dd></div>
+          <div>
+            <dt>Museum</dt>
+            <dd class="place">
+              Cleveland Museum of Art
+              <a [href]="artwork.url" target="_blank" rel="noopener">See it online ↗</a>
+            </dd>
+          </div>
+        </dl>
 
-      <a [href]="artwork.url" target="_blank" rel="noopener">See it on the museum website</a>
-
-      <form (ngSubmit)="hang(artwork)">
-        <label for="room">Hang it in a room</label>
-        <select id="room" name="room" [(ngModel)]="roomId">
-          <option value="" disabled>Choose a memory</option>
-          @for (memory of memories(); track memory.id) {
-            <option [value]="memory.id">{{ memory.title }}</option>
+        <form class="hang" (ngSubmit)="hang(artwork)">
+          <label for="room">Hang it in a room</label>
+          <div class="row">
+            <select id="room" name="room" [(ngModel)]="roomId">
+              <option value="" disabled>Choose a memory</option>
+              @for (memory of memories(); track memory.id) {
+                <option [value]="memory.id">{{ memory.title }}</option>
+              }
+            </select>
+            <button type="submit" [disabled]="!roomId">Hang here</button>
+          </div>
+          @if (message()) {
+            <p role="status">{{ message() }}</p>
           }
-        </select>
-        <button type="submit" [disabled]="!roomId">Hang here</button>
-      </form>
-
-      @if (message()) {
-        <p role="status">{{ message() }}</p>
-      }
+        </form>
+      </div>
     </article>
   }
 }

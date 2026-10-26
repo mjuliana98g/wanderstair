@@ -1,12 +1,15 @@
 <figure>
-    @if (artwork.images) {
-    <img [src]="artwork.images.web.url" [alt]="artwork.title" width="300">
-    } @else {
-    <p>No image for this artwork</p>
-    }
+    <a class="painting" [routerLink]="linkToDetail()" queryParamsHandling="preserve"
+        [attr.aria-label]="still ? null : 'Open ' + artwork.title">
+        @if (artwork.images) {
+        <img [src]="artwork.images.web.url" [alt]="artwork.title" width="300">
+        } @else {
+        <p>No image for this artwork</p>
+        }
+    </a>
     <figcaption>
         <strong>{{ artistName() }}</strong>
-        <cite><a [routerLink]="['/artwork', artwork.id]">{{ artwork.title }}</a></cite>
+        <cite>{{ artwork.title }}</cite>
         <small>{{ artwork.creation_date }}</small>
     </figcaption>
     @if (actionLabel) {

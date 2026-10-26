@@ -1,0 +1,147 @@
+/* --------------------------------------------------
+   BACK
+   -------------------------------------------------- */
+
+.back {
+  min-height: 36px;
+  margin-bottom: 28px;
+  padding: 4px 16px;
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--title);
+  font-size: 16px;
+}
+
+/* --------------------------------------------------
+   LAYOUT
+   -------------------------------------------------- */
+
+article {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  align-items: start;
+  gap: 28px 48px;
+}
+
+header {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 48px;
+}
+
+header p {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* --------------------------------------------------
+   INFORMATION
+   -------------------------------------------------- */
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.about {
+  max-width: 30em;
+  color: var(--ink-soft);
+  font-style: italic;
+  text-align: justify;
+  hyphens: auto;
+}
+
+dl {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+dt {
+  color: var(--ink-soft);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+dd {
+  font-family: var(--display);
+  font-size: 19px;
+  color: var(--title);
+  text-align: justify;
+  hyphens: auto;
+}
+
+.place {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.place a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 2px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--title);
+  font-family: var(--body);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.place a:hover {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+/* --------------------------------------------------
+   HANGING
+   -------------------------------------------------- */
+
+.hang {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: min(100%, 360px);
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.row select {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+}
+
+.row select option {
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-solid));
+  color: var(--title);
+}
+
+.row button {
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 720px) {
+  article {
+    grid-template-columns: 1fr;
+  }
+}
