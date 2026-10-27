@@ -20,7 +20,6 @@ import { Frame } from '../../components/frame/frame';
   styleUrl: './artwork-detail.css'
 })
 export class ArtworkDetail implements OnInit {
-
   private route = inject(ActivatedRoute);
   private museumService = inject(MuseumService);
   private memoriesService = inject(MemoriesService);
@@ -58,7 +57,7 @@ export class ArtworkDetail implements OnInit {
   loadMemories(): void {
     this.memoriesService.getAll().subscribe({
       next: (memories) => this.memories.set(memories),
-            error: () => this.message.set('Your rooms could not be loaded. Try again later.')
+      error: () => this.message.set('Your rooms could not be loaded. Try again later.')
     });
   }
 
@@ -74,11 +73,24 @@ export class ArtworkDetail implements OnInit {
     this.location.back();
   }
 
+  roomsWith(artwork: Artwork): Memory[] {
+    return this.memories().filter((memory) => memory.artworks.includes(artwork.id));
+  }
+
+  roomsWithout(artwork: Artwork): Memory[] {
+    return this.memories().filter((memory) => !memory.artworks.includes(artwork.id));
+  }
+
+  hungIn(artwork: Artwork): string {
+    const titles = this.roomsWith(artwork).map((memory) => memory.title);
+    return new Intl.ListFormat('en', { type: 'conjunction' }).format(titles);
+  }
+
   // --------------------------------------------------
   // HANGING
   // --------------------------------------------------
 
-    hang(artwork: Artwork): void {
+  hang(artwork: Artwork): void {
     const room = this.memories().find((memory) => memory.id === Number(this.roomId));
     if (!room) return;
     if (room.artworks.includes(artwork.id)) {
@@ -91,8 +103,9 @@ export class ArtworkDetail implements OnInit {
     });
   }
 
-    private saveRoom(saved: Memory): void {
+  private saveRoom(saved: Memory): void {
     this.memories.update((list) => list.map((memory) => (memory.id === saved.id ? saved : memory)));
     this.message.set(`Hung in "${saved.title}".`);
+    this.roomId = '';
   }
 }
