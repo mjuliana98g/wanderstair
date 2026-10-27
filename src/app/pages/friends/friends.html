@@ -1,0 +1,75 @@
+<header class="intro">
+    <h2>Friends</h2>
+    <p>Friends can send you postcards from their stair, and you can send yours back.</p>
+</header>
+
+<section class="card">
+    <h3>Add a friend</h3>
+    <form [formGroup]="form" (ngSubmit)="addFriend()">
+        <label for="email">Their email</label>
+        <div class="row">
+            <input id="email" type="email" formControlName="email" placeholder="name@example.com" autocomplete="off">
+            <button type="submit" [disabled]="form.invalid || sending()">Send request</button>
+        </div>
+        @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+        <p role="alert">Enter a valid email.</p>
+        }
+        @if (message()) {
+        <p role="status">{{ message() }}</p>
+        }
+        @if (formError()) {
+        <p role="alert">{{ formError() }}</p>
+        }
+    </form>
+</section>
+
+@if (loading()) {
+<p>Looking for your friends…</p>
+} @else {
+@if (error()) {
+<p role="alert">{{ error() }}</p>
+}
+
+@if (received().length) {
+<section class="card">
+    <h3>Asking to be your friend</h3>
+    <ul class="people">
+        @for (friend of received(); track friend.friendshipId) {
+        <li>
+            <span class="name">{{ friend.name }}</span>
+            <button type="submit" (click)="accept(friend)">Accept</button>
+            <button type="button" (click)="remove(friend)">Decline</button>
+        </li>
+        }
+    </ul>
+</section>
+}
+
+<section class="card">
+    <h3>Your friends</h3>
+    <ul class="people">
+        @for (friend of accepted(); track friend.friendshipId) {
+        <li>
+            <span class="name">{{ friend.name }}</span>
+            <button type="button" (click)="remove(friend)">Remove</button>
+        </li>
+        } @empty {
+        <li class="empty">No friends yet. Add someone by their email.</li>
+        }
+    </ul>
+</section>
+
+@if (sent().length) {
+<section class="card">
+    <h3>Waiting for an answer</h3>
+    <ul class="people">
+        @for (friend of sent(); track friend.friendshipId) {
+        <li>
+            <span class="name">{{ friend.name }}</span>
+            <button type="button" (click)="remove(friend)">Cancel</button>
+        </li>
+        }
+    </ul>
+</section>
+}
+}
