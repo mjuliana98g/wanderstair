@@ -109,10 +109,21 @@ dd {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
   width: min(100%, 360px);
   padding-top: 20px;
   border-top: 1px solid var(--line);
+}
+
+.hang form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.hung {
+  color: var(--ok);
 }
 
 .row {
