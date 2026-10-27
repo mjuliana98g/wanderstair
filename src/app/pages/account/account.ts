@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth';
 import { MemoriesService } from '../../services/memories';
 import { Memory } from '../../models/memory.model';
 import { MOOD_FAMILIES, familyOf } from '../../models/moods';
+import { passwordsMatch } from '../../validators/passwords-match';
 
 // --------------------------------------------------
 // ACCOUNT PAGE
@@ -36,6 +37,17 @@ export class Account implements OnInit {
   savingName = signal(false);
   nameMessage = signal('');
   nameError = signal('');
+
+  passwordForm = new FormGroup({
+    current: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(6)] }),
+    confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  }, { validators: passwordsMatch });
+  savingPassword = signal(false);
+  passwordMessage = signal('');
+  passwordError = signal('');
+  showNewPassword = signal(false);
+  showConfirmPassword = signal(false);
 
   ngOnInit(): void {
     this.nameForm.controls.name.setValue(this.name());
@@ -106,5 +118,42 @@ export class Account implements OnInit {
         this.savingName.set(false);
       },
     });
+  }
+
+  // --------------------------------------------------
+  // YOUR PASSWORD
+  // --------------------------------------------------
+
+  savePassword(): void {
+    if (this.passwordForm.invalid) return;
+    const { current, password } = this.passwordForm.getRawValue();
+    this.savingPassword.set(true);
+    this.passwordMessage.set('');
+    this.passwordError.set('');
+    this.auth.changePassword(current, password).subscribe({
+      next: () => {
+        this.passwordForm.reset();
+        this.passwordMessage.set('Your password was changed.');
+        this.savingPassword.set(false);
+      },
+      error: (error: { message?: string; code?: string }) => {
+        this.passwordError.set(this.passwordMessageFor(error));
+        this.savingPassword.set(false);
+      },
+    });
+  }
+
+  toggleNewPassword(): void {
+    this.showNewPassword.update((shown) => !shown);
+  }
+
+  toggleConfirmPassword(): void {
+    this.showConfirmPassword.update((shown) => !shown);
+  }
+
+  private passwordMessageFor(error: { message?: string; code?: string }): string {
+    if (error.message === 'wrong-password') return 'Your current password is not right.';
+    if (error.code === 'same_password') return 'The new password must be different from the current one.';
+    return 'Your password could not be changed. Try again.';
   }
 }

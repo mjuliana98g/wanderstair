@@ -1,6 +1,6 @@
 import { Service, inject, signal } from '@angular/core';
 import { User } from '@supabase/supabase-js';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, switchMap } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
 
@@ -10,7 +10,6 @@ import { SupabaseService } from './supabase-service';
 
 @Service()
 export class AuthService {
-
     private supabase = inject(SupabaseService).supabaseClient;
     user = signal<User | null>(null);
 
@@ -38,6 +37,18 @@ export class AuthService {
         return from(request).pipe(map(({ error }) => {
             if (error) throw error;
         }));
+    }
+
+    changePassword(current: string, password: string): Observable<void> {
+        const email = this.user()?.email ?? '';
+        const check = this.supabase.auth.signInWithPassword({ email, password: current });
+        return from(check).pipe(
+            switchMap(({ error }) => {
+                if (error) throw new Error('wrong-password');
+                return from(this.supabase.auth.updateUser({ password }));
+            }),
+            map(({ error }) => { if (error) throw error; })
+        )
     }
 
     hasSession(): Promise<boolean> {
