@@ -1,5 +1,5 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth';
 
 const THEME_KEY = 'wanderstair-theme';
@@ -15,7 +15,6 @@ export class App implements OnInit {
 
   protected readonly title = 'Wanderstair';
   private auth = inject(AuthService);
-  private router = inject(Router);
   user = this.auth.user;
 
   isNight = signal(false);
@@ -34,10 +33,6 @@ export class App implements OnInit {
 
   userName(): string {
     return this.user()?.user_metadata['name'] ?? '';
-  }
-
-  signOut(): void {
-    this.auth.signOut().subscribe(() => this.router.navigate(['/sign-in']));
   }
 
   private applyTheme(night: boolean): void {

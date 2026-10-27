@@ -1,19 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthError } from '@supabase/supabase-js';
 import { AuthService } from '../../services/auth';
-
-// --------------------------------------------------
-// VALIDATORS
-// --------------------------------------------------
-
-function passwordsMatch(form: AbstractControl): ValidationErrors | null {
-  const password = form.get('password')?.value;
-  const confirmPassword = form.get('confirmPassword')?.value;
-  return password === confirmPassword ? null : { passwordDiffer: true };
-
-}
+import { passwordsMatch } from '../../validators/passwords-match';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
