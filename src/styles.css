@@ -124,15 +124,28 @@
    RESET
    -------------------------------------------------- */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-body, h1, h2, h3, p, figure, ul, ol, dl, dd, fieldset {
+body,
+h1,
+h2,
+h3,
+p,
+figure,
+ul,
+ol,
+dl,
+dd,
+fieldset {
   margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
   padding: 0;
   list-style: none;
 }
@@ -163,6 +176,7 @@ body {
   background-attachment: fixed;
   color: var(--ink);
   font-family: var(--body);
+  font-variant-numeric: lining-nums;
   font-size: 20px;
   line-height: 1.55;
 }
@@ -173,7 +187,9 @@ main {
   padding: 40px 16px 80px;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--display);
   font-weight: 400;
   line-height: 1.12;
@@ -233,7 +249,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--line);
@@ -248,7 +266,8 @@ input, select, textarea {
   opacity: 0.7;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"],
+input[type="checkbox"] {
   width: auto;
 }
 
@@ -269,11 +288,25 @@ label {
    MOOD FAMILY COLOURS
    -------------------------------------------------- */
 
-[data-family="bright"] { --family: #e8b23a; }
-[data-family="quiet"] { --family: #2f9c8a; }
-[data-family="heavy"] { --family: #3d5fa8; }
-[data-family="stormy"] { --family: #b0243c; }
-[data-family="mixed"] { --family: #8a4fb3; }
+[data-family="bright"] {
+  --family: #e8b23a;
+}
+
+[data-family="quiet"] {
+  --family: #2f9c8a;
+}
+
+[data-family="heavy"] {
+  --family: #3d5fa8;
+}
+
+[data-family="stormy"] {
+  --family: #b0243c;
+}
+
+[data-family="mixed"] {
+  --family: #8a4fb3;
+}
 
 /* --------------------------------------------------
    DOORS
@@ -505,12 +538,25 @@ label {
    -------------------------------------------------- */
 
 @media (max-width: 480px) {
-  body { font-size: 18px; }
-  .door { width: 104px; }
-  .door[data-door="round"] { width: 110px; }
-  .door[data-door="double"] { width: 120px; }
+  body {
+    font-size: 18px;
+  }
+
+  .door {
+    width: 104px;
+  }
+
+  .door[data-door="round"] {
+    width: 110px;
+  }
+
+  .door[data-door="double"] {
+    width: 120px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .door { transition: none; }
+  .door {
+    transition: none;
+  }
 }

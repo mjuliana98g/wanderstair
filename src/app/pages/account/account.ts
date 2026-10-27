@@ -93,15 +93,23 @@ export class Account implements OnInit {
     return this.memories().filter((memory) => familyOf(memory.moods[0]) === family).length;
   }
 
+  sortedFamilies(): string[] {
+    return [...this.families].sort((a, b) => this.familyCount(b) - this.familyCount(a))
+  }
+
   share(family: string): number {
     const total = this.memories().length;
     return total ? (this.familyCount(family) / total) * 100 : 0;
   }
 
-  topFamily(): string | null {
-    const counts = this.families.map((family) => ({ family, count: this.familyCount(family) }));
-    const top = counts.sort((a, b) => b.count - a.count)[0];
-    return top && top.count > 0 ? top.family : null;
+  topFamilies(): string[] {
+    const best = Math.max(...this.families.map((family) => this.familyCount(family)));
+    return best > 0 ? this.families.filter((family) => this.familyCount(family) === best) : [];
+  }
+
+  topLabel(): string {
+    const names = this.topFamilies().map((family) => family[0].toUpperCase() + family.slice(1));
+    return new Intl.ListFormat('en', { type: 'conjunction' }).format(names);
   }
 
   // --------------------------------------------------

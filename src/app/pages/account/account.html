@@ -1,7 +1,7 @@
 <header class="intro">
   <h2>Your account</h2>
   @if (user(); as user) {
-    <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
+  <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
   }
   <button class="sign-out" type="button" (click)="signOut()">Sign out</button>
 </header>
@@ -10,37 +10,43 @@
   <h3>Your stair</h3>
 
   @if (loading()) {
-    <p>Counting your doors…</p>
+  <p>Counting your doors…</p>
   } @else if (error()) {
-    <p role="alert">{{ error() }}</p>
+  <p role="alert">{{ error() }}</p>
   } @else {
-    <dl class="stats">
-      <div><dt>doors</dt><dd>{{ memories().length }}</dd></div>
-      <div><dt>paintings on the walls</dt><dd>{{ paintingCount() }}</dd></div>
-      <div>
-        <dt>last memory</dt>
-        <dd>{{ lastDate() ? (lastDate() | date: 'd MMM') : '—' }}</dd>
-      </div>
-      @if (topFamily(); as family) {
-        <div class="top" [attr.data-family]="family">
-          <dt>your most common feeling</dt>
-          <dd>{{ family | titlecase }}</dd>
-        </div>
-      }
-    </dl>
-
-    @if (memories().length) {
-      <p class="bar" role="img" aria-label="Your doors by feeling">
-        @for (family of families; track family) {
-          <span [attr.data-family]="family" [style.width.%]="share(family)"></span>
-        }
-      </p>
-      <ul class="legend">
-        @for (family of families; track family) {
-          <li [attr.data-family]="family">{{ family | titlecase }} {{ familyCount(family) }}</li>
-        }
-      </ul>
+  <dl class="stats">
+    <div>
+      <dt>doors</dt>
+      <dd>{{ memories().length }}</dd>
+    </div>
+    <div>
+      <dt>paintings on the walls</dt>
+      <dd>{{ paintingCount() }}</dd>
+    </div>
+    <div class="date">
+      <dt>last memory</dt>
+      <dd>{{ lastDate() ? (lastDate() | date: 'd MMM y') : '—' }}</dd>
+    </div>
+    @if (topFamilies().length) {
+    <div class="top" [attr.data-family]="topFamilies().length === 1 ? topFamilies()[0] : null">
+      <dt>{{ topFamilies().length === 1 ? 'your most common feeling' : 'your most common feelings' }}</dt>
+      <dd>{{ topLabel() }}</dd>
+    </div>
     }
+  </dl>
+
+  @if (memories().length) {
+  <p class="bar" role="img" aria-label="Your doors by feeling">
+    @for (family of sortedFamilies(); track family) {
+    <span [attr.data-family]="family" [style.width.%]="share(family)"></span>
+    }
+  </p>
+  <ul class="legend">
+    @for (family of sortedFamilies(); track family) {
+    <li [attr.data-family]="family">{{ family | titlecase }} <span class="count">{{ familyCount(family) }}</span></li>
+    }
+  </ul>
+  }
   }
 </section>
 
@@ -55,16 +61,16 @@
       <button type="submit" [disabled]="nameForm.invalid || savingName()">Save name</button>
     </div>
     @if (nameForm.controls.name.hasError('required') || nameForm.controls.name.hasError('pattern')) {
-      <p role="alert">Write your name.</p>
+    <p role="alert">Write your name.</p>
     }
     @if (nameForm.controls.name.hasError('maxlength')) {
-      <p role="alert">Use at most 30 characters.</p>
+    <p role="alert">Use at most 30 characters.</p>
     }
     @if (nameMessage()) {
-      <p role="status">{{ nameMessage() }}</p>
+    <p role="status">{{ nameMessage() }}</p>
     }
     @if (nameError()) {
-      <p role="alert">{{ nameError() }}</p>
+    <p role="alert">{{ nameError() }}</p>
     }
   </form>
 </section>
@@ -83,69 +89,77 @@
       <div class="field">
         <label for="new-password">New password</label>
         <div class="password">
-          <input id="new-password" [type]="showNewPassword() ? 'text' : 'password'" formControlName="password" autocomplete="new-password">
-          <button type="button" (click)="toggleNewPassword()" [attr.aria-label]="showNewPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showNewPassword()">
+          <input id="new-password" [type]="showNewPassword() ? 'text' : 'password'" formControlName="password"
+            autocomplete="new-password">
+          <button type="button" (click)="toggleNewPassword()"
+            [attr.aria-label]="showNewPassword() ? 'Hide password' : 'Show password'"
+            [attr.aria-pressed]="showNewPassword()">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
               <circle cx="12" cy="12" r="3" />
               @if (showNewPassword()) {
-                <line x1="3" y1="3" x2="21" y2="21" />
+              <line x1="3" y1="3" x2="21" y2="21" />
               }
             </svg>
           </button>
         </div>
         @if (passwordForm.controls.password.touched && passwordForm.controls.password.hasError('minlength')) {
-          <p role="alert">Use at least 6 characters.</p>
+        <p role="alert">Use at least 6 characters.</p>
         }
       </div>
 
       <div class="field">
         <label for="confirm-password">Confirm new password</label>
         <div class="password">
-          <input id="confirm-password" [type]="showConfirmPassword() ? 'text' : 'password'" formControlName="confirmPassword" autocomplete="new-password">
-          <button type="button" (click)="toggleConfirmPassword()" [attr.aria-label]="showConfirmPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showConfirmPassword()">
+          <input id="confirm-password" [type]="showConfirmPassword() ? 'text' : 'password'"
+            formControlName="confirmPassword" autocomplete="new-password">
+          <button type="button" (click)="toggleConfirmPassword()"
+            [attr.aria-label]="showConfirmPassword() ? 'Hide password' : 'Show password'"
+            [attr.aria-pressed]="showConfirmPassword()">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
               <circle cx="12" cy="12" r="3" />
               @if (showConfirmPassword()) {
-                <line x1="3" y1="3" x2="21" y2="21" />
+              <line x1="3" y1="3" x2="21" y2="21" />
               }
             </svg>
           </button>
         </div>
         @if (passwordForm.controls.confirmPassword.touched && passwordForm.hasError('passwordsDiffer')) {
-          <p role="alert">The passwords are not the same.</p>
+        <p role="alert">The passwords are not the same.</p>
         }
       </div>
     </div>
 
     <button type="submit" [disabled]="passwordForm.invalid || savingPassword()">Change password</button>
     @if (passwordMessage()) {
-      <p role="status">{{ passwordMessage() }}</p>
+    <p role="status">{{ passwordMessage() }}</p>
     }
     @if (passwordError()) {
-      <p role="alert">{{ passwordError() }}</p>
+    <p role="alert">{{ passwordError() }}</p>
     }
   </form>
 </section>
 
 <section class="card danger-zone">
   <h3>Delete your account</h3>
-  <p class="hint">Your account and every door on your stair, with its letter and exhibition, will be gone forever. This cannot be undone.</p>
+  <p class="hint">Your account and every door on your stair, with its letter and exhibition, will be gone forever. This
+    cannot be undone.</p>
 
   @if (!confirmingDelete()) {
-    <button class="danger" type="button" (click)="confirmingDelete.set(true)">Delete my account…</button>
+  <button class="danger" type="button" (click)="confirmingDelete.set(true)">Delete my account…</button>
   } @else {
-    <div class="confirm">
-      <label for="delete-password">To confirm, write your password</label>
-      <div class="row">
-        <input id="delete-password" type="password" [formControl]="deletePassword" autocomplete="current-password">
-        <button class="danger-solid" type="button" (click)="deleteAccount()" [disabled]="!canDelete()">Delete forever</button>
-        <button type="button" (click)="cancelDelete()">Keep my account</button>
-      </div>
-      @if (deleteError()) {
-        <p role="alert">{{ deleteError() }}</p>
-      }
+  <div class="confirm">
+    <label for="delete-password">To confirm, write your password</label>
+    <div class="row">
+      <input id="delete-password" type="password" [formControl]="deletePassword" autocomplete="current-password">
+      <button class="danger-solid" type="button" (click)="deleteAccount()" [disabled]="!canDelete()">Delete
+        forever</button>
+      <button type="button" (click)="cancelDelete()">Keep my account</button>
     </div>
+    @if (deleteError()) {
+    <p role="alert">{{ deleteError() }}</p>
+    }
+  </div>
   }
 </section>
