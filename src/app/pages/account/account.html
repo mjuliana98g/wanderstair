@@ -5,3 +5,46 @@
   }
   <button class="sign-out" type="button" (click)="signOut()">Sign out</button>
 </header>
+<section class="card">
+  <h3>Your stair</h3>
+
+  @if (loading()) {
+  <p>Counting your doors…</p>
+  } @else if (error()) {
+  <p role="alert">{{ error() }}</p>
+  } @else {
+  <dl class="stats">
+    <div>
+      <dt>doors</dt>
+      <dd>{{ memories().length }}</dd>
+    </div>
+    <div>
+      <dt>paintings on the walls</dt>
+      <dd>{{ paintingCount() }}</dd>
+    </div>
+    <div>
+      <dt>last memory</dt>
+      <dd>{{ lastDate() ? (lastDate() | date: 'd MMM') : '—' }}</dd>
+    </div>
+    @if (topFamily(); as family) {
+    <div class="top" [attr.data-family]="family">
+      <dt>your most common feeling</dt>
+      <dd>{{ family | titlecase }}</dd>
+    </div>
+    }
+  </dl>
+
+  @if (memories().length) {
+  <p class="bar" role="img" aria-label="Your doors by feeling">
+    @for (family of families; track family) {
+    <span [attr.data-family]="family" [style.width.%]="share(family)"></span>
+    }
+  </p>
+  <ul class="legend">
+    @for (family of families; track family) {
+    <li [attr.data-family]="family">{{ family | titlecase }} {{ familyCount(family) }}</li>
+    }
+  </ul>
+  }
+  }
+</section>
