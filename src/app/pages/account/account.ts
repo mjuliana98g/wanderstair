@@ -49,6 +49,11 @@ export class Account implements OnInit {
   showNewPassword = signal(false);
   showConfirmPassword = signal(false);
 
+  confirmingDelete = signal(false);
+  deleting = signal(false);
+  deleteError = signal('');
+  deletePassword = new FormControl('', { nonNullable: true, validators: [Validators.required] });
+
   ngOnInit(): void {
     this.nameForm.controls.name.setValue(this.name());
     this.memoriesService.getAll().subscribe({
@@ -155,5 +160,33 @@ export class Account implements OnInit {
     if (error.message === 'wrong-password') return 'Your current password is not right.';
     if (error.code === 'same_password') return 'The new password must be different from the current one.';
     return 'Your password could not be changed. Try again.';
+  }
+
+  // --------------------------------------------------
+  // DELETE ACCOUNT
+  // --------------------------------------------------
+
+  canDelete(): boolean {
+    return this.deletePassword.valid && !this.deleting();
+  }
+
+  cancelDelete(): void {
+    this.confirmingDelete.set(false);
+    this.deletePassword.reset();
+    this.deleteError.set('');
+  }
+
+  deleteAccount(): void {
+    if (!this.canDelete()) return;
+    this.deleting.set(true);
+    this.deleteError.set('');
+    this.auth.deleteAccount(this.deletePassword.value).subscribe({
+      next: () => this.router.navigate(['/create-account']),
+      error: (error: { message?: string }) => {
+        this.deleteError.set(error.message === 'wrong-password' ? 'Your password is not right.' : 'Your account could not be deleted. Try again.');
+        this.deletePassword.reset();
+        this.deleting.set(false);
+      },
+    });
   }
 }

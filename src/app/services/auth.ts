@@ -39,16 +39,30 @@ export class AuthService {
         }));
     }
 
-    changePassword(current: string, password: string): Observable<void> {
+    private checkPassword(password: string): Observable<void> {
         const email = this.user()?.email ?? '';
-        const check = this.supabase.auth.signInWithPassword({ email, password: current });
-        return from(check).pipe(
+        const request = this.supabase.auth.signInWithPassword({ email, password });
+        return from(request).pipe(map(({ error }) => {
+            if (error) throw new Error('wrong-password');
+        }));
+    }
+
+    changePassword(current: string, password: string): Observable<void> {
+        return this.checkPassword(current).pipe(
+            switchMap(() => from(this.supabase.auth.updateUser({ password }))),
+            map(({ error }) => { if (error) throw error; }),
+        );
+    }
+
+    deleteAccount(password: string): Observable<void> {
+        return this.checkPassword(password).pipe(
+            switchMap(() => from(this.supabase.rpc('delete_my_account'))),
             switchMap(({ error }) => {
-                if (error) throw new Error('wrong-password');
-                return from(this.supabase.auth.updateUser({ password }));
+                if (error) throw error;
+                return from(this.supabase.auth.signOut({ scope: 'local' }));
             }),
-            map(({ error }) => { if (error) throw error; })
-        )
+            map(() => undefined),
+        );
     }
 
     hasSession(): Promise<boolean> {
