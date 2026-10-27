@@ -1,0 +1,6 @@
+<header class="intro">
+  <h2>Your account</h2>
+  @if (user(); as user) {
+    <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
+  }
+</header>

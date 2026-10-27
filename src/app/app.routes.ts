@@ -9,6 +9,7 @@ import { ArtworkDetail } from './pages/artwork-detail/artwork-detail';
 import { SignIn } from './pages/sign-in/sign-in';
 import { CreateAccount } from './pages/create-account/create-account';
 import { authGuard } from './guards/auth-guard';
+import { Account } from './pages/account/account';
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignIn },
@@ -26,6 +27,7 @@ export const routes: Routes = [
       },
       { path: 'write', component: Write },
       { path: 'artwork/:id', component: ArtworkDetail },
+      { path: 'account', component: Account },
     ],
   },
   { path: '**', component: NotFound },
