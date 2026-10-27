@@ -1,6 +1,7 @@
 <header class="intro">
   <h2>Your account</h2>
   @if (user(); as user) {
-    <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
+  <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
   }
+  <button class="sign-out" type="button" (click)="signOut()">Sign out</button>
 </header>
