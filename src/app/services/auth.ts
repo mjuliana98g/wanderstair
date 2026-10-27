@@ -10,6 +10,7 @@ import { SupabaseService } from './supabase-service';
 
 @Service()
 export class AuthService {
+
     private supabase = inject(SupabaseService).supabaseClient;
     user = signal<User | null>(null);
 
@@ -32,8 +33,14 @@ export class AuthService {
         return from(this.supabase.auth.signOut()).pipe(map(({ error }) => { if (error) throw error; }));
     }
 
+    updateName(name: string): Observable<void> {
+        const request = this.supabase.auth.updateUser({ data: { name } });
+        return from(request).pipe(map(({ error }) => {
+            if (error) throw error;
+        }));
+    }
+
     hasSession(): Promise<boolean> {
         return this.supabase.auth.getSession().then(({ data }) => !!data.session);
     }
-
 }

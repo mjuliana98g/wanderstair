@@ -1,50 +1,70 @@
 <header class="intro">
   <h2>Your account</h2>
   @if (user(); as user) {
-  <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
+    <p>{{ name() }} · climbing since {{ user.created_at | date: 'd MMMM y' }}</p>
   }
   <button class="sign-out" type="button" (click)="signOut()">Sign out</button>
 </header>
+
 <section class="card">
   <h3>Your stair</h3>
 
   @if (loading()) {
-  <p>Counting your doors…</p>
+    <p>Counting your doors…</p>
   } @else if (error()) {
-  <p role="alert">{{ error() }}</p>
+    <p role="alert">{{ error() }}</p>
   } @else {
-  <dl class="stats">
-    <div>
-      <dt>doors</dt>
-      <dd>{{ memories().length }}</dd>
-    </div>
-    <div>
-      <dt>paintings on the walls</dt>
-      <dd>{{ paintingCount() }}</dd>
-    </div>
-    <div>
-      <dt>last memory</dt>
-      <dd>{{ lastDate() ? (lastDate() | date: 'd MMM') : '—' }}</dd>
-    </div>
-    @if (topFamily(); as family) {
-    <div class="top" [attr.data-family]="family">
-      <dt>your most common feeling</dt>
-      <dd>{{ family | titlecase }}</dd>
-    </div>
-    }
-  </dl>
+    <dl class="stats">
+      <div><dt>doors</dt><dd>{{ memories().length }}</dd></div>
+      <div><dt>paintings on the walls</dt><dd>{{ paintingCount() }}</dd></div>
+      <div>
+        <dt>last memory</dt>
+        <dd>{{ lastDate() ? (lastDate() | date: 'd MMM') : '—' }}</dd>
+      </div>
+      @if (topFamily(); as family) {
+        <div class="top" [attr.data-family]="family">
+          <dt>your most common feeling</dt>
+          <dd>{{ family | titlecase }}</dd>
+        </div>
+      }
+    </dl>
 
-  @if (memories().length) {
-  <p class="bar" role="img" aria-label="Your doors by feeling">
-    @for (family of families; track family) {
-    <span [attr.data-family]="family" [style.width.%]="share(family)"></span>
+    @if (memories().length) {
+      <p class="bar" role="img" aria-label="Your doors by feeling">
+        @for (family of families; track family) {
+          <span [attr.data-family]="family" [style.width.%]="share(family)"></span>
+        }
+      </p>
+      <ul class="legend">
+        @for (family of families; track family) {
+          <li [attr.data-family]="family">{{ family | titlecase }} {{ familyCount(family) }}</li>
+        }
+      </ul>
     }
-  </p>
-  <ul class="legend">
-    @for (family of families; track family) {
-    <li [attr.data-family]="family">{{ family | titlecase }} {{ familyCount(family) }}</li>
+  }
+</section>
+
+<section class="card">
+  <h3>Your name</h3>
+  <p class="hint">This is the name at the top of the site.</p>
+
+  <form [formGroup]="nameForm" (ngSubmit)="saveName()">
+    <label for="name">Name</label>
+    <div class="row">
+      <input id="name" type="text" formControlName="name" autocomplete="name">
+      <button type="submit" [disabled]="nameForm.invalid || savingName()">Save name</button>
+    </div>
+    @if (nameForm.controls.name.hasError('required') || nameForm.controls.name.hasError('pattern')) {
+      <p role="alert">Write your name.</p>
     }
-  </ul>
-  }
-  }
+    @if (nameForm.controls.name.hasError('maxlength')) {
+      <p role="alert">Use at most 30 characters.</p>
+    }
+    @if (nameMessage()) {
+      <p role="status">{{ nameMessage() }}</p>
+    }
+    @if (nameError()) {
+      <p role="alert">{{ nameError() }}</p>
+    }
+  </form>
 </section>

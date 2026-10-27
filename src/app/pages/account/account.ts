@@ -1,30 +1,44 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe, TitleCasePipe } from '@angular/common';
-import { AuthService } from '../../services/auth';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import { AuthService } from '../../services/auth';
 import { MemoriesService } from '../../services/memories';
 import { Memory } from '../../models/memory.model';
 import { MOOD_FAMILIES, familyOf } from '../../models/moods';
 
+// --------------------------------------------------
+// ACCOUNT PAGE
+// --------------------------------------------------
+
 @Component({
-  imports: [DatePipe, TitleCasePipe],
   selector: 'app-account',
-  styleUrl: './account.css',
+  imports: [DatePipe, TitleCasePipe, ReactiveFormsModule],
   templateUrl: './account.html',
+  styleUrl: './account.css'
 })
-
 export class Account implements OnInit {
-
   private auth = inject(AuthService);
   private router = inject(Router);
   private memoriesService = inject(MemoriesService);
+
   user = this.auth.user;
+  families = MOOD_FAMILIES.map((family) => family.name.toLowerCase());
+
   memories = signal<Memory[]>([]);
   loading = signal(true);
   error = signal('');
-  families = MOOD_FAMILIES.map((family) => family.name.toLowerCase());
+
+  nameForm = new FormGroup({
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/\S/), Validators.maxLength(30)] }),
+  });
+  savingName = signal(false);
+  nameMessage = signal('');
+  nameError = signal('');
 
   ngOnInit(): void {
+    this.nameForm.controls.name.setValue(this.name());
     this.memoriesService.getAll().subscribe({
       next: (memories) => {
         this.memories.set(memories);
@@ -49,13 +63,10 @@ export class Account implements OnInit {
   // YOUR STAIR
   // --------------------------------------------------
 
-  // --------------------------------------------------
-  // YOUR STAIR
-  // --------------------------------------------------
-
   paintingCount(): number {
     return this.memories().reduce((total, memory) => total + memory.artworks.length, 0);
   }
+
   lastDate(): string | null {
     const dates = this.memories().map((memory) => memory.date).sort();
     return dates.at(-1) ?? null;
@@ -74,5 +85,26 @@ export class Account implements OnInit {
     const counts = this.families.map((family) => ({ family, count: this.familyCount(family) }));
     const top = counts.sort((a, b) => b.count - a.count)[0];
     return top && top.count > 0 ? top.family : null;
+  }
+
+  // --------------------------------------------------
+  // YOUR NAME
+  // --------------------------------------------------
+
+  saveName(): void {
+    if (this.nameForm.invalid) return;
+    this.savingName.set(true);
+    this.nameMessage.set('');
+    this.nameError.set('');
+    this.auth.updateName(this.nameForm.controls.name.value.trim()).subscribe({
+      next: () => {
+        this.nameMessage.set('Your name was saved.');
+        this.savingName.set(false);
+      },
+      error: () => {
+        this.nameError.set('Your name could not be saved. Try again.');
+        this.savingName.set(false);
+      },
+    });
   }
 }
