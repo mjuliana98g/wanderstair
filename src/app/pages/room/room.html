@@ -1,55 +1,56 @@
 <a class="back" routerLink="/">↑ Climb back to the stair</a>
 
 @if (loading()) {
-  <p>Opening the door…</p>
+<p>Opening the door…</p>
 } @else if (error()) {
-  <p role="alert">{{ error() }}</p>
+<p role="alert">{{ error() }}</p>
 } @else {
-  @if (memory(); as memory) {
-    <article>
-      <header>
-        <p>{{ memory.date | date: 'd MMMM y' }}</p>
-        <h2>{{ memory.title }}</h2>
-        <p class="pills">
-          @for (mood of memory.moods; track mood) {
-            <span [attr.data-family]="familyOf(mood)">{{ mood }}</span>
-          }
-        </p>
-      </header>
+@if (memory(); as memory) {
+<article>
+  <header>
+    <p>{{ memory.date | date: 'd MMMM y' }}</p>
+    <h2>{{ memory.title }}</h2>
+    <p class="pills">
+      @for (mood of memory.moods; track mood) {
+      <span [attr.data-family]="familyOf(mood)">{{ mood }}</span>
+      }
+    </p>
+  </header>
 
-      <section class="letter">
-        <h3>The letter</h3>
-        <p>{{ memory.text }}</p>
-      </section>
+  <section class="letter">
+    <h3>The letter</h3>
+    <p>{{ memory.text }}</p>
+  </section>
 
-      <section class="exhibition">
-        <div class="section-head">
-          <h3>The exhibition</h3>
-          <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
-        </div>
-        @if (artworksLoading()) {
-          <p>Hanging the paintings…</p>
-        } @else if (artworksError()) {
-          <p role="alert">{{ artworksError() }}</p>
-        } @else {
-          <ul class="wall">
-            @for (artwork of artworks(); track artwork.id) {
-              <li>
-                <app-frame [artwork]="artwork" actionLabel="Take off the wall" (action)="takeOffWall($event)" />
-              </li>
-            } @empty {
-              <li class="empty">The walls are empty. Choose a few artworks that feel like this day.</li>
-            }
-          </ul>
-        }
-      </section>
+  <section class="exhibition">
+    <div class="section-head">
+      <h3>The exhibition</h3>
+      <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
+    </div>
+    @if (artworksLoading()) {
+    <p>Hanging the paintings…</p>
+    } @else if (artworksError()) {
+    <p role="alert">{{ artworksError() }}</p>
+    } @else {
+    <ul class="wall">
+      @for (artwork of artworks(); track artwork.id) {
+      <li>
+        <app-frame [artwork]="artwork" actionLabel="Take off the wall" (action)="takeOffWall($event)"
+          [sendLink]="['/room', memory.id, 'send', artwork.id]" />
+      </li>
+      } @empty {
+      <li class="empty">The walls are empty. Choose a few artworks that feel like this day.</li>
+      }
+    </ul>
+    }
+  </section>
 
-      <footer class="actions">
-        <button type="button" (click)="deleteMemory()">Close this door forever</button>
-        @if (deleteError()) {
-          <p role="alert">{{ deleteError() }}</p>
-        }
-      </footer>
-    </article>
-  }
+  <footer class="actions">
+    <button type="button" (click)="deleteMemory()">Close this door forever</button>
+    @if (deleteError()) {
+    <p role="alert">{{ deleteError() }}</p>
+    }
+  </footer>
+</article>
+}
 }

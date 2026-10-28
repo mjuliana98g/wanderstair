@@ -120,8 +120,37 @@ small {
   opacity: 0.85;
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
 button {
-  margin-top: 12px;
+  min-height: 32px;
+  padding: 2px 14px;
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--title);
+  font-size: 15px;
+}
+
+.send {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--title);
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.send:hover {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 /* --------------------------------------------------
