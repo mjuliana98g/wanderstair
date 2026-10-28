@@ -63,6 +63,15 @@ export class PostcardsService {
     );
   }
 
+  getById(id: number): Observable<Postcard> {
+    return this.me().pipe(
+      switchMap((me) => {
+        const request = this.supabase.from('postcards').select(COLUMNS).eq('id', id).single();
+        return send(request).pipe(map((row) => toPostcard(row, me)));
+      }),
+    );
+  }
+
   markRead(id: number): Observable<void> {
     const request = this.supabase.from('postcards').update({ read_at: new Date().toISOString() }).eq('id', id).select('id');
     return send(request).pipe(map(() => undefined));

@@ -13,6 +13,7 @@ import { Account } from './pages/account/account';
 import { Friends } from './pages/friends/friends';
 import { SendPostcard } from './pages/send-postcard/send-postcard';
 import { Postcards } from './pages/postcards/postcards';
+import { PostcardView } from './pages/postcard-view/postcard-view';
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignIn },
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'friends', component: Friends },
       { path: 'room/:id/send/:artworkId', component: SendPostcard },
       { path: 'postcards', component: Postcards },
+      { path: 'postcards/:id', component: PostcardView },
     ],
   },
   { path: '**', component: NotFound },
