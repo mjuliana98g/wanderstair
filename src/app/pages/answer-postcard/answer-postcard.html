@@ -1,0 +1,76 @@
+<a class="back" [routerLink]="['/postcards', postcardId]">↑ Back to the postcard</a>
+
+@if (loading()) {
+<p>Opening the postcard…</p>
+} @else if (error()) {
+<p role="alert">{{ error() }}</p>
+} @else if (answered()) {
+<section class="done">
+    <h2>Your painting is on the wall</h2>
+    <p>It now hangs in {{ postcard()?.sender?.name }}'s room “{{ postcard()?.memoryTitle }}”.</p>
+</section>
+} @else {
+@if (postcard(); as postcard) {
+<header class="intro">
+    <h2>Answer {{ postcard.sender.name }} with a painting</h2>
+    <p>Choose one painting from the museum. It will hang in {{ postcard.sender.name }}'s room, with your name on a rose
+        plate.</p>
+</header>
+
+<div class="from">
+    @if (postcardArtwork()?.images; as images) {
+    <img class="thumb" [src]="images.web.url" alt="">
+    }
+    <div class="what">
+        <span>In answer to the postcard from</span>
+        <strong>{{ postcard.memoryTitle }} · {{ postcard.memoryDate | date: 'd MMMM y' }}</strong>
+        <p class="pills">
+            @for (mood of postcard.moods; track mood) {
+            <span [attr.data-family]="familyOf(mood)">{{ mood }}</span>
+            }
+        </p>
+    </div>
+</div>
+
+<section class="card">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+        <label for="term">Search the museum</label>
+        <div class="row">
+            <input id="term" type="search" formControlName="term" placeholder="sea, flowers, a cat…">
+            <button type="submit" [disabled]="searchForm.invalid || searching()">Search</button>
+        </div>
+    </form>
+
+    @if (searching()) {
+    <p>Searching the museum…</p>
+    } @else if (searchError()) {
+    <p role="alert">{{ searchError() }}</p>
+    } @else if (results().length) {
+    <ul class="wall">
+        @for (artwork of results(); track artwork.id) {
+        <li>
+            <button type="button" [title]="artwork.title" [attr.aria-pressed]="chosen()?.id === artwork.id"
+                (click)="choose(artwork)">
+                <span class="mini"><img [src]="artwork.images?.web?.url" alt=""></span>
+                <span class="name">{{ artwork.title }}</span>
+            </button>
+        </li>
+        }
+    </ul>
+    }
+</section>
+
+@if (chosen(); as chosen) {
+<form class="card answer" [formGroup]="answerForm" (ngSubmit)="answer()">
+    <p>You chose <strong>{{ chosen.title }}</strong>.</p>
+    <label for="note">A few words for the plate</label>
+    <textarea id="note" rows="3" formControlName="note" maxlength="120" placeholder="Next rainy Sunday?"></textarea>
+    <small>{{ answerForm.controls.note.value.length }} / 120</small>
+    @if (sendError()) {
+    <p role="alert">{{ sendError() }}</p>
+    }
+    <button type="submit" [disabled]="answerForm.invalid || sending()">Send it back</button>
+</form>
+}
+}
+}
