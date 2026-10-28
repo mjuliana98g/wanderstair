@@ -12,6 +12,7 @@ import { authGuard } from './guards/auth-guard';
 import { Account } from './pages/account/account';
 import { Friends } from './pages/friends/friends';
 import { SendPostcard } from './pages/send-postcard/send-postcard';
+import { Postcards } from './pages/postcards/postcards';
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignIn },
@@ -32,6 +33,7 @@ export const routes: Routes = [
       { path: 'account', component: Account },
       { path: 'friends', component: Friends },
       { path: 'room/:id/send/:artworkId', component: SendPostcard },
+      { path: 'postcards', component: Postcards },
     ],
   },
   { path: '**', component: NotFound },

@@ -8,6 +8,7 @@ import { MuseumService } from '../../services/museum';
 import { Artwork } from '../../models/artwork.model';
 import { Frame } from '../../components/frame/frame';
 import { familyOf } from '../../models/moods';
+import { PostcardsService } from '../../services/postcards';
 
 // --------------------------------------------------
 // STAIR PAGE
@@ -22,6 +23,7 @@ import { familyOf } from '../../models/moods';
 export class Stair implements OnInit {
   private memoriesService = inject(MemoriesService);
   private museumService = inject(MuseumService);
+  private postcardsService = inject(PostcardsService);
 
   memories = signal<Memory[]>([]);
   loading = signal(true);
@@ -33,6 +35,7 @@ export class Stair implements OnInit {
   ngOnInit(): void {
     this.loadPortrait();
     this.loadMemories();
+    this.postcardsService.refreshUnread();
   }
 
   loadMemories(): void {
