@@ -26,4 +26,11 @@ export class PostcardsService {
         const request = this.supabase.from('postcards').insert(row).select('id').single();
         return send(request).pipe(map((saved) => saved.id));
     }
+
+    recipientsOf(artworkId: number): Observable<string[]> {
+        const request = this.supabase.from('postcards').select('recipient_id').eq('artwork_id', artworkId);
+        return send(request).pipe(map((rows) => rows.map((row) => row.recipient_id)));
+    }
+
+    
 }
