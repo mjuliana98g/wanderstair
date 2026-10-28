@@ -7,9 +7,10 @@ import { MuseumService } from '../../services/museum';
 import { Postcard } from '../../models/postcard.model';
 import { Artwork } from '../../models/artwork.model';
 import { Frame } from '../../components/frame/frame';
+import { Postcard as PostcardCard } from '../../components/postcard/postcard';
 
 @Component({
-  imports: [RouterLink, Frame],
+  imports: [RouterLink, PostcardCard],
   selector: 'app-postcard-view',
   styleUrl: './postcard-view.css',
   templateUrl: './postcard-view.html',
@@ -45,7 +46,7 @@ export class PostcardView implements OnInit {
   private markRead(postcard: Postcard): void {
     this.postcardsService.markRead(postcard.id).subscribe({
       next: () => this.postcardsService.refreshUnread(),
-      error: () => {},
+      error: () => { },
     });
   }
 }

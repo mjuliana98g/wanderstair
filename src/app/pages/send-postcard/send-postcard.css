@@ -21,9 +21,9 @@
 
 .compose {
   display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
   align-items: start;
-  gap: 40px;
+  gap: 32px;
 }
 
 form {

@@ -14,7 +14,9 @@
     <h2>Send a piece of this day</h2>
     <div class="compose">
       @if (artwork(); as artwork) {
-        <app-frame [artwork]="artwork" [still]="true" />
+        <app-postcard [artwork]="artwork" [title]="memory.title" [date]="memory.date"
+          [moods]="memory.moods" [message]="form.controls.message.value || 'Your message…'"
+          [from]="myName()" [to]="chosenName()" />
       }
 
       <form [formGroup]="form" (ngSubmit)="sendPostcard()">

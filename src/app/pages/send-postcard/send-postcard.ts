@@ -8,10 +8,11 @@ import { MemoriesService } from '../../services/memories';
 import { MuseumService } from '../../services/museum';
 import { FriendsService } from '../../services/friends';
 import { PostcardsService } from '../../services/postcards';
+import { AuthService } from '../../services/auth';
 import { Memory } from '../../models/memory.model';
 import { Artwork } from '../../models/artwork.model';
 import { Friend } from '../../models/friend.model';
-import { Frame } from '../../components/frame/frame';
+import { Postcard } from '../../components/postcard/postcard';
 
 // --------------------------------------------------
 // SEND POSTCARD PAGE
@@ -19,7 +20,7 @@ import { Frame } from '../../components/frame/frame';
 
 @Component({
   selector: 'app-send-postcard',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink, Frame],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink, Postcard],
   templateUrl: './send-postcard.html',
   styleUrl: './send-postcard.css'
 })
@@ -29,6 +30,7 @@ export class SendPostcard implements OnInit {
   private museumService = inject(MuseumService);
   private friendsService = inject(FriendsService);
   private postcardsService = inject(PostcardsService);
+  private auth = inject(AuthService);
 
   memoryId = Number(this.route.snapshot.paramMap.get('id'));
   artworkId = Number(this.route.snapshot.paramMap.get('artworkId'));
@@ -80,6 +82,15 @@ export class SendPostcard implements OnInit {
   alreadySent(): string {
     const names = this.friends().filter((friend) => this.receivedBy().includes(friend.id)).map((friend) => friend.name);
     return new Intl.ListFormat('en', { type: 'conjunction' }).format(names);
+  }
+
+  myName(): string {
+    return this.auth.user()?.user_metadata['name'] ?? '';
+  }
+
+  chosenName(): string {
+    const id = this.form.controls.friend.value;
+    return id ? this.friendName(id) : '…';
   }
 
   private friendName(id: string): string {
