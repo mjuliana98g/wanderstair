@@ -1,0 +1,49 @@
+<div class="card" [class.flipped]="flipped()">
+    <div class="inner">
+        <section class="face front" [attr.aria-hidden]="flipped()">
+            <div class="picture">
+                @if (artwork.images) {
+                <img [src]="artwork.images.web.url" [alt]="artwork.title">
+                }
+                <div class="label">
+                    <div class="day">
+                        <p class="from-room">A day from {{ from }}'s stair</p>
+                        <h3>{{ title }}</h3>
+                        <p class="pills">
+                            @for (mood of moods; track mood) {
+                            <span [attr.data-family]="familyOf(mood)">{{ mood }}</span>
+                            }
+                        </p>
+                    </div>
+                    <p class="work">{{ artwork.title }}, {{ artwork.creation_date }}</p>
+                </div>
+            </div>
+        </section>
+        <section class="face back" [attr.aria-hidden]="!flipped()">
+            <p class="message">
+                {{ message }}
+                <span class="sign">— {{ from }}</span>
+            </p>
+            <span class="divider" aria-hidden="true"></span>
+            <div class="address">
+                <div class="stamp-row">
+                    <p class="postmark">
+                        {{ date | date: 'd · M · y' }}
+                        <span class="dots">
+                            @for (mood of moods; track mood) {
+                            <i [attr.data-family]="familyOf(mood)"></i>
+                            }
+                        </span>
+                        Wanderstair
+                    </p>
+                    @if (artwork.images) {
+                    <img class="stamp" [src]="artwork.images.web.url" alt="">
+                    }
+                </div>
+                <p class="to">To {{ to }}</p>
+                <p class="brandmark">Sent from a door on {{ from }}'s stair</p>
+            </div>
+        </section>
+    </div>
+</div>
+<button class="turn" type="button" (click)="flip()">↻ Turn the postcard</button>

@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth';
+import { PostcardsService } from './services/postcards';
 
 const THEME_KEY = 'wanderstair-theme';
 
@@ -16,6 +17,7 @@ export class App implements OnInit {
   protected readonly title = 'Wanderstair';
   private auth = inject(AuthService);
   user = this.auth.user;
+  postcards = inject(PostcardsService);
 
   isNight = signal(false);
 
@@ -23,6 +25,7 @@ export class App implements OnInit {
     const saved = localStorage.getItem(THEME_KEY);
     const night = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     this.applyTheme(night);
+    this.postcards.refreshUnread();
   }
 
   toggleTheme(): void {
@@ -36,7 +39,7 @@ export class App implements OnInit {
   }
 
   private applyTheme(night: boolean): void {
-    this.isNight.set(night) ;
+    this.isNight.set(night);
     document.documentElement.dataset['theme'] = night ? 'dark' : 'light';
   }
 }

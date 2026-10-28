@@ -1,0 +1,23 @@
+<a class="back" routerLink="/postcards">↑ Back to your postcards</a>
+
+@if (loading()) {
+  <p>Opening the postcard…</p>
+} @else if (error()) {
+  <p role="alert">{{ error() }}</p>
+} @else {
+  @if (postcard(); as postcard) {
+    <p class="lead">
+      @if (postcard.sentByMe) {
+        You sent {{ postcard.recipient.name }} a day from your stair.
+      } @else {
+        {{ postcard.sender.name }} sent you a day from their stair.
+      }
+    </p>
+
+    @if (artwork(); as artwork) {
+      <app-postcard [artwork]="artwork" [title]="postcard.memoryTitle" [date]="postcard.memoryDate"
+        [moods]="postcard.moods" [message]="postcard.message"
+        [from]="postcard.sender.name" [to]="postcard.recipient.name" />
+    }
+  }
+}

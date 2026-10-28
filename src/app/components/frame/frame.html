@@ -12,7 +12,14 @@
         <cite>{{ artwork.title }}</cite>
         <small>{{ artwork.creation_date }}</small>
     </figcaption>
-    @if (actionLabel) {
-    <button type="button" (click)="emitAction()">{{ actionLabel }}</button>
+    @if (actionLabel || sendLink) {
+    <div class="buttons">
+        @if (actionLabel) {
+        <button type="button" (click)="emitAction()">{{ actionLabel }}</button>
+        }
+        @if (sendLink) {
+        <a class="send" [routerLink]="sendLink" aria-label="Send as a postcard" title="Send as a postcard">✉</a>
+        }
+    </div>
     }
 </figure>

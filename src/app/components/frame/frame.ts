@@ -20,9 +20,10 @@ export class Frame {
   @Input() actionLabel = '';
   @Input() detailLink: (string | number)[] | null = null;
   @Input() still = false;
+  @Input() sendLink: (string | number)[] | null = null;
   @Output() action = new EventEmitter<Artwork>();
 
-    artistName(): string {
+  artistName(): string {
     return (this.artwork.creators[0]?.description ?? 'Unknown artist').split(' (')[0];
   }
 

@@ -1,0 +1,45 @@
+<header class="intro">
+    <h2>Postcards</h2>
+    <p>Pieces of days, sent between friends.</p>
+</header>
+<div class="tabs" role="tablist" aria-label="Postcards">
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'received'" (click)="tab.set('received')">
+        Received · {{ received().length }}
+    </button>
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'sent'" (click)="tab.set('sent')">
+        Sent · {{ sent().length }}
+    </button>
+</div>
+@if (loading()) {
+<p>Opening the letterbox…</p>
+} @else if (error()) {
+<p role="alert">{{ error() }}</p>
+} @else {
+<ul class="list">
+    @for (postcard of shown(); track postcard.id) {
+    <li>
+        <a class="card" [routerLink]="['/postcards', postcard.id]">
+            @if (isNew(postcard)) {
+            <span class="new">New</span>
+            }
+            <p class="who">
+                @if (postcard.sentByMe) { To {{ postcard.recipient.name }} } @else { From {{ postcard.sender.name }} }
+            </p>
+            <h3>{{ postcard.memoryTitle }}</h3>
+            <p class="pills">
+                @for (mood of postcard.moods; track mood) {
+                <span [attr.data-family]="familyOf(mood)">{{ mood }}</span>
+                }
+            </p>
+            <p class="message">{{ postcard.message }}</p>
+            <p class="date">{{ postcard.createdAt | date: 'd MMMM y' }}</p>
+        </a>
+    </li>
+    } @empty {
+    <li class="empty">
+        @if (tab() === 'received') { No postcards yet. When a friend sends you one, it will be here. }
+        @else { You have not sent any postcards yet. Open a room and press ✉ under a painting. }
+    </li>
+    }
+</ul>
+}

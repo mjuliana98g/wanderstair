@@ -1,0 +1,60 @@
+<a class="back" [routerLink]="['/room', memoryId]">↑ Back to the room</a>
+
+@if (loading()) {
+  <p>Preparing the postcard…</p>
+} @else if (error()) {
+  <p role="alert">{{ error() }}</p>
+} @else if (sentTo()) {
+  <section class="sent">
+    <h2>Your postcard is on its way</h2>
+    <p>{{ sentTo() }} will find it on their Postcards page.</p>
+  </section>
+} @else {
+  @if (memory(); as memory) {
+    <h2>Send a piece of this day</h2>
+    <div class="compose">
+      @if (artwork(); as artwork) {
+        <app-postcard [artwork]="artwork" [title]="memory.title" [date]="memory.date"
+          [moods]="memory.moods" [message]="form.controls.message.value || 'Your message…'"
+          [from]="myName()" [to]="chosenName()" />
+      }
+
+      <form [formGroup]="form" (ngSubmit)="sendPostcard()">
+        <p class="from-day">
+          From the room <strong>{{ memory.title }}</strong>
+          <span>{{ memory.date | date: 'd MMMM y' }}</span>
+        </p>
+
+        @if (alreadySent()) {
+          <p class="hint">✓ Already sent to {{ alreadySent() }}.</p>
+        }
+
+        @if (!friends().length) {
+          <p>You have no friends yet. <a routerLink="/friends">Add a friend</a> to send postcards.</p>
+        } @else if (!available().length) {
+          <p>All your friends already have this painting. Choose another one from the room.</p>
+        } @else {
+          <label for="friend">To</label>
+          <select id="friend" formControlName="friend">
+            <option value="" disabled>Choose a friend</option>
+            @for (friend of available(); track friend.id) {
+              <option [value]="friend.id">{{ friend.name }}</option>
+            }
+          </select>
+
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" formControlName="message" maxlength="280"
+            placeholder="Remember this day?"></textarea>
+          <small>{{ form.controls.message.value.length }} / 280</small>
+
+          <p class="hint">🔒 Your letter stays sealed. They only see the painting, the day, the feelings and this message.</p>
+
+          @if (sendError()) {
+            <p role="alert">{{ sendError() }}</p>
+          }
+          <button type="submit" [disabled]="form.invalid || sending()">Send the postcard</button>
+        }
+      </form>
+    </div>
+  }
+}

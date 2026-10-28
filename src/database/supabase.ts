@@ -197,6 +197,70 @@ export type Database = {
         }
         Relationships: []
       }
+      postcards: {
+        Row: {
+          artwork_id: number
+          created_at: string
+          id: number
+          memory_date: string
+          memory_id: number
+          memory_title: string
+          message: string
+          moods: string[]
+          read_at: string | null
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          artwork_id: number
+          created_at?: string
+          id?: never
+          memory_date: string
+          memory_id: number
+          memory_title: string
+          message: string
+          moods?: string[]
+          read_at?: string | null
+          recipient_id: string
+          sender_id?: string
+        }
+        Update: {
+          artwork_id?: number
+          created_at?: string
+          id?: never
+          memory_date?: string
+          memory_id?: number
+          memory_title?: string
+          message?: string
+          moods?: string[]
+          read_at?: string | null
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "postcards_memory_id_fkey"
+            columns: ["memory_id"]
+            isOneToOne: false
+            referencedRelation: "memories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "postcards_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "postcards_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           id: string
