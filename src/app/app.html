@@ -1,5 +1,5 @@
 <header>
-  <h1>{{ title }}</h1>
+  <h1><a routerLink="/" (click)="closeMenu()">{{ title }}</a></h1>
 
   <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"
     aria-controls="site-menu" [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'">
