@@ -116,7 +116,7 @@ export class ArtworkDetail implements OnInit {
 
   private saveRoom(saved: Memory): void {
     this.memories.update((list) => list.map((memory) => (memory.id === saved.id ? saved : memory)));
-    this.message.set(`Hung in "${saved.title}".`);
+    this.message.set('');
     this.roomId = '';
   }
 }

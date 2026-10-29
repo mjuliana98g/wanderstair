@@ -5,6 +5,10 @@ import { Artwork } from '../../models/artwork.model';
 import { Mood } from '../../models/memory.model';
 import { familyOf } from '../../models/moods';
 
+// --------------------------------------------------
+// POSTCARD COMPONENT
+// --------------------------------------------------
+
 @Component({
   imports: [DatePipe],
   selector: 'app-postcard',
@@ -25,6 +29,6 @@ export class Postcard {
   flipped = signal(false);
 
   flip(): void {
-    this.flipped.update((value) => !value)
+    this.flipped.update((value) => !value);
   }
 }

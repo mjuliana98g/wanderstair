@@ -76,8 +76,10 @@ form {
 
 .name {
   flex: 1;
+  min-width: 0;
   font-family: var(--display);
   color: var(--title);
+  overflow-wrap: anywhere;
 }
 
 .people button {
@@ -97,4 +99,34 @@ form {
   background: none;
   color: var(--ink-soft);
   font-style: italic;
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .row input {
+    flex: none;
+    width: 100%;
+  }
+
+  .people li {
+    gap: 8px;
+    padding: 10px 10px 10px 16px;
+    border-radius: 16px;
+  }
+
+  .people button {
+    padding: 3px 12px;
+    font-size: 15px;
+  }
+
+  .people .empty {
+    border-radius: 16px;
+  }
 }

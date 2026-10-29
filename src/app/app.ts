@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth';
 import { PostcardsService } from './services/postcards';
@@ -20,6 +20,7 @@ export class App implements OnInit {
   postcards = inject(PostcardsService);
 
   isNight = signal(false);
+  menuOpen = signal(false);
 
   ngOnInit(): void {
     const saved = localStorage.getItem(THEME_KEY);
@@ -32,6 +33,19 @@ export class App implements OnInit {
     const night = !this.isNight();
     this.applyTheme(night);
     localStorage.setItem(THEME_KEY, night ? 'dark' : 'light');
+  }
+
+  toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  closeMenuOnEscape(): void {
+    this.closeMenu();
   }
 
   userName(): string {

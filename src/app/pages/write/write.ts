@@ -49,7 +49,7 @@ export class Write implements OnInit {
   saving = signal(false);
   error = signal('');
   familyOf = familyOf;
-  today = todayText;
+  today = todayText();
 
   form = new FormGroup({
     title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3)] }),

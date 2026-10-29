@@ -1,4 +1,4 @@
-<figure>
+<figure [class.gift]="gift">
     <a class="painting" [routerLink]="linkToDetail()" queryParamsHandling="preserve"
         [attr.aria-label]="still ? null : 'Open ' + artwork.title">
         @if (artwork.images) {
@@ -7,7 +7,7 @@
         <p>No image for this artwork</p>
         }
     </a>
-    <figcaption [class.gift]="gift">
+    <figcaption>
         <strong>{{ gift ? 'A gift from ' + gift : artistName() }}</strong>
         <cite>{{ artwork.title }}</cite>
         <small>{{ artwork.creation_date }}</small>

@@ -33,6 +33,7 @@ nav {
 }
 
 nav a {
+  position: relative;
   padding-block: 8px 2px;
   border-bottom: 1px solid transparent;
   color: var(--ink-soft);
@@ -48,12 +49,8 @@ nav.guest {
   margin-left: auto;
 }
 
-nav.guest + .tools {
+nav.guest+.tools {
   margin-left: 0;
-}
-
-nav a {
-  position: relative;
 }
 
 .dot {
@@ -89,10 +86,11 @@ nav a {
 
 .who strong {
   color: var(--title);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .who a {
+  border-bottom: 1px solid var(--accent);
   color: inherit;
   text-decoration: none;
 }
@@ -108,4 +106,99 @@ nav a {
   background: var(--surface);
   color: var(--title);
   font-size: 16px;
+}
+
+.menu {
+  display: contents;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.backdrop {
+  display: none;
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 720px) {
+  header {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    min-height: 0;
+    height: 42px;
+    padding: 0;
+    border-color: var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--title);
+    font-size: 20px;
+  }
+
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px 16px 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-solid);
+    box-shadow: 0 18px 30px var(--shadow);
+  }
+
+  .menu.open {
+    display: flex;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  nav a {
+    padding-block: 8px;
+    font-size: 20px;
+  }
+
+  nav.guest {
+    margin-left: 0;
+  }
+
+  .tools {
+    justify-content: space-between;
+    margin-left: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  .who {
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    display: block;
+    background: rgba(8, 10, 16, 0.45);
+  }
 }

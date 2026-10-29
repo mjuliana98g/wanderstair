@@ -110,49 +110,6 @@
   opacity: 0.85;
 }
 
-.label {
-  position: absolute;
-  inset: auto 0 0 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 60px 26px 22px;
-  background: linear-gradient(180deg, transparent, rgba(10, 12, 18, 0.8));
-  color: #ffffff;
-}
-
-.day {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.from-room {
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.85;
-}
-
-.label h3 {
-  color: #ffffff;
-  font-size: clamp(20px, 3.4vw, 34px);
-}
-
-.label .pills span {
-  background: color-mix(in srgb, var(--family) 35%, transparent);
-  color: #ffffff;
-}
-
-.work {
-  max-width: 40%;
-  font-size: 14px;
-  font-style: italic;
-  text-align: right;
-  opacity: 0.85;
-}
-
 /* --------------------------------------------------
    BACK
    -------------------------------------------------- */
@@ -264,6 +221,71 @@
   background: var(--surface);
   color: var(--title);
 }
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .card {
+    aspect-ratio: 4 / 5;
+  }
+
+  .front {
+    padding: 10px;
+  }
+
+  .label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 80px 16px 16px;
+  }
+
+  .from-room {
+    font-size: 11px;
+  }
+
+  .work {
+    max-width: none;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .back {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1px auto;
+    gap: 16px 0;
+    padding: 20px 18px;
+  }
+
+  .message {
+    font-size: 17px;
+  }
+
+  .address {
+    gap: 10px;
+  }
+
+  .postmark {
+    width: 70px;
+    height: 70px;
+    font-size: 8px;
+  }
+
+  .stamp {
+    width: 56px;
+    height: 68px;
+  }
+
+  .to {
+    font-size: 17px;
+  }
+}
+
+/* --------------------------------------------------
+   MOTION
+   -------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .inner {
