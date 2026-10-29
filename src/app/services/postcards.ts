@@ -1,13 +1,15 @@
-import { Service, inject, signal } from '@angular/core';
-import { Observable, from, map, switchMap } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { Observable, map, switchMap } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
+import { AuthService } from './auth';
 import { send } from './send';
 import { NewPostcard, Postcard } from '../models/postcard.model';
 import { Mood } from '../models/memory.model';
 import { Profile } from '../models/friend.model';
 
-const COLUMNS = 'id, created_at, read_at, reply_to, memory_id, artwork_id, message, memory_title, memory_date, moods, sender_id, recipient_id, sender:profiles!postcards_sender_id_fkey(id, name), recipient:profiles!postcards_recipient_id_fkey(id, name)';
+const COLUMNS =
+  'id, created_at, read_at, reply_to, memory_id, artwork_id, message, memory_title, memory_date, moods, sender_id, recipient_id, sender:profiles!postcards_sender_id_fkey(id, name), recipient:profiles!postcards_recipient_id_fkey(id, name)';
 
 interface PostcardRow {
   id: number;
@@ -26,13 +28,10 @@ interface PostcardRow {
   recipient: Profile;
 }
 
-// --------------------------------------------------
-// POSTCARDS SERVICE
-// --------------------------------------------------
-
-@Service()
+@Injectable({ providedIn: 'root' })
 export class PostcardsService {
   private supabase = inject(SupabaseService).supabaseClient;
+  private auth = inject(AuthService);
 
   unread = signal(0);
 
@@ -52,21 +51,27 @@ export class PostcardsService {
   }
 
   recipientsOf(artworkId: number): Observable<string[]> {
-    const request = this.supabase.from('postcards').select('recipient_id').eq('artwork_id', artworkId);
+    const request = this.supabase
+      .from('postcards')
+      .select('recipient_id')
+      .eq('artwork_id', artworkId);
     return send(request).pipe(map((rows) => rows.map((row) => row.recipient_id)));
   }
 
   getAll(): Observable<Postcard[]> {
-    return this.me().pipe(
+    return this.auth.myId().pipe(
       switchMap((me) => {
-        const request = this.supabase.from('postcards').select(COLUMNS).order('created_at', { ascending: false });
+        const request = this.supabase
+          .from('postcards')
+          .select(COLUMNS)
+          .order('created_at', { ascending: false });
         return send(request).pipe(map((rows) => rows.map((row) => toPostcard(row, me))));
       }),
     );
   }
 
   getById(id: number): Observable<Postcard> {
-    return this.me().pipe(
+    return this.auth.myId().pipe(
       switchMap((me) => {
         const request = this.supabase.from('postcards').select(COLUMNS).eq('id', id).single();
         return send(request).pipe(map((row) => toPostcard(row, me)));
@@ -75,21 +80,28 @@ export class PostcardsService {
   }
 
   markRead(id: number): Observable<void> {
-    const request = this.supabase.from('postcards').update({ read_at: new Date().toISOString() }).eq('id', id).select('id');
+    const request = this.supabase
+      .from('postcards')
+      .update({ read_at: new Date().toISOString() })
+      .eq('id', id)
+      .select('id');
     return send(request).pipe(map(() => undefined));
   }
 
   refreshUnread(): void {
-    this.me().pipe(
-      switchMap((me) => send(this.supabase.from('postcards').select('id').eq('recipient_id', me).is('read_at', null))),
-    ).subscribe({
-      next: (rows) => this.unread.set(rows.length),
-      error: () => this.unread.set(0),
-    });
-  }
-
-  private me(): Observable<string> {
-    return from(this.supabase.auth.getSession()).pipe(map(({ data }) => data.session?.user.id ?? ''));
+    this.auth
+      .myId()
+      .pipe(
+        switchMap((me) =>
+          send(
+            this.supabase.from('postcards').select('id').eq('recipient_id', me).is('read_at', null),
+          ),
+        ),
+      )
+      .subscribe({
+        next: (rows) => this.unread.set(rows.length),
+        error: () => this.unread.set(0),
+      });
   }
 }
 

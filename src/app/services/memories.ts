@@ -1,4 +1,4 @@
-import { Service, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, map, switchMap } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
@@ -22,11 +22,7 @@ interface MemoryRow {
   door: { name: string };
 }
 
-// --------------------------------------------------
-// MEMORIES SERVICE
-// --------------------------------------------------
-
-@Service()
+@Injectable({ providedIn: 'root' })
 export class MemoriesService {
   private supabase = inject(SupabaseService).supabaseClient;
 

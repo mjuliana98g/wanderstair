@@ -9,10 +9,6 @@ import { Memory } from '../../models/memory.model';
 import { MOOD_FAMILIES, familyOf } from '../../models/moods';
 import { passwordsMatch } from '../../validators/passwords-match';
 
-// --------------------------------------------------
-// ACCOUNT PAGE
-// --------------------------------------------------
-
 @Component({
   selector: 'app-account',
   imports: [DatePipe, TitleCasePipe, ReactiveFormsModule],
@@ -69,16 +65,14 @@ export class Account implements OnInit {
   }
 
   name(): string {
-    return this.user()?.user_metadata['name'] ?? '';
+    return this.auth.userName();
   }
 
   signOut(): void {
     this.auth.signOut().subscribe(() => this.router.navigate(['/sign-in']));
   }
 
-  // --------------------------------------------------
-  // YOUR STAIR
-  // --------------------------------------------------
+  // STATISTICS
 
   paintingCount(): number {
     return this.memories().reduce((total, memory) => total + memory.artworks.length, 0);
@@ -112,9 +106,7 @@ export class Account implements OnInit {
     return new Intl.ListFormat('en', { type: 'conjunction' }).format(names);
   }
 
-  // --------------------------------------------------
-  // YOUR NAME
-  // --------------------------------------------------
+  // ACCOUNT NAME
 
   saveName(): void {
     if (this.nameForm.invalid) return;
@@ -133,9 +125,7 @@ export class Account implements OnInit {
     });
   }
 
-  // --------------------------------------------------
-  // YOUR PASSWORD
-  // --------------------------------------------------
+  // CHANGE PASSWORD
 
   savePassword(): void {
     if (this.passwordForm.invalid) return;
@@ -170,9 +160,7 @@ export class Account implements OnInit {
     return 'Your password could not be changed. Try again.';
   }
 
-  // --------------------------------------------------
   // DELETE ACCOUNT
-  // --------------------------------------------------
 
   canDelete(): boolean {
     return this.deletePassword.valid && !this.deleting();

@@ -13,10 +13,6 @@ import { familyOf } from '../../models/moods';
 
 const HEADER_SPACE = 90;
 
-// --------------------------------------------------
-// STAIR PAGE
-// --------------------------------------------------
-
 @Component({
   imports: [DatePipe, RouterLink, Frame],
   selector: 'app-stair',
@@ -71,9 +67,7 @@ export class Stair implements OnInit, OnDestroy {
     return [...memories].sort((a, b) => b.date.localeCompare(a.date));
   }
 
-  // --------------------------------------------------
   // PORTRAIT OF THE DAY
-  // --------------------------------------------------
 
   loadPortrait(): void {
     this.museumService.getPortraitOfTheDay().subscribe({
@@ -89,9 +83,7 @@ export class Stair implements OnInit, OnDestroy {
     });
   }
 
-  // --------------------------------------------------
   // SCROLL
-  // --------------------------------------------------
 
   private restoreScroll(): void {
     const scroll = this.pendingScroll;

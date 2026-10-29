@@ -3,10 +3,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
-// --------------------------------------------------
-// FORGOT PASSWORD PAGE
-// --------------------------------------------------
-
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-forgot-password',

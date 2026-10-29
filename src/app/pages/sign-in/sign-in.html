@@ -6,35 +6,37 @@
     <label for="email">Email</label>
     <input id="email" type="email" formControlName="email" autocomplete="email" placeholder="name@example.com">
     @if (form.controls.email.touched && form.controls.email.hasError('required')) {
-      <p role="alert">Enter your email.</p>
+    <p role="alert">Enter your email.</p>
     }
     @if (form.controls.email.touched && form.controls.email.hasError('email')) {
-      <p role="alert">Enter a valid email.</p>
+    <p role="alert">Enter a valid email.</p>
     }
 
     <label for="password">Password</label>
     <div class="password">
-      <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password" autocomplete="current-password">
-      <button type="button" (click)="togglePassword()" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showPassword()">
+      <input id="password" [type]="showPassword() ? 'text' : 'password'" formControlName="password"
+        autocomplete="current-password">
+      <button type="button" (click)="togglePassword()"
+        [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showPassword()">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
           <circle cx="12" cy="12" r="3" />
           @if (showPassword()) {
-            <line x1="3" y1="3" x2="21" y2="21" />
+          <line x1="3" y1="3" x2="21" y2="21" />
           }
         </svg>
       </button>
     </div>
     @if (form.controls.password.touched && form.controls.password.hasError('required')) {
-      <p role="alert">Enter your password.</p>
+    <p role="alert">Enter your password.</p>
     }
     @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
-      <p role="alert">The password has at least 6 characters.</p>
+    <p role="alert">The password has at least 6 characters.</p>
     }
     <a class="forgot" routerLink="/forgot-password">Forgot your password?</a>
 
     @if (error()) {
-      <p role="alert">{{ error() }}</p>
+    <p role="alert">{{ error() }}</p>
     }
     <button type="submit" [disabled]="form.invalid || sending()">Sign in</button>
   </form>

@@ -14,10 +14,6 @@ import { Artwork } from '../../models/artwork.model';
 import { Friend } from '../../models/friend.model';
 import { Postcard } from '../../components/postcard/postcard';
 
-// --------------------------------------------------
-// SEND POSTCARD PAGE
-// --------------------------------------------------
-
 @Component({
   selector: 'app-send-postcard',
   imports: [DatePipe, ReactiveFormsModule, RouterLink, Postcard],
@@ -71,9 +67,7 @@ export class SendPostcard implements OnInit {
     });
   }
 
-  // --------------------------------------------------
   // FRIENDS
-  // --------------------------------------------------
 
   available(): Friend[] {
     return this.friends().filter((friend) => !this.receivedBy().includes(friend.id));
@@ -85,7 +79,7 @@ export class SendPostcard implements OnInit {
   }
 
   myName(): string {
-    return this.auth.user()?.user_metadata['name'] ?? '';
+    return this.auth.userName();
   }
 
   chosenName(): string {
@@ -97,9 +91,7 @@ export class SendPostcard implements OnInit {
     return this.friends().find((friend) => friend.id === id)?.name ?? 'your friend';
   }
 
-  // --------------------------------------------------
   // SEND
-  // --------------------------------------------------
 
   sendPostcard(): void {
     const memory = this.memory();

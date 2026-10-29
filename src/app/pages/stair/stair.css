@@ -1,16 +1,10 @@
-/* --------------------------------------------------
-   PAGE
-   -------------------------------------------------- */
-
 :host {
   display: flex;
   flex-direction: column;
   gap: 72px;
 }
 
-/* --------------------------------------------------
-   PORTRAIT OF THE DAY
-   -------------------------------------------------- */
+/* PORTRAIT OF THE DAY */
 
 .hero {
   display: grid;
@@ -53,9 +47,7 @@
   border-color: var(--accent);
 }
 
-/* --------------------------------------------------
-   STAIR TITLE
-   -------------------------------------------------- */
+/* STAIR TITLE */
 
 .stair-head {
   display: flex;
@@ -88,9 +80,7 @@
   border-color: var(--accent);
 }
 
-/* --------------------------------------------------
-   STAIR
-   -------------------------------------------------- */
+/* STAIR */
 
 .stair {
   position: relative;
@@ -136,9 +126,7 @@
   box-shadow: 0 0 60px color-mix(in srgb, var(--family) 70%, transparent), inset 0 0 0 3px rgba(10, 13, 20, 0.45);
 }
 
-/* --------------------------------------------------
-   LANDING TEXT
-   -------------------------------------------------- */
+/* LANDING TEXT */
 
 .landing hgroup {
   display: flex;
@@ -174,9 +162,7 @@
   justify-content: flex-end;
 }
 
-/* --------------------------------------------------
-   STEPS BETWEEN DOORS
-   -------------------------------------------------- */
+/* STEPS BETWEEN DOORS */
 
 .flight {
   display: flex;
@@ -226,9 +212,7 @@
   text-align: center;
 }
 
-/* --------------------------------------------------
-   SMALL SCREENS
-   -------------------------------------------------- */
+/* SMALL SCREENS */
 
 @media (max-width: 760px) {
   :host {
@@ -322,11 +306,10 @@
   }
 }
 
-/* --------------------------------------------------
-   MOTION
-   -------------------------------------------------- */
+/* MOTION */
 
 @media (prefers-reduced-motion: reduce) {
+
   .see,
   .write {
     transition: none;

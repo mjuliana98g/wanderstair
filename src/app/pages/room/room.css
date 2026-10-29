@@ -1,25 +1,7 @@
-/* --------------------------------------------------
-   PAGE
-   -------------------------------------------------- */
-
 :host {
   display: flex;
   flex-direction: column;
   gap: 28px;
-}
-
-.back {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  min-height: 36px;
-  padding: 4px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--title);
-  font-size: 16px;
-  text-decoration: none;
 }
 
 article {
@@ -28,9 +10,7 @@ article {
   gap: 44px;
 }
 
-/* --------------------------------------------------
-   HEADER
-   -------------------------------------------------- */
+/* HEADER */
 
 header {
   display: flex;
@@ -56,9 +36,7 @@ header .pills {
   justify-content: center;
 }
 
-/* --------------------------------------------------
-   LETTER
-   -------------------------------------------------- */
+/* LETTER */
 
 .letter {
   position: relative;
@@ -100,9 +78,7 @@ header .pills {
   text-align: right;
 }
 
-/* --------------------------------------------------
-   EXHIBITION
-   -------------------------------------------------- */
+/* EXHIBITION */
 
 .exhibition {
   display: flex;
@@ -164,9 +140,16 @@ header .pills {
   text-align: center;
 }
 
-/* --------------------------------------------------
-   ACTIONS
-   -------------------------------------------------- */
+/* ACTIONS */
+
+button {
+  min-height: 32px;
+  padding: 2px 14px;
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--title);
+  font-size: 15px;
+}
 
 .actions {
   display: flex;
@@ -194,7 +177,6 @@ header .pills {
 }
 
 .actions button {
-  margin-top: 0;
   border-color: var(--danger);
   color: var(--danger);
 }
@@ -225,10 +207,6 @@ header .pills {
   gap: 10px;
 }
 
-.confirm button {
-  margin-top: 0;
-}
-
 .actions .danger-solid,
 .actions .danger-solid:hover:not(:disabled) {
   background: var(--danger);
@@ -241,19 +219,7 @@ header .pills {
   color: var(--title);
 }
 
-button {
-  margin-top: 14px;
-  min-height: 32px;
-  padding: 2px 14px;
-  border-color: var(--line);
-  background: var(--surface);
-  color: var(--title);
-  font-size: 15px;
-}
-
-/* --------------------------------------------------
-   SMALL SCREENS
-   -------------------------------------------------- */
+/* SMALL SCREENS */
 
 @media (max-width: 720px) {
   article {
@@ -305,9 +271,7 @@ button {
   }
 }
 
-/* --------------------------------------------------
-   MOTION
-   -------------------------------------------------- */
+/* MOTION */
 
 @media (prefers-reduced-motion: reduce) {
   .section-head a {

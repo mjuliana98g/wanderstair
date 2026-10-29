@@ -11,10 +11,6 @@ import { Memory } from '../../models/memory.model';
 import { Frame } from '../../components/frame/frame';
 import { GiftsService } from '../../services/gifts';
 
-// --------------------------------------------------
-// FIND ARTWORKS PAGE
-// --------------------------------------------------
-
 @Component({
   selector: 'app-find',
   imports: [FormsModule, RouterLink, Frame, RouterOutlet],
@@ -58,9 +54,7 @@ export class Find implements OnInit, OnDestroy {
     this.typing.unsubscribe();
   }
 
-  // --------------------------------------------------
   // DETAIL MODAL
-  // --------------------------------------------------
 
   closeDetail(): void {
     this.location.back();
@@ -101,9 +95,7 @@ export class Find implements OnInit, OnDestroy {
     });
   }
 
-  // --------------------------------------------------
   // HANGING ARTWORKS
-  // --------------------------------------------------
 
   isHung(artwork: Artwork): boolean {
     const chosen = this.room()?.artworks.includes(artwork.id) ?? false;

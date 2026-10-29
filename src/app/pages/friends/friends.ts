@@ -6,10 +6,6 @@ import { FriendsService } from '../../services/friends';
 import { AuthService } from '../../services/auth';
 import { Friend } from '../../models/friend.model';
 
-// --------------------------------------------------
-// FRIENDS PAGE
-// --------------------------------------------------
-
 @Component({
   selector: 'app-friends',
   imports: [ReactiveFormsModule],
@@ -60,9 +56,7 @@ export class Friends implements OnInit {
     return this.friends().filter((friend) => friend.status === 'pending' && friend.sentByMe);
   }
 
-  // --------------------------------------------------
   // ADD A FRIEND
-  // --------------------------------------------------
 
   addFriend(): void {
     if (this.form.invalid) return;
@@ -99,9 +93,7 @@ export class Friends implements OnInit {
     return 'The request could not be sent. Try again.';
   }
 
-  // --------------------------------------------------
   // ANSWER AND REMOVE
-  // --------------------------------------------------
 
   accept(friend: Friend): void {
     this.friendsService.accept(friend.friendshipId).subscribe({

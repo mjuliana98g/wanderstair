@@ -4,10 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthError } from '@supabase/supabase-js';
 import { AuthService } from '../../services/auth';
 
-// --------------------------------------------------
-// SIGN IN PAGE
-// --------------------------------------------------
-
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-sign-in',

@@ -3,7 +3,7 @@
     <p>Friends can send you postcards from their stair, and you can send yours back.</p>
 </header>
 
-<section class="card">
+<section class="panel">
     <h3>Add a friend</h3>
     <form [formGroup]="form" (ngSubmit)="addFriend()">
         <label for="email">Their email</label>
@@ -31,7 +31,7 @@
 }
 
 @if (received().length) {
-<section class="card">
+<section class="panel">
     <h3>Asking to be your friend</h3>
     <ul class="people">
         @for (friend of received(); track friend.friendshipId) {
@@ -45,7 +45,7 @@
 </section>
 }
 
-<section class="card">
+<section class="panel">
     <h3>Your friends</h3>
     <ul class="people">
         @for (friend of accepted(); track friend.friendshipId) {
@@ -60,7 +60,7 @@
 </section>
 
 @if (sent().length) {
-<section class="card">
+<section class="panel">
     <h3>Waiting for an answer</h3>
     <ul class="people">
         @for (friend of sent(); track friend.friendshipId) {

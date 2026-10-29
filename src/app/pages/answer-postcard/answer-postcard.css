@@ -1,33 +1,7 @@
-/* --------------------------------------------------
-   PAGE
-   -------------------------------------------------- */
-
 :host {
   display: flex;
   flex-direction: column;
   gap: 26px;
-}
-
-.back {
-  align-self: flex-start;
-  padding: 4px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--title);
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.intro {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.intro p {
-  color: var(--ink-soft);
-  font-style: italic;
 }
 
 .done {
@@ -38,9 +12,7 @@
   text-align: center;
 }
 
-/* --------------------------------------------------
-   FROM THE POSTCARD
-   -------------------------------------------------- */
+/* FROM THE POSTCARD */
 
 .from {
   display: flex;
@@ -79,20 +51,7 @@
   color: var(--title);
 }
 
-/* --------------------------------------------------
-   CARDS
-   -------------------------------------------------- */
-
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
-  box-shadow: 0 20px 44px var(--shadow);
-}
+/* FORMS */
 
 form {
   display: flex;
@@ -111,9 +70,7 @@ form {
   min-width: 0;
 }
 
-/* --------------------------------------------------
-   WALL
-   -------------------------------------------------- */
+/* WALL */
 
 .wall {
   display: grid;
@@ -187,9 +144,7 @@ form {
   text-align: center;
 }
 
-/* --------------------------------------------------
-   ANSWER
-   -------------------------------------------------- */
+/* ANSWER */
 
 :host:has(.answer) {
   padding-bottom: 110px;
@@ -249,9 +204,7 @@ form {
   color: var(--title);
 }
 
-/* --------------------------------------------------
-   SMALL SCREENS
-   -------------------------------------------------- */
+/* SMALL SCREENS */
 
 @media (max-width: 480px) {
   .from {
@@ -261,10 +214,6 @@ form {
 
   .thumb {
     width: 64px;
-  }
-
-  .card {
-    padding: 18px;
   }
 
   .wall {
@@ -300,9 +249,7 @@ form {
   }
 }
 
-/* --------------------------------------------------
-   MOTION
-   -------------------------------------------------- */
+/* MOTION */
 
 @media (prefers-reduced-motion: reduce) {
   .mini {

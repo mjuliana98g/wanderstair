@@ -1,19 +1,15 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MuseumService } from '../../services/museum';
 import { MemoriesService } from '../../services/memories';
-import { Artwork } from '../../models/artwork.model';
+import { Artwork, artistName, shortArtistName } from '../../models/artwork.model';
 import { Memory } from '../../models/memory.model';
-import { Location } from '@angular/common';
 import { Frame } from '../../components/frame/frame';
 import { GiftsService } from '../../services/gifts';
 import { GiftedArtwork } from '../../models/gift.model';
-
-// --------------------------------------------------
-// ARTWORK DETAIL PAGE
-// --------------------------------------------------
 
 @Component({
   selector: 'app-artwork-detail',
@@ -37,6 +33,8 @@ export class ArtworkDetail implements OnInit {
   message = signal('');
   inModal = this.router.url.startsWith('/find');
   gifted = signal<GiftedArtwork[]>([]);
+  artistName = artistName;
+  shortArtistName = shortArtistName;
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -46,7 +44,7 @@ export class ArtworkDetail implements OnInit {
     this.giftsService.hungArtworks().subscribe((gifted) => this.gifted.set(gifted));
   }
 
-  loadArtwork(id: number): void {
+  private loadArtwork(id: number): void {
     this.museumService.getById(id).subscribe({
       next: (artwork) => {
         this.artwork.set(artwork);
@@ -64,14 +62,6 @@ export class ArtworkDetail implements OnInit {
       next: (memories) => this.memories.set(memories),
       error: () => this.message.set('Your rooms could not be loaded. Try again later.')
     });
-  }
-
-  artistName(artwork: Artwork): string {
-    return artwork.creators[0]?.description ?? 'Unknown artist';
-  }
-
-  shortName(artwork: Artwork): string {
-    return this.artistName(artwork).split(' (')[0];
   }
 
   goBack(): void {
@@ -97,9 +87,7 @@ export class ArtworkDetail implements OnInit {
     return new Intl.ListFormat('en', { type: 'conjunction' }).format(titles);
   }
 
-  // --------------------------------------------------
   // HANGING
-  // --------------------------------------------------
 
   hang(artwork: Artwork): void {
     const room = this.memories().find((memory) => memory.id === Number(this.roomId));

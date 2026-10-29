@@ -49,5 +49,4 @@ export class Postcards implements OnInit {
   isNew(postcard: Postcard): boolean {
     return !postcard.sentByMe && !postcard.readAt;
   }
-
 }
