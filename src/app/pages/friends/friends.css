@@ -107,12 +107,17 @@ form {
 
 @media (max-width: 480px) {
   .row {
-    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .row input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row button {
     flex: none;
-    width: 100%;
+    padding-inline: 16px;
   }
 
   .people li {

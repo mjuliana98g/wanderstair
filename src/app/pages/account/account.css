@@ -257,10 +257,24 @@ form {
   }
 
   .row {
-    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .row input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row button {
+    flex: none;
+    padding-inline: 16px;
+  }
+
+  .confirm .row {
+    flex-direction: column;
+  }
+
+  .confirm .row input {
     flex: none;
     width: 100%;
   }
