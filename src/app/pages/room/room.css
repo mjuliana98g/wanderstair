@@ -187,6 +187,43 @@ header .pills {
   color: var(--danger);
 }
 
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, 480px);
+  padding: 16px 18px;
+  border: 1px dashed color-mix(in srgb, var(--danger) 55%, transparent);
+  border-radius: 12px;
+}
+
+.confirm p {
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.confirm .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.confirm button {
+  margin-top: 0;
+}
+
+.actions .danger-solid,
+.actions .danger-solid:hover:not(:disabled) {
+  background: var(--danger);
+  color: var(--accent-ink);
+}
+
+.actions .keep,
+.actions .keep:hover:not(:disabled) {
+  border-color: var(--line);
+  color: var(--title);
+}
+
 button {
   margin-top: 14px;
   min-height: 32px;
@@ -243,6 +280,10 @@ button {
 
   .actions {
     align-items: center;
+  }
+
+  .confirm .row button {
+    flex: 1;
   }
 }
 

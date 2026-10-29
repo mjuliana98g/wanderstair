@@ -57,7 +57,19 @@
       </section>
 
       <footer class="actions">
-        <button type="button" (click)="deleteMemory()">Close this door forever</button>
+        @if (!confirmingClose()) {
+          <button type="button" (click)="confirmingClose.set(true)">Close this door forever…</button>
+        } @else {
+          <div class="confirm" role="group" aria-label="Close this door">
+            <p>“{{ memory.title }}” will leave your stair, with its letter and its exhibition. This cannot be undone.</p>
+            <div class="row">
+              <button class="danger-solid" type="button" (click)="deleteMemory()" [disabled]="closing()">
+                @if (closing()) { Closing… } @else { Close it forever }
+              </button>
+              <button class="keep" type="button" (click)="confirmingClose.set(false)">Keep this door</button>
+            </div>
+          </div>
+        }
         @if (deleteError()) {
           <p role="alert">{{ deleteError() }}</p>
         }

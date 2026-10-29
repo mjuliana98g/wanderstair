@@ -41,6 +41,8 @@ export class Room implements OnInit {
   artworksError = signal('');
   gifts = signal<HungGift[]>([]);
 
+  confirmingClose = signal(false);
+  closing = signal(false);
   deleteError = signal('');
 
   ngOnInit(): void {
@@ -123,10 +125,14 @@ export class Room implements OnInit {
   // --------------------------------------------------
 
   deleteMemory(): void {
+    this.closing.set(true);
     this.deleteError.set('');
     this.memoriesService.remove(this.id).subscribe({
       next: () => this.router.navigate(['/']),
-      error: () => this.deleteError.set('The door could not be closed. Try again.'),
+      error: () => {
+        this.deleteError.set('The door could not be closed. Try again.');
+        this.closing.set(false);
+      },
     });
   }
 }
