@@ -57,6 +57,7 @@
       </section>
 
       <footer class="actions">
+        <a class="edit" [routerLink]="['/room', memory.id, 'edit']">✎ Edit this memory</a>
         @if (!confirmingClose()) {
           <button type="button" (click)="confirmingClose.set(true)">Close this door forever…</button>
         } @else {

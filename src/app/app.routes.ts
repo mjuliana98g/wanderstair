@@ -25,6 +25,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Stair },
       { path: 'room/:id', component: Room },
+      { path: 'room/:id/edit', component: Write },
       {
         path: 'find',
         component: Find,

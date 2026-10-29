@@ -1,5 +1,5 @@
 import { Service, inject } from '@angular/core';
-import { Observable, from, map, switchMap } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
 import { DoorOption, DoorStyle, Memory, Mood, MoodOption, NewMemory } from '../models/memory.model';
@@ -41,13 +41,27 @@ export class MemoriesService {
   }
 
   create(memory: NewMemory): Observable<Memory> {
-    const row = { title: memory.title, date: memory.date, text: memory.text, door_id: memory.doorId };
-    const request = this.supabase.from('memories').insert(row).select('id').single();
+    const request = this.supabase.from('memories').insert(toRow(memory)).select('id').single();
 
     return send(request).pipe(
       switchMap((saved) => this.saveMoods(saved.id, memory.moodIds)),
       switchMap((id) => this.getById(id))
     );
+  }
+
+  update(id: number, memory: NewMemory): Observable<Memory> {
+    const request = this.supabase.from('memories').update(toRow(memory)).eq('id', id).select('id').single();
+
+    return send(request).pipe(
+      switchMap(() => this.removeMoods(id)),
+      switchMap(() => this.saveMoods(id, memory.moodIds)),
+      switchMap(() => this.getById(id))
+    );
+  }
+
+  private removeMoods(memoryId: number): Observable<unknown> {
+    const request = this.supabase.from('memory_moods').delete().eq('memory_id', memoryId).select('id');
+    return send(request);
   }
 
   private saveMoods(memoryId: number, moodIds: number[]): Observable<number> {
@@ -81,6 +95,10 @@ export class MemoriesService {
   }
 }
 
+function toRow(memory: NewMemory) {
+  return { title: memory.title, date: memory.date, text: memory.text, door_id: memory.doorId };
+}
+
 function toMemory(row: MemoryRow): Memory {
   return {
     id: row.id,
@@ -96,5 +114,5 @@ function toMemory(row: MemoryRow): Memory {
 function sortMoods(links: MoodLink[]): Mood[] {
   return [...links]
     .sort((a, b) => a.position - b.position)
-    .map((link) => link.mood.name as Mood)
+    .map((link) => link.mood.name as Mood);
 }

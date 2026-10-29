@@ -1,18 +1,25 @@
-<h2>Write a new memory</h2>
+<h2>{{ editingId ? 'Edit this memory' : 'Write a new memory' }}</h2>
 
 @if (error()) {
 <p role="alert">{{ error() }}</p>
 }
 
+@if (loading()) {
+<p>Opening the memory…</p>
+} @else {
 <form [formGroup]="form" (ngSubmit)="save()">
     <div class="pair">
         <div class="field">
             <label for="title">Title</label>
-            <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam">
+            <input id="title" type="text" formControlName="title" placeholder="The day I passed my exam"
+                [maxlength]="maxTitle">
+            <small>{{ form.controls.title.value.length }} / {{ maxTitle }}</small>
             @if (hasError('title', 'required')) {
             <span role="alert">Every door needs a title.</span>
             } @else if (hasError('title', 'minlength')) {
             <span role="alert">The title needs at least 3 letters.</span>
+            } @else if (form.controls.title.hasError('maxlength')) {
+            <span role="alert">Use at most {{ maxTitle }} characters.</span>
             }
         </div>
 
@@ -30,7 +37,7 @@
 
     <fieldset class="moods">
         <legend>How did it feel?</legend>
-        <p class="hint">Choose every feeling that was there, from the strongest to the weakest. The first one colours
+        <p class="hint">Choose up to {{ maxMoods }} feelings, from the strongest to the weakest. The first one colours
             the door.</p>
 
         <ol class="chosen">
@@ -46,30 +53,35 @@
                 <button type="button" (click)="removeMood(i)" [attr.aria-label]="'Remove ' + mood">✕</button>
             </li>
             } @empty {
-            <li class="empty">Pick one or more feelings below. Put the strongest first.</li>
+            <li class="empty">Pick one to {{ maxMoods }} feelings below. Put the strongest first.</li>
             }
         </ol>
 
         <div class="families">
             @for (family of moodFamilies; track family.name) {
-            <details #box name="families" [attr.data-family]="family.name.toLowerCase()" (mouseenter)="box.open = true"
-                (mouseleave)="box.open = false">
+            <details #box name="families" [attr.data-family]="family.name.toLowerCase()" (mouseenter)="openOnHover(box)"
+                (mouseleave)="closeOnLeave(box)">
                 <summary>
                     {{ family.name }}
                     @if (countIn(family) > 0) { <span class="count">{{ countIn(family) }}</span> }
                 </summary>
                 <div class="choices">
                     @for (mood of family.moods; track mood) {
-                    <button type="button" [attr.aria-pressed]="isChosen(mood)" (click)="toggleMood(mood)">{{ mood
-                        }}</button>
+                    <button type="button" [attr.aria-pressed]="isChosen(mood)" (click)="toggleMood(mood)"
+                        [disabled]="isFull() && !isChosen(mood)">{{ mood }}</button>
                     }
                 </div>
             </details>
             }
         </div>
 
+        @if (isFull()) {
+        <p class="hint">You chose {{ maxMoods }} feelings. Remove one to choose another.</p>
+        }
         @if (hasError('moods', 'required')) {
         <span role="alert">Choose at least one feeling.</span>
+        } @else if (form.controls.moods.hasError('maxlength')) {
+        <span role="alert">Choose at most {{ maxMoods }} feelings.</span>
         }
     </fieldset>
 
@@ -108,9 +120,10 @@
     </div>
 
     <div class="buttons">
-        <a routerLink="/">Cancel</a>
+        <a [routerLink]="cancelLink()">Cancel</a>
         <button type="submit" [disabled]="form.invalid || saving()">
-            @if (saving()) { Opening… } @else { Open the door }
+            {{ submitLabel() }}
         </button>
     </div>
 </form>
+}

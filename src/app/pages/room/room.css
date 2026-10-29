@@ -170,14 +170,31 @@ header .pills {
 
 .actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
   padding-top: 24px;
   border-top: 1px solid var(--line);
 }
 
+.actions [role="alert"] {
+  flex-basis: 100%;
+}
+
+.edit {
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  color: var(--accent);
+  font-size: 17px;
+  text-decoration: none;
+}
+
+.edit:hover {
+  border-color: var(--accent);
+}
+
 .actions button {
+  margin-top: 0;
   border-color: var(--danger);
   color: var(--danger);
 }
@@ -279,6 +296,7 @@ button {
   }
 
   .actions {
+    flex-direction: column;
     align-items: center;
   }
 
