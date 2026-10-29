@@ -4,6 +4,11 @@ import { AuthService } from './services/auth';
 import { PostcardsService } from './services/postcards';
 
 const THEME_KEY = 'wanderstair-theme';
+const TOP_BUTTON_AFTER = 400;
+
+// --------------------------------------------------
+// APP
+// --------------------------------------------------
 
 @Component({
   selector: 'app-root',
@@ -21,6 +26,7 @@ export class App implements OnInit {
 
   isNight = signal(false);
   menuOpen = signal(false);
+  showTopButton = signal(false);
 
   ngOnInit(): void {
     const saved = localStorage.getItem(THEME_KEY);
@@ -29,11 +35,28 @@ export class App implements OnInit {
     this.postcards.refreshUnread();
   }
 
+  userName(): string {
+    return this.user()?.user_metadata['name'] ?? '';
+  }
+
+  // --------------------------------------------------
+  // THEME
+  // --------------------------------------------------
+
   toggleTheme(): void {
     const night = !this.isNight();
     this.applyTheme(night);
     localStorage.setItem(THEME_KEY, night ? 'dark' : 'light');
   }
+
+  private applyTheme(night: boolean): void {
+    this.isNight.set(night);
+    document.documentElement.dataset['theme'] = night ? 'dark' : 'light';
+  }
+
+  // --------------------------------------------------
+  // MENU
+  // --------------------------------------------------
 
   toggleMenu(): void {
     this.menuOpen.update((open) => !open);
@@ -48,12 +71,17 @@ export class App implements OnInit {
     this.closeMenu();
   }
 
-  userName(): string {
-    return this.user()?.user_metadata['name'] ?? '';
+  // --------------------------------------------------
+  // BACK TO THE TOP
+  // --------------------------------------------------
+
+  @HostListener('window:scroll')
+  checkTopButton(): void {
+    this.showTopButton.set(window.scrollY > TOP_BUTTON_AFTER);
   }
 
-  private applyTheme(night: boolean): void {
-    this.isNight.set(night);
-    document.documentElement.dataset['theme'] = night ? 'dark' : 'light';
+  scrollToTop(): void {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
   }
 }
