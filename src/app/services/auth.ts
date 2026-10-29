@@ -48,10 +48,18 @@ export class AuthService {
     }
 
     changePassword(current: string, password: string): Observable<void> {
-        return this.checkPassword(current).pipe(
-            switchMap(() => from(this.supabase.auth.updateUser({ password }))),
-            map(({ error }) => { if (error) throw error; }),
-        );
+        return this.checkPassword(current).pipe(switchMap(() => this.setNewPassword(password)));
+    }
+
+    sendPasswordReset(email: string): Observable<void> {
+        const redirectTo = new URL('reset-password', document.baseURI).href;
+        const request = this.supabase.auth.resetPasswordForEmail(email, { redirectTo });
+        return from(request).pipe(map(({ error }) => { if (error) throw error; }));
+    }
+
+    setNewPassword(password: string): Observable<void> {
+        const request = this.supabase.auth.updateUser({ password });
+        return from(request).pipe(map(({ error }) => { if (error) throw error; }));
     }
 
     deleteAccount(password: string): Observable<void> {

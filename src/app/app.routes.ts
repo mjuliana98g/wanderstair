@@ -15,10 +15,14 @@ import { SendPostcard } from './pages/send-postcard/send-postcard';
 import { Postcards } from './pages/postcards/postcards';
 import { PostcardView } from './pages/postcard-view/postcard-view';
 import { AnswerPostcard } from './pages/answer-postcard/answer-postcard';
+import { ForgotPassword } from './pages/forgot-password/forgot-password';
+import { ResetPassword } from './pages/reset-password/reset-password';
 
 export const routes: Routes = [
   { path: 'sign-in', component: SignIn },
   { path: 'create-account', component: CreateAccount },
+  { path: 'forgot-password', component: ForgotPassword },
+  { path: 'reset-password', component: ResetPassword },
   {
     path: '',
     canActivate: [authGuard],
