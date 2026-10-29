@@ -126,6 +126,34 @@ nav.guest+.tools {
 }
 
 /* --------------------------------------------------
+   BACK TO THE TOP
+   -------------------------------------------------- */
+
+.to-top {
+  position: fixed;
+  right: max(16px, calc((100% - 1200px) / 2));
+  bottom: 24px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-height: 0;
+  height: 48px;
+  padding: 0;
+  border-color: var(--line);
+  border-radius: 50%;
+  background: var(--surface-solid);
+  box-shadow: 0 10px 24px var(--shadow);
+  color: var(--title);
+  font-size: 22px;
+}
+
+.to-top:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--surface-solid);
+}
+
+/* --------------------------------------------------
    SMALL SCREENS
    -------------------------------------------------- */
 
@@ -205,5 +233,12 @@ nav.guest+.tools {
     z-index: 4;
     display: block;
     background: rgba(8, 10, 16, 0.45);
+  }
+
+  .to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 44px;
+    height: 44px;
   }
 }

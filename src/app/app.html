@@ -45,3 +45,7 @@
 <main>
   <router-outlet />
 </main>
+
+@if (showTopButton()) {
+<button class="to-top" type="button" (click)="scrollToTop()" aria-label="Back to the top">↑</button>
+}
