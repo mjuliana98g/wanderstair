@@ -8,6 +8,8 @@ import { Artwork } from '../../models/artwork.model';
 import { Memory } from '../../models/memory.model';
 import { Location } from '@angular/common';
 import { Frame } from '../../components/frame/frame';
+import { GiftsService } from '../../services/gifts';
+import { GiftedArtwork } from '../../models/gift.model';
 
 // --------------------------------------------------
 // ARTWORK DETAIL PAGE
@@ -25,6 +27,7 @@ export class ArtworkDetail implements OnInit {
   private memoriesService = inject(MemoriesService);
   private router = inject(Router);
   private location = inject(Location);
+  private giftsService = inject(GiftsService);
 
   artwork = signal<Artwork | null>(null);
   loading = signal(true);
@@ -33,12 +36,14 @@ export class ArtworkDetail implements OnInit {
   roomId = '';
   message = signal('');
   inModal = this.router.url.startsWith('/find');
+  gifted = signal<GiftedArtwork[]>([]);
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.roomId = this.route.snapshot.queryParamMap.get('room') ?? '';
     this.loadArtwork(id);
     this.loadMemories();
+    this.giftsService.hungArtworks().subscribe((gifted) => this.gifted.set(gifted));
   }
 
   loadArtwork(id: number): void {
@@ -73,12 +78,18 @@ export class ArtworkDetail implements OnInit {
     this.location.back();
   }
 
+  private hangsIn(memory: Memory, artwork: Artwork): boolean {
+    const chosen = memory.artworks.includes(artwork.id);
+    const gifted = this.gifted().some((pair) => pair.memoryId === memory.id && pair.artworkId === artwork.id);
+    return chosen || gifted;
+  }
+
   roomsWith(artwork: Artwork): Memory[] {
-    return this.memories().filter((memory) => memory.artworks.includes(artwork.id));
+    return this.memories().filter((memory) => this.hangsIn(memory, artwork));
   }
 
   roomsWithout(artwork: Artwork): Memory[] {
-    return this.memories().filter((memory) => !memory.artworks.includes(artwork.id));
+    return this.memories().filter((memory) => !this.hangsIn(memory, artwork));
   }
 
   hungIn(artwork: Artwork): string {

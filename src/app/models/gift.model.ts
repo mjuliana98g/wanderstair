@@ -23,3 +23,8 @@ export interface HungGift {
   artwork: Artwork;
 }
 
+export interface GiftedArtwork {
+  memoryId: number;
+  artworkId: number;
+}
+

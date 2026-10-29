@@ -3,7 +3,7 @@ import { Observable, map } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
 import { send } from './send';
-import { Gift, NewGift } from '../models/gift.model';
+import { Gift, GiftedArtwork, NewGift } from '../models/gift.model';
 import { Profile } from '../models/friend.model';
 
 const COLUMNS = 'id, created_at, postcard_id, memory_id, artwork_id, note, giver:profiles!gifts_giver_id_fkey(id, name)';
@@ -42,6 +42,11 @@ export class GiftsService {
     forPostcard(postcardId: number): Observable<Gift | null> {
         const request = this.supabase.from('gifts').select(COLUMNS).eq('postcard_id', postcardId);
         return send(request).pipe(map((rows) => (rows[0] ? toGift(rows[0]) : null)));
+    }
+
+    hungArtworks(): Observable<GiftedArtwork[]> {
+        const request = this.supabase.from('gifts').select('memory_id, artwork_id');
+        return send(request).pipe(map((rows) => rows.map((row) => ({ memoryId: row.memory_id, artworkId: row.artwork_id }))));
     }
 
     remove(id: number): Observable<void> {

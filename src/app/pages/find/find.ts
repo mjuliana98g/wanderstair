@@ -8,6 +8,7 @@ import { MemoriesService } from '../../services/memories';
 import { Artwork } from '../../models/artwork.model';
 import { Memory } from '../../models/memory.model';
 import { Frame } from '../../components/frame/frame';
+import { GiftsService } from '../../services/gifts';
 
 // --------------------------------------------------
 // FIND ARTWORKS PAGE
@@ -26,6 +27,7 @@ export class Find implements OnInit, OnDestroy {
   private router = inject(Router);
   private museumService = inject(MuseumService);
   private memoriesService = inject(MemoriesService);
+  private giftsService = inject(GiftsService);
 
   term = '';
   results = signal<Artwork[]>([]);
@@ -34,6 +36,7 @@ export class Find implements OnInit, OnDestroy {
   searched = signal(false);
   room = signal<Memory | null>(null);
   detailOpen = signal(false);
+  giftedHere = signal<number[]>([]);
 
   private typedTerms = new Subject<String>();
   private typing!: Subscription;
@@ -76,6 +79,7 @@ export class Find implements OnInit, OnDestroy {
       next: (memory) => this.room.set(memory),
       error: () => this.error.set('This room does not exist.')
     });
+    this.giftsService.forMemory(id).subscribe((gifts) => this.giftedHere.set(gifts.map((gift) => gift.artworkId)));
   }
 
   search(): void {
@@ -101,7 +105,8 @@ export class Find implements OnInit, OnDestroy {
   // --------------------------------------------------
 
   isHung(artwork: Artwork): boolean {
-    return this.room()?.artworks.includes(artwork.id) ?? false;
+    const chosen = this.room()?.artworks.includes(artwork.id) ?? false;
+    return chosen || this.giftedHere().includes(artwork.id);
   }
 
   hang(artwork: Artwork): void {
