@@ -92,16 +92,6 @@ figcaption::after {
   right: 6px;
 }
 
-figcaption.gift {
-  background: linear-gradient(180deg, #f3d6dc, #c98b98 55%, #8e4f5c);
-  color: #3a1820;
-}
-
-figcaption.gift::before,
-figcaption.gift::after {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.8), #6e3a46);
-}
-
 strong {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -129,6 +119,29 @@ small {
   letter-spacing: 0.08em;
   opacity: 0.85;
 }
+
+/* --------------------------------------------------
+   GIFT
+   -------------------------------------------------- */
+
+.gift img,
+.gift .painting p {
+  border-color: #ddb1ba;
+}
+
+.gift figcaption {
+  background: linear-gradient(180deg, #f3d6dc, #c98b98 55%, #8e4f5c);
+  color: #3a1820;
+}
+
+.gift figcaption::before,
+.gift figcaption::after {
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.8), #6e3a46);
+}
+
+/* --------------------------------------------------
+   BUTTONS
+   -------------------------------------------------- */
 
 .buttons {
   display: flex;

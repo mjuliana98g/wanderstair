@@ -6,7 +6,6 @@ import { PostcardsService } from '../../services/postcards';
 import { MuseumService } from '../../services/museum';
 import { Postcard } from '../../models/postcard.model';
 import { Artwork } from '../../models/artwork.model';
-import { Frame } from '../../components/frame/frame';
 import { Postcard as PostcardCard } from '../../components/postcard/postcard';
 import { GiftsService } from '../../services/gifts';
 import { Gift } from '../../models/gift.model';

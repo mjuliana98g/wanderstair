@@ -92,3 +92,35 @@ li p {
   color: var(--title);
   font-size: 18px;
 }
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 720px) {
+  ul {
+    grid-template-columns: minmax(0, 260px);
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .modal {
+    padding: 0;
+  }
+
+  .dialog {
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    padding: 64px 18px 32px;
+    border: none;
+    border-radius: 0;
+  }
+
+  .close {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--surface-solid);
+  }
+}

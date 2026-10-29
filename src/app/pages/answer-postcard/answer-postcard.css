@@ -65,6 +65,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .what span {
@@ -107,6 +108,7 @@ form {
 .row input {
   flex: 1;
   width: auto;
+  min-width: 0;
 }
 
 /* --------------------------------------------------
@@ -201,4 +203,47 @@ form {
 
 .answer button {
   align-self: flex-start;
+}
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .from {
+    gap: 14px;
+    padding: 12px 14px;
+  }
+
+  .thumb {
+    width: 64px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 14px;
+    padding: 20px 12px;
+  }
+
+  .wall button {
+    font-size: 14px;
+  }
+
+  .answer button {
+    align-self: stretch;
+  }
+}
+
+/* --------------------------------------------------
+   MOTION
+   -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .mini {
+    transition: none;
+  }
 }

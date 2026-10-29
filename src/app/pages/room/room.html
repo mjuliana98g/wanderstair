@@ -1,4 +1,4 @@
-<a class="back" routerLink="/">↑ Climb back to the stair</a>
+<a class="back" routerLink="/" fragment="stair">↑ Climb back to the stair</a>
 
 @if (loading()) {
   <p>Opening the door…</p>
@@ -7,8 +7,7 @@
 } @else {
   @if (memory(); as memory) {
     <article>
-      <header>
-        <p>{{ memory.date | date: 'd MMMM y' }}</p>
+      <header [attr.data-family]="familyOf(memory.moods[0])">
         <h2>{{ memory.title }}</h2>
         <p class="pills">
           @for (mood of memory.moods; track mood) {
@@ -17,15 +16,15 @@
         </p>
       </header>
 
-      <section class="letter">
-        <h3>The letter</h3>
+      <section class="letter" aria-label="The letter">
         <p>{{ memory.text }}</p>
+        <p class="sign">— {{ memory.date | date: 'd MMMM y' }}</p>
       </section>
 
       <section class="exhibition">
         <div class="section-head">
           <h3>The exhibition</h3>
-          <a routerLink="/find" [queryParams]="{ room: memory.id }">Choose artworks for this room</a>
+          <a routerLink="/find" [queryParams]="{ room: memory.id }">+ Add paintings</a>
         </div>
         @if (artworksLoading()) {
           <p>Hanging the paintings…</p>

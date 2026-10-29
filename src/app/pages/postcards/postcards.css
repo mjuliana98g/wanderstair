@@ -120,3 +120,37 @@
   color: var(--ink-soft);
   font-style: italic;
 }
+
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .tabs button {
+    flex: 1;
+    padding: 4px 10px;
+  }
+
+  .list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .card h3 {
+    font-size: 20px;
+  }
+}
+
+/* --------------------------------------------------
+   MOTION
+   -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+}

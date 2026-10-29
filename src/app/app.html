@@ -1,34 +1,46 @@
 <header>
   <h1>{{ title }}</h1>
-  <nav aria-label="Main navigation" [class.guest]="!user()">
-    @if (user()) {
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My stair</a>
-    <a routerLink="/find" routerLinkActive="active">Find artworks</a>
-    <a routerLink="/write" routerLinkActive="active">New memory</a>
-    <a routerLink="/friends" routerLinkActive="active">Friends</a>
-    <a routerLink="/postcards" routerLinkActive="active">
-      Postcards
-      @if (postcards.unread() > 0) {
-      <span class="dot" aria-label="New postcards"></span>
-      }
-    </a>
-    } @else {
-    <a routerLink="/sign-in" routerLinkActive="active">Sign in</a>
-    <a routerLink="/create-account" routerLinkActive="active">Create account</a>
-    }
-  </nav>
 
-  <div class="tools">
-    @if (user()) {
-    <div class="who">
-      <a routerLink="/account"><strong>{{ userName() }}</strong></a>
+  <button class="menu-toggle" type="button" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()"
+    aria-controls="site-menu" [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'">
+    {{ menuOpen() ? '✕' : '☰' }}
+  </button>
+
+  <div id="site-menu" class="menu" [class.open]="menuOpen()">
+    <nav aria-label="Main navigation" [class.guest]="!user()" (click)="closeMenu()">
+      @if (user()) {
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">My stair</a>
+      <a routerLink="/find" routerLinkActive="active">Find artworks</a>
+      <a routerLink="/write" routerLinkActive="active">New memory</a>
+      <a routerLink="/friends" routerLinkActive="active">Friends</a>
+      <a routerLink="/postcards" routerLinkActive="active">
+        Postcards
+        @if (postcards.unread() > 0) {
+        <span class="dot" aria-label="New postcards"></span>
+        }
+      </a>
+      } @else {
+      <a routerLink="/sign-in" routerLinkActive="active">Sign in</a>
+      <a routerLink="/create-account" routerLinkActive="active">Create account</a>
+      }
+    </nav>
+
+    <div class="tools">
+      @if (user()) {
+      <div class="who">
+        <a routerLink="/account" (click)="closeMenu()"><strong>{{ userName() }}</strong></a>
+      </div>
+      }
+      <button type="button" (click)="toggleTheme()" aria-label="Switch between day and night">
+        @if (isNight()) { ☾ Night } @else { ☀︎ Day }
+      </button>
     </div>
-    }
-    <button type="button" (click)="toggleTheme()" aria-label="Switch between day and night">
-      @if (isNight()) { ☾ Night } @else { ☀︎ Day }
-    </button>
   </div>
 </header>
+
+@if (menuOpen()) {
+<div class="backdrop" (click)="closeMenu()" aria-hidden="true"></div>
+}
 
 <main>
   <router-outlet />

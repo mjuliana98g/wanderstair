@@ -1,7 +1,8 @@
 import { Component, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
-import { Subject, Subscription, debounce, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink, RouterOutlet, Router } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { MuseumService } from '../../services/museum';
 import { MemoriesService } from '../../services/memories';
@@ -24,7 +25,7 @@ import { GiftsService } from '../../services/gifts';
 export class Find implements OnInit, OnDestroy {
 
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  private location = inject(Location);
   private museumService = inject(MuseumService);
   private memoriesService = inject(MemoriesService);
   private giftsService = inject(GiftsService);
@@ -38,7 +39,7 @@ export class Find implements OnInit, OnDestroy {
   detailOpen = signal(false);
   giftedHere = signal<number[]>([]);
 
-  private typedTerms = new Subject<String>();
+  private typedTerms = new Subject<string>();
   private typing!: Subscription;
 
   ngOnInit(): void {
@@ -62,7 +63,7 @@ export class Find implements OnInit, OnDestroy {
   // --------------------------------------------------
 
   closeDetail(): void {
-    this.router.navigate(['/find'], { queryParamsHandling: 'preserve' });
+    this.location.back();
   }
 
   closeOnBackdrop(event: MouseEvent): void {

@@ -26,6 +26,10 @@
   gap: 32px;
 }
 
+/* --------------------------------------------------
+   FORM
+   -------------------------------------------------- */
+
 form {
   display: flex;
   flex-direction: column;
@@ -75,8 +79,23 @@ form button {
   text-align: center;
 }
 
+/* --------------------------------------------------
+   SMALL SCREENS
+   -------------------------------------------------- */
+
 @media (max-width: 720px) {
   .compose {
     grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  form {
+    padding: 18px;
+  }
+
+  form button {
+    align-self: stretch;
   }
 }

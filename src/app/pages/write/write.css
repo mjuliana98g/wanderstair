@@ -120,6 +120,7 @@ legend {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    margin-top: 16px;
 }
 
 details {
@@ -282,8 +283,68 @@ details[open] summary::after {
    SMALL SCREENS
    -------------------------------------------------- */
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
+    form {
+        gap: 32px;
+    }
+
     .pair {
         grid-template-columns: 1fr;
+    }
+
+    .families {
+        flex-direction: column;
+    }
+
+    .choices {
+        position: static;
+        width: auto;
+        max-width: none;
+        margin-top: 8px;
+        box-shadow: none;
+    }
+
+    .choices::before {
+        display: none;
+    }
+
+    .door-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .door-options label {
+        width: auto;
+        height: 160px;
+        padding: 12px 6px 10px;
+        font-size: 15px;
+    }
+
+    .door-options .door {
+        zoom: 0.4;
+    }
+
+    .buttons {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 14px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .chosen li {
+        gap: 6px;
+        padding-left: 12px;
+    }
+
+    .chosen small {
+        display: none;
+    }
+
+    .chosen button {
+        width: 30px;
+        height: 30px;
     }
 }
