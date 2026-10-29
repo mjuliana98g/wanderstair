@@ -1,5 +1,11 @@
 <section class="account">
   <h2>Create account</h2>
+
+  @if (waitingForEmail()) {
+  <p role="status">Your account was created. Check your inbox and open the link we sent you to confirm your email.
+    Then sign in.</p>
+  <p><a routerLink="/sign-in">Go to sign in</a></p>
+  } @else {
   <p>Build the first step of your stair.</p>
 
   <form [formGroup]="form" (ngSubmit)="createAccount()">
@@ -71,4 +77,5 @@
   </form>
 
   <p>Already have an account? <a routerLink="/sign-in">Sign in</a></p>
+  }
 </section>

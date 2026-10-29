@@ -18,9 +18,12 @@ export class AuthService {
 
     }
 
-    signUp(name: string, email: string, password: string): Observable<void> {
+    signUp(name: string, email: string, password: string): Observable<boolean> {
         const request = this.supabase.auth.signUp({ email, password, options: { data: { name } } });
-        return from(request).pipe(map(({ error }) => { if (error) throw error; }));
+        return from(request).pipe(map(({ data, error }) => {
+            if (error) throw error;
+            return data.session !== null;
+        }));
     }
 
     signIn(email: string, password: string): Observable<void> {
