@@ -61,15 +61,26 @@
 </section>
 
 @if (chosen(); as chosen) {
-<form class="card answer" [formGroup]="answerForm" (ngSubmit)="answer()">
-    <p>You chose <strong>{{ chosen.title }}</strong>.</p>
+<form class="answer" [formGroup]="answerForm" (ngSubmit)="answer()" aria-label="Your answer">
+    <div class="picked">
+        <img class="pick" [src]="chosen.images?.web?.url" alt="">
+        <p>You chose <strong>{{ chosen.title }}</strong></p>
+        @if (!writing()) {
+        <button type="button" (click)="writing.set(true)">Write the note</button>
+        }
+    </div>
+    @if (writing()) {
     <label for="note">A few words for the plate</label>
     <textarea id="note" rows="3" formControlName="note" maxlength="120" placeholder="Next rainy Sunday?"></textarea>
     <small>{{ answerForm.controls.note.value.length }} / 120</small>
     @if (sendError()) {
     <p role="alert">{{ sendError() }}</p>
     }
-    <button type="submit" [disabled]="answerForm.invalid || sending()">Send it back</button>
+    <div class="row">
+        <button class="later" type="button" (click)="writing.set(false)">Back</button>
+        <button type="submit" [disabled]="answerForm.invalid || sending()">Send it back</button>
+    </div>
+    }
 </form>
 }
 }

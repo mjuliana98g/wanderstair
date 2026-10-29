@@ -191,8 +191,47 @@ form {
    ANSWER
    -------------------------------------------------- */
 
+:host:has(.answer) {
+  padding-bottom: 110px;
+}
+
 .answer {
-  max-width: 560px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(100%, 760px);
+  padding: 14px 20px 18px;
+  border: 1px solid var(--line);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  background: var(--surface-solid);
+  box-shadow: 0 -12px 30px var(--shadow);
+  transform: translateX(-50%);
+}
+
+.picked {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pick {
+  flex: none;
+  width: 52px;
+  aspect-ratio: 1;
+  border: 4px solid var(--frame-b);
+  background: var(--mat);
+  object-fit: contain;
+}
+
+.picked p {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
 }
 
 .answer small {
@@ -201,8 +240,13 @@ form {
   font-size: 14px;
 }
 
-.answer button {
-  align-self: flex-start;
+.answer .row {
+  justify-content: flex-end;
+}
+
+.later {
+  border-color: var(--line);
+  color: var(--title);
 }
 
 /* --------------------------------------------------
@@ -233,8 +277,26 @@ form {
     font-size: 14px;
   }
 
-  .answer button {
-    align-self: stretch;
+  .answer {
+    width: 100%;
+    padding: 12px 14px 16px;
+    border-radius: 14px 14px 0 0;
+  }
+
+  .picked {
+    gap: 10px;
+  }
+
+  .pick {
+    width: 44px;
+  }
+
+  .picked p {
+    font-size: 15px;
+  }
+
+  .answer .row button {
+    flex: 1;
   }
 }
 

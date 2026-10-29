@@ -44,6 +44,7 @@ export class AnswerPostcard implements OnInit {
   searching = signal(false);
   searchError = signal('');
   chosen = signal<Artwork | null>(null);
+  writing = signal(false);
 
   answerForm = new FormGroup({
     note: new FormControl('', { nonNullable: true, validators: [Validators.maxLength(120)] }),
