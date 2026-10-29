@@ -7,12 +7,13 @@ import { NewPostcard, Postcard } from '../models/postcard.model';
 import { Mood } from '../models/memory.model';
 import { Profile } from '../models/friend.model';
 
-const COLUMNS = 'id, created_at, read_at, memory_id, artwork_id, message, memory_title, memory_date, moods, sender_id, recipient_id, sender:profiles!postcards_sender_id_fkey(id, name), recipient:profiles!postcards_recipient_id_fkey(id, name)';
+const COLUMNS = 'id, created_at, read_at, reply_to, memory_id, artwork_id, message, memory_title, memory_date, moods, sender_id, recipient_id, sender:profiles!postcards_sender_id_fkey(id, name), recipient:profiles!postcards_recipient_id_fkey(id, name)';
 
 interface PostcardRow {
   id: number;
   created_at: string;
   read_at: string | null;
+  reply_to: number | null;
   memory_id: number;
   artwork_id: number;
   message: string;
@@ -44,6 +45,7 @@ export class PostcardsService {
       memory_title: postcard.memoryTitle,
       memory_date: postcard.memoryDate,
       moods: postcard.moods,
+      reply_to: postcard.replyTo ?? null,
     };
     const request = this.supabase.from('postcards').insert(row).select('id').single();
     return send(request).pipe(map((saved) => saved.id));
@@ -96,6 +98,7 @@ function toPostcard(row: PostcardRow, me: string): Postcard {
     id: row.id,
     createdAt: row.created_at,
     readAt: row.read_at,
+    replyTo: row.reply_to,
     recipientId: row.recipient_id,
     memoryId: row.memory_id,
     artworkId: row.artwork_id,

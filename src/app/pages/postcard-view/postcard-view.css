@@ -25,3 +25,25 @@
   font-style: italic;
   text-align: center;
 }
+
+/* --------------------------------------------------
+   ANSWER
+   -------------------------------------------------- */
+
+.answer {
+  padding: 6px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--title);
+  text-decoration: none;
+}
+
+.answer:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.answered {
+  color: var(--ok);
+  font-style: italic;
+}

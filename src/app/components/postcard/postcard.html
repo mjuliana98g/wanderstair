@@ -7,7 +7,9 @@
                 }
                 <div class="label">
                     <div class="day">
-                        <p class="from-room">A day from {{ from }}'s stair</p>
+                        <p class="from-room">
+                            @if (answer) { An answer to {{ to }}'s day } @else { A day from {{ from }}'s stair }
+                        </p>
                         <h3>{{ title }}</h3>
                         <p class="pills">
                             @for (mood of moods; track mood) {
@@ -41,7 +43,10 @@
                     }
                 </div>
                 <p class="to">To {{ to }}</p>
-                <p class="brandmark">Sent from a door on {{ from }}'s stair</p>
+                <p class="brandmark">
+                    @if (answer) { Sent in answer to a door on {{ to }}'s stair } @else { Sent from a door on {{ from
+                    }}'s stair }
+                </p>
             </div>
         </section>
     </div>

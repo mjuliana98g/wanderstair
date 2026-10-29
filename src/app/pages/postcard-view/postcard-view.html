@@ -7,7 +7,11 @@
 } @else {
   @if (postcard(); as postcard) {
     <p class="lead">
-      @if (postcard.sentByMe) {
+      @if (postcard.replyTo && postcard.sentByMe) {
+        You answered {{ postcard.recipient.name }}'s postcard with a painting.
+      } @else if (postcard.replyTo) {
+        {{ postcard.sender.name }} answered your postcard with a painting.
+      } @else if (postcard.sentByMe) {
         You sent {{ postcard.recipient.name }} a day from your stair.
       } @else {
         {{ postcard.sender.name }} sent you a day from their stair.
@@ -17,7 +21,16 @@
     @if (artwork(); as artwork) {
       <app-postcard [artwork]="artwork" [title]="postcard.memoryTitle" [date]="postcard.memoryDate"
         [moods]="postcard.moods" [message]="postcard.message"
-        [from]="postcard.sender.name" [to]="postcard.recipient.name" />
+        [from]="postcard.sender.name" [to]="postcard.recipient.name"
+        [answer]="postcard.replyTo !== null" />
+    }
+
+    @if (gift()) {
+      <p class="answered">
+        ✓ {{ postcard.sentByMe ? postcard.recipient.name + ' answered' : 'You answered' }} with “{{ giftTitle() }}”.
+      </p>
+    } @else if (!postcard.sentByMe && !postcard.replyTo) {
+      <a class="answer" [routerLink]="['/postcards', postcard.id, 'answer']">↩ Answer with a painting</a>
     }
   }
 }

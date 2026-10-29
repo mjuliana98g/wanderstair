@@ -7,8 +7,8 @@
         <p>No image for this artwork</p>
         }
     </a>
-    <figcaption>
-        <strong>{{ artistName() }}</strong>
+    <figcaption [class.gift]="gift">
+        <strong>{{ gift ? 'A gift from ' + gift : artistName() }}</strong>
         <cite>{{ artwork.title }}</cite>
         <small>{{ artwork.creation_date }}</small>
     </figcaption>

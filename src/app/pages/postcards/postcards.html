@@ -24,6 +24,7 @@
             }
             <p class="who">
                 @if (postcard.sentByMe) { To {{ postcard.recipient.name }} } @else { From {{ postcard.sender.name }} }
+                @if (postcard.replyTo) { · answer }
             </p>
             <h3>{{ postcard.memoryTitle }}</h3>
             <p class="pills">

@@ -1,13 +1,16 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
 
 import { MemoriesService } from '../../services/memories';
 import { MuseumService } from '../../services/museum';
+import { GiftsService } from '../../services/gifts';
 import { Memory } from '../../models/memory.model';
 import { Artwork } from '../../models/artwork.model';
-import { Frame } from '../../components/frame/frame';
+import { Gift, HungGift } from '../../models/gift.model';
 import { familyOf } from '../../models/moods';
+import { Frame } from '../../components/frame/frame';
 
 // --------------------------------------------------
 // ROOM PAGE
@@ -24,79 +27,106 @@ export class Room implements OnInit {
   private router = inject(Router);
   private memoriesService = inject(MemoriesService);
   private museumService = inject(MuseumService);
+  private giftsService = inject(GiftsService);
+
+  familyOf = familyOf;
+  id = Number(this.route.snapshot.paramMap.get('id'));
 
   memory = signal<Memory | null>(null);
   loading = signal(true);
   error = signal('');
-  familyOf = familyOf;
 
   artworks = signal<Artwork[]>([]);
   artworksLoading = signal(false);
   artworksError = signal('');
+  gifts = signal<HungGift[]>([]);
+
   deleteError = signal('');
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadMemory(id);
-  }
-
-  loadMemory(id: number): void {
-    this.memoriesService.getById(id).subscribe({
+    this.memoriesService.getById(this.id).subscribe({
       next: (memory) => {
         this.memory.set(memory);
         this.loading.set(false);
         this.loadArtworks(memory.artworks);
       },
       error: () => {
-        this.error.set('This door does not exist.');
+        this.error.set('This door does not open. The room may not exist.');
         this.loading.set(false);
-      }
+      },
     });
+    this.loadGifts(this.id);
   }
 
   // --------------------------------------------------
-  // ARTWORKS
+  // EXHIBITION
   // --------------------------------------------------
 
-  loadArtworks(ids: number[]): void {
-    if (ids.length === 0) return;
+  private loadArtworks(ids: number[]): void {
     this.artworksLoading.set(true);
-    this.museumService.getByIds(ids).subscribe({
+    this.artworksError.set('');
+    this.byIds(ids).subscribe({
       next: (artworks) => {
         this.artworks.set(artworks);
         this.artworksLoading.set(false);
       },
       error: () => {
-        this.artworksError.set('The paintings are asleep. The museum did not answer.');
+        this.artworksError.set('The paintings could not be hung. Try again later.');
         this.artworksLoading.set(false);
-      }
+      },
     });
+  }
+
+  private byIds(ids: number[]): Observable<Artwork[]> {
+    if (!ids.length) return of([]);
+    return forkJoin(ids.map((id) => this.museumService.getById(id)));
   }
 
   takeOffWall(artwork: Artwork): void {
     const memory = this.memory();
     if (!memory) return;
-    const artworks = memory.artworks.filter((id) => id !== artwork.id);
-    this.memoriesService.updateArtworks(memory.id, artworks).subscribe({
+    const remaining = memory.artworks.filter((id) => id !== artwork.id);
+    this.memoriesService.updateArtworks(memory.id, remaining).subscribe({
       next: (saved) => {
         this.memory.set(saved);
-        this.artworks.update((list) => list.filter((item) => item.id !== artwork.id));
+        this.artworks.update((list) => list.filter((hung) => hung.id !== artwork.id));
       },
-      error: () => this.artworksError.set('The painting is stuck to the wall. Try again.')
+      error: () => this.artworksError.set('The painting could not be taken down. Try again.'),
     });
   }
 
   // --------------------------------------------------
-  // DELETING
+  // GIFTS
+  // --------------------------------------------------
+
+  private loadGifts(memoryId: number): void {
+    this.giftsService.forMemory(memoryId).pipe(switchMap((gifts) => this.withArtworks(gifts))).subscribe({
+      next: (hung) => this.gifts.set(hung),
+      error: () => this.gifts.set([]),
+    });
+  }
+
+  private withArtworks(gifts: Gift[]): Observable<HungGift[]> {
+    if (!gifts.length) return of([]);
+    return forkJoin(gifts.map((gift) => this.museumService.getById(gift.artworkId).pipe(map((artwork) => ({ gift, artwork })))));
+  }
+
+  takeDown(gift: Gift): void {
+    this.giftsService.remove(gift.id).subscribe({
+      next: () => this.gifts.update((list) => list.filter((hung) => hung.gift.id !== gift.id)),
+      error: () => this.artworksError.set('The painting could not be taken down. Try again.'),
+    });
+  }
+
+  // --------------------------------------------------
+  // CLOSE THE DOOR
   // --------------------------------------------------
 
   deleteMemory(): void {
-    const memory = this.memory();
-    if (!memory) return;
-    if (!confirm(`Close the door "${memory.title}" forever?`)) return;
-    this.memoriesService.remove(memory.id).subscribe({
+    this.deleteError.set('');
+    this.memoriesService.remove(this.id).subscribe({
       next: () => this.router.navigate(['/']),
-      error: () => this.deleteError.set('The door is stuck. Try again.')
+      error: () => this.deleteError.set('The door could not be closed. Try again.'),
     });
   }
 }

@@ -22,6 +22,7 @@ export class Frame {
   @Input() still = false;
   @Input() sendLink: (string | number)[] | null = null;
   @Output() action = new EventEmitter<Artwork>();
+  @Input() gift: string | null = null;
 
   artistName(): string {
     return (this.artwork.creators[0]?.description ?? 'Unknown artist').split(' (')[0];

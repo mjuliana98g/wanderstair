@@ -99,6 +99,58 @@ export type Database = {
           },
         ]
       }
+      gifts: {
+        Row: {
+          artwork_id: number
+          created_at: string
+          giver_id: string
+          id: number
+          memory_id: number
+          note: string
+          postcard_id: number
+        }
+        Insert: {
+          artwork_id: number
+          created_at?: string
+          giver_id?: string
+          id?: never
+          memory_id: number
+          note?: string
+          postcard_id: number
+        }
+        Update: {
+          artwork_id?: number
+          created_at?: string
+          giver_id?: string
+          id?: never
+          memory_id?: number
+          note?: string
+          postcard_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gifts_giver_id_fkey"
+            columns: ["giver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gifts_memory_id_fkey"
+            columns: ["memory_id"]
+            isOneToOne: false
+            referencedRelation: "memories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gifts_postcard_id_fkey"
+            columns: ["postcard_id"]
+            isOneToOne: true
+            referencedRelation: "postcards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memories: {
         Row: {
           artworks: number[]
@@ -209,6 +261,7 @@ export type Database = {
           moods: string[]
           read_at: string | null
           recipient_id: string
+          reply_to: number | null
           sender_id: string
         }
         Insert: {
@@ -222,6 +275,7 @@ export type Database = {
           moods?: string[]
           read_at?: string | null
           recipient_id: string
+          reply_to?: number | null
           sender_id?: string
         }
         Update: {
@@ -235,6 +289,7 @@ export type Database = {
           moods?: string[]
           read_at?: string | null
           recipient_id?: string
+          reply_to?: number | null
           sender_id?: string
         }
         Relationships: [
@@ -250,6 +305,13 @@ export type Database = {
             columns: ["recipient_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "postcards_reply_to_fkey"
+            columns: ["reply_to"]
+            isOneToOne: true
+            referencedRelation: "postcards"
             referencedColumns: ["id"]
           },
           {

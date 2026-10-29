@@ -38,7 +38,7 @@ header {
   gap: 8px;
 }
 
-header > p:first-child {
+header>p:first-child {
   color: var(--ink-soft);
   font-style: italic;
 }
@@ -124,6 +124,15 @@ header > p:first-child {
 .wall .empty {
   width: auto;
   color: var(--ink-soft);
+  font-style: italic;
+  text-align: center;
+}
+
+.note {
+  max-width: 220px;
+  margin-top: 10px;
+  color: var(--ink-soft);
+  font-size: 15px;
   font-style: italic;
   text-align: center;
 }

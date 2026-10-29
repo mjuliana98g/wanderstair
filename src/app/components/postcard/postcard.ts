@@ -19,11 +19,12 @@ export class Postcard {
   @Input() message = '';
   @Input() from = '';
   @Input() to = '';
+  @Input() answer = false;
 
   familyOf = familyOf;
   flipped = signal(false);
 
   flip(): void {
-      this.flipped.update((value) => !value)
+    this.flipped.update((value) => !value)
   }
 }

@@ -13,6 +13,7 @@ export interface NewPostcard {
     memoryTitle: string;
     memoryDate: string;
     moods: Mood[];
+    replyTo?: number | null;
 }
 
 export interface Postcard extends NewPostcard {
@@ -22,4 +23,5 @@ export interface Postcard extends NewPostcard {
     sender: Profile;
     recipient: Profile;
     sentByMe: boolean;
+    replyTo: number | null;
 }
