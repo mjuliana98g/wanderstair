@@ -1,30 +1,36 @@
 <a class="back" routerLink="/postcards">↑ Back to your postcards</a>
 
 @if (loading()) {
-<p>Opening the postcard…</p>
+  <p>Opening the postcard…</p>
 } @else if (error()) {
-<p role="alert">{{ error() }}</p>
+  <p role="alert">{{ error() }}</p>
 } @else {
-@if (postcard(); as postcard) {
-<p class="lead">
-  @if (postcard.sentByMe) {
-  You sent {{ postcard.recipient.name }} a day from your stair.
-  } @else {
-  {{ postcard.sender.name }} sent you a day from their stair.
+  @if (postcard(); as postcard) {
+    <p class="lead">
+      @if (postcard.replyTo && postcard.sentByMe) {
+        You answered {{ postcard.recipient.name }}'s postcard with a painting.
+      } @else if (postcard.replyTo) {
+        {{ postcard.sender.name }} answered your postcard with a painting.
+      } @else if (postcard.sentByMe) {
+        You sent {{ postcard.recipient.name }} a day from your stair.
+      } @else {
+        {{ postcard.sender.name }} sent you a day from their stair.
+      }
+    </p>
+
+    @if (artwork(); as artwork) {
+      <app-postcard [artwork]="artwork" [title]="postcard.memoryTitle" [date]="postcard.memoryDate"
+        [moods]="postcard.moods" [message]="postcard.message"
+        [from]="postcard.sender.name" [to]="postcard.recipient.name"
+        [answer]="postcard.replyTo !== null" />
+    }
+
+    @if (gift()) {
+      <p class="answered">
+        ✓ {{ postcard.sentByMe ? postcard.recipient.name + ' answered' : 'You answered' }} with “{{ giftTitle() }}”.
+      </p>
+    } @else if (!postcard.sentByMe && !postcard.replyTo) {
+      <a class="answer" [routerLink]="['/postcards', postcard.id, 'answer']">↩ Answer with a painting</a>
+    }
   }
-</p>
-
-@if (artwork(); as artwork) {
-<app-postcard [artwork]="artwork" [title]="postcard.memoryTitle" [date]="postcard.memoryDate" [moods]="postcard.moods"
-  [message]="postcard.message" [from]="postcard.sender.name" [to]="postcard.recipient.name" />
-}
-
-@if (gift()) {
-<p class="answered">
-  ✓ {{ postcard.sentByMe ? postcard.recipient.name + ' answered' : 'You answered' }} with “{{ giftTitle() }}”.
-</p>
-} @else if (!postcard.sentByMe) {
-<a class="answer" [routerLink]="['/postcards', postcard.id, 'answer']">↩ Answer with a painting</a>
-}
-}
 }

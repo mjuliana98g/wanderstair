@@ -261,6 +261,7 @@ export type Database = {
           moods: string[]
           read_at: string | null
           recipient_id: string
+          reply_to: number | null
           sender_id: string
         }
         Insert: {
@@ -274,6 +275,7 @@ export type Database = {
           moods?: string[]
           read_at?: string | null
           recipient_id: string
+          reply_to?: number | null
           sender_id?: string
         }
         Update: {
@@ -287,6 +289,7 @@ export type Database = {
           moods?: string[]
           read_at?: string | null
           recipient_id?: string
+          reply_to?: number | null
           sender_id?: string
         }
         Relationships: [
@@ -302,6 +305,13 @@ export type Database = {
             columns: ["recipient_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "postcards_reply_to_fkey"
+            columns: ["reply_to"]
+            isOneToOne: true
+            referencedRelation: "postcards"
             referencedColumns: ["id"]
           },
           {

@@ -2,14 +2,16 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin, switchMap } from 'rxjs';
 
 import { PostcardsService } from '../../services/postcards';
 import { GiftsService } from '../../services/gifts';
 import { MuseumService } from '../../services/museum';
-import { Postcard } from '../../models/postcard.model';
+import { NewPostcard, Postcard } from '../../models/postcard.model';
 import { Artwork } from '../../models/artwork.model';
 import { familyOf } from '../../models/moods';
+
+const DEFAULT_ANSWER = 'A painting for your day.';
 
 // --------------------------------------------------
 // ANSWER POSTCARD PAGE
@@ -55,17 +57,28 @@ export class AnswerPostcard implements OnInit {
       gift: this.giftsService.forPostcard(this.postcardId),
     }).subscribe({
       next: ({ postcard, gift }) => {
-        if (postcard.sentByMe) this.error.set('Only the person who received this postcard can answer it.');
+        const reason = this.cannotAnswer(postcard);
+        if (reason) this.error.set(reason);
         this.postcard.set(postcard);
-        this.museumService.getById(postcard.artworkId).subscribe((artwork) => this.postcardArtwork.set(artwork));
         this.answered.set(gift !== null);
         this.loading.set(false);
+        this.loadPostcardArtwork(postcard.artworkId);
       },
       error: () => {
         this.error.set('This postcard could not be found.');
         this.loading.set(false);
       },
     });
+  }
+
+  private loadPostcardArtwork(artworkId: number): void {
+    this.museumService.getById(artworkId).subscribe((artwork) => this.postcardArtwork.set(artwork));
+  }
+
+  private cannotAnswer(postcard: Postcard): string {
+    if (postcard.sentByMe) return 'Only the person who received this postcard can answer it.';
+    if (postcard.replyTo) return 'This postcard is already an answer, so it cannot be answered.';
+    return '';
   }
 
   // --------------------------------------------------
@@ -103,17 +116,43 @@ export class AnswerPostcard implements OnInit {
     if (!postcard || !artwork || this.answerForm.invalid) return;
     this.sending.set(true);
     this.sendError.set('');
-    this.giftsService.create({
-      postcardId: postcard.id,
-      memoryId: postcard.memoryId,
-      artworkId: artwork.id,
-      note: this.answerForm.controls.note.value.trim(),
-    }).subscribe({
+    this.sendAnswer(postcard, artwork).subscribe({
       next: () => this.answered.set(true),
-      error: (error: { code?: string }) => {
-        this.sendError.set(error.code === '23505' ? 'You already answered this postcard.' : 'The painting could not be sent. Try again.');
+      error: (error: { code?: string; message?: string }) => {
+        this.sendError.set(this.answerError(error));
         this.sending.set(false);
       },
     });
+  }
+
+  private sendAnswer(postcard: Postcard, artwork: Artwork): Observable<number> {
+    const note = this.answerForm.controls.note.value.trim();
+    return this.postcardsService.create(this.answerPostcard(postcard, artwork, note)).pipe(
+      switchMap(() => this.giftsService.create({
+        postcardId: postcard.id,
+        memoryId: postcard.memoryId,
+        artworkId: artwork.id,
+        note,
+      })),
+    );
+  }
+
+  private answerPostcard(postcard: Postcard, artwork: Artwork, note: string): NewPostcard {
+    return {
+      recipientId: postcard.sender.id,
+      memoryId: postcard.memoryId,
+      artworkId: artwork.id,
+      message: note || DEFAULT_ANSWER,
+      memoryTitle: postcard.memoryTitle,
+      memoryDate: postcard.memoryDate,
+      moods: postcard.moods,
+      replyTo: postcard.id,
+    };
+  }
+
+  private answerError(error: { code?: string; message?: string }): string {
+    if (error.code !== '23505') return 'The painting could not be sent. Try again.';
+    if (error.message?.includes('postcards_once')) return 'You already sent this painting to them. Choose another one.';
+    return 'You already answered this postcard.';
   }
 }
