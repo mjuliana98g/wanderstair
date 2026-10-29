@@ -1,4 +1,5 @@
 import { Profile } from './friend.model';
+import { Artwork } from './artwork.model';
 
 // --------------------------------------------------
 // INTERFACES
@@ -16,3 +17,9 @@ export interface Gift extends NewGift {
   createdAt: string;
   giver: Profile;
 }
+
+export interface HungGift {
+  gift: Gift;
+  artwork: Artwork;
+}
+
