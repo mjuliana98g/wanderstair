@@ -1,20 +1,10 @@
-/* --------------------------------------------------
-   BACK
-   -------------------------------------------------- */
+/* BACK */
 
-.back {
-  min-height: 36px;
+.back-link {
   margin-bottom: 28px;
-  padding: 4px 16px;
-  border-color: var(--line);
-  background: var(--surface);
-  color: var(--title);
-  font-size: 16px;
 }
 
-/* --------------------------------------------------
-   LAYOUT
-   -------------------------------------------------- */
+/* LAYOUT */
 
 article {
   display: grid;
@@ -36,9 +26,7 @@ header p {
   font-style: italic;
 }
 
-/* --------------------------------------------------
-   INFORMATION
-   -------------------------------------------------- */
+/* INFORMATION */
 
 .info {
   display: flex;
@@ -101,9 +89,7 @@ dd {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
 }
 
-/* --------------------------------------------------
-   HANGING
-   -------------------------------------------------- */
+/* HANGING */
 
 .hang {
   display: flex;
@@ -147,9 +133,7 @@ dd {
   white-space: nowrap;
 }
 
-/* --------------------------------------------------
-   SMALL SCREENS
-   -------------------------------------------------- */
+/* SMALL SCREENS */
 
 @media (max-width: 720px) {
   article {

@@ -4,10 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { passwordsMatch } from '../../validators/passwords-match';
 
-// --------------------------------------------------
-// RESET PASSWORD PAGE
-// --------------------------------------------------
-
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-reset-password',
@@ -45,9 +41,7 @@ export class ResetPassword implements OnInit {
     this.showConfirmPassword.update((shown) => !shown);
   }
 
-  // --------------------------------------------------
   // SAVING
-  // --------------------------------------------------
 
   savePassword(): void {
     if (this.form.invalid) return;

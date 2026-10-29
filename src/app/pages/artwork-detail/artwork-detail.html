@@ -1,5 +1,5 @@
 @if (!inModal) {
-<button class="back" type="button" (click)="goBack()">← Go back</button>
+<button class="back-link" type="button" (click)="goBack()">← Go back</button>
 }
 
 @if (loading()) {
@@ -11,7 +11,7 @@
 <article>
   <header>
     <h2>{{ artwork.title }}</h2>
-    <p>{{ shortName(artwork) }}, {{ artwork.creation_date }}</p>
+    <p>{{ shortArtistName(artwork) }}, {{ artwork.creation_date }}</p>
   </header>
 
   <app-frame [artwork]="artwork" [still]="true" />

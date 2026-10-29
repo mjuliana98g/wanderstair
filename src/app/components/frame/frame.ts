@@ -1,32 +1,24 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { Artwork } from '../../models/artwork.model';
 import { RouterLink } from '@angular/router';
 
-// --------------------------------------------------
-// FRAME COMPONENT
-// --------------------------------------------------
+import { Artwork, shortArtistName } from '../../models/artwork.model';
 
 @Component({
   selector: 'app-frame',
   templateUrl: './frame.html',
   styleUrl: './frame.css',
-  imports: [RouterLink]
+  imports: [RouterLink],
 })
-
 export class Frame {
-
   @Input({ required: true }) artwork!: Artwork;
   @Input() actionLabel = '';
   @Input() detailLink: (string | number)[] | null = null;
   @Input() still = false;
   @Input() sendLink: (string | number)[] | null = null;
-  @Output() action = new EventEmitter<Artwork>();
   @Input() gift: string | null = null;
+  @Output() action = new EventEmitter<Artwork>();
 
-  artistName(): string {
-    return (this.artwork.creators[0]?.description ?? 'Unknown artist').split(' (')[0];
-  }
+  shortArtistName = shortArtistName;
 
   emitAction(): void {
     this.action.emit(this.artwork);

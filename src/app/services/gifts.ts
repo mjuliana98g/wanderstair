@@ -1,4 +1,4 @@
-import { Service, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
@@ -6,7 +6,8 @@ import { send } from './send';
 import { Gift, GiftedArtwork, NewGift } from '../models/gift.model';
 import { Profile } from '../models/friend.model';
 
-const COLUMNS = 'id, created_at, postcard_id, memory_id, artwork_id, note, giver:profiles!gifts_giver_id_fkey(id, name)';
+const COLUMNS =
+    'id, created_at, postcard_id, memory_id, artwork_id, note, giver:profiles!gifts_giver_id_fkey(id, name)';
 
 interface GiftRow {
     id: number;
@@ -17,9 +18,8 @@ interface GiftRow {
     note: string;
     giver: Profile;
 }
-// GIFTS SERVICE
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class GiftsService {
     private supabase = inject(SupabaseService).supabaseClient;
 
@@ -35,7 +35,11 @@ export class GiftsService {
     }
 
     forMemory(memoryId: number): Observable<Gift[]> {
-        const request = this.supabase.from('gifts').select(COLUMNS).eq('memory_id', memoryId).order('created_at');
+        const request = this.supabase
+            .from('gifts')
+            .select(COLUMNS)
+            .eq('memory_id', memoryId)
+            .order('created_at');
         return send(request).pipe(map((rows) => rows.map(toGift)));
     }
 
@@ -46,7 +50,9 @@ export class GiftsService {
 
     hungArtworks(): Observable<GiftedArtwork[]> {
         const request = this.supabase.from('gifts').select('memory_id, artwork_id');
-        return send(request).pipe(map((rows) => rows.map((row) => ({ memoryId: row.memory_id, artworkId: row.artwork_id }))));
+        return send(request).pipe(
+            map((rows) => rows.map((row) => ({ memoryId: row.memory_id, artworkId: row.artwork_id }))),
+        );
     }
 
     remove(id: number): Observable<void> {

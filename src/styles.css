@@ -1,6 +1,4 @@
-/* --------------------------------------------------
-   DAY THEME
-   -------------------------------------------------- */
+/* DAY THEME */
 
 :root {
   --sky: #e7eff6;
@@ -40,9 +38,7 @@
   --body: 'Alegreya', Georgia, serif;
 }
 
-/* --------------------------------------------------
-   NIGHT THEME
-   -------------------------------------------------- */
+/* NIGHT THEME */
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -120,9 +116,7 @@
   color-scheme: dark;
 }
 
-/* --------------------------------------------------
-   RESET
-   -------------------------------------------------- */
+/* RESET */
 
 *,
 *::before,
@@ -161,9 +155,7 @@ img {
   max-width: 100%;
 }
 
-/* --------------------------------------------------
-   PAGE
-   -------------------------------------------------- */
+/* PAGE */
 
 html {
   background: var(--sky);
@@ -218,9 +210,7 @@ a:hover {
   outline-offset: 3px;
 }
 
-/* --------------------------------------------------
-   BUTTONS AND FIELDS
-   -------------------------------------------------- */
+/* BUTTONS AND FIELDS */
 
 button {
   min-height: 44px;
@@ -284,9 +274,7 @@ label {
   color: var(--ok);
 }
 
-/* --------------------------------------------------
-   MOOD FAMILY COLOURS
-   -------------------------------------------------- */
+/* MOOD FAMILY COLOURS */
 
 [data-family="bright"] {
   --family: #e8b23a;
@@ -308,9 +296,7 @@ label {
   --family: #8a4fb3;
 }
 
-/* --------------------------------------------------
-   DOORS
-   -------------------------------------------------- */
+/* DOORS */
 
 .door {
   --rim: color-mix(in srgb, var(--family) 45%, var(--rim-base));
@@ -347,9 +333,7 @@ label {
   left: 14px;
 }
 
-/* --------------------------------------------------
-   DOOR STYLES
-   -------------------------------------------------- */
+/* DOOR STYLES */
 
 .door[data-door="arch"]::before {
   content: "";
@@ -452,9 +436,7 @@ label {
   filter: drop-shadow(0 0 6px rgba(243, 246, 251, 0.8));
 }
 
-/* --------------------------------------------------
-   MOOD PILLS
-   -------------------------------------------------- */
+/* MOOD PILLS */
 
 .pills {
   display: flex;
@@ -472,9 +454,45 @@ label {
   font-style: italic;
 }
 
-/* --------------------------------------------------
-   ACCOUNT PAGES
-   -------------------------------------------------- */
+/* PAGE PIECES */
+
+.back-link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 4px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--title);
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.intro p {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 26px clamp(18px, 4vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
+  box-shadow: 0 20px 44px var(--shadow);
+}
+
+/* ACCOUNT PAGES */
 
 .account {
   max-width: 420px;
@@ -533,9 +551,7 @@ label {
   stroke-linecap: round;
 }
 
-/* --------------------------------------------------
-   SMALL SCREENS AND MOTION
-   -------------------------------------------------- */
+/* SMALL SCREENS AND MOTION */
 
 @media (max-width: 480px) {
   body {

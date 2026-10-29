@@ -13,10 +13,6 @@ import { familyOf } from '../../models/moods';
 
 const DEFAULT_ANSWER = 'A painting for your day.';
 
-// --------------------------------------------------
-// ANSWER POSTCARD PAGE
-// --------------------------------------------------
-
 @Component({
   selector: 'app-answer-postcard',
   imports: [ReactiveFormsModule, RouterLink, DatePipe],
@@ -82,9 +78,7 @@ export class AnswerPostcard implements OnInit {
     return '';
   }
 
-  // --------------------------------------------------
   // SEARCH
-  // --------------------------------------------------
 
   search(): void {
     const term = this.searchForm.controls.term.value.trim();
@@ -107,9 +101,7 @@ export class AnswerPostcard implements OnInit {
     this.chosen.set(artwork);
   }
 
-  // --------------------------------------------------
   // ANSWER
-  // --------------------------------------------------
 
   answer(): void {
     const postcard = this.postcard();

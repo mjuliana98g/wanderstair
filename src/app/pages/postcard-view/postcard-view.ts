@@ -4,10 +4,10 @@ import { map, switchMap } from 'rxjs';
 
 import { PostcardsService } from '../../services/postcards';
 import { MuseumService } from '../../services/museum';
+import { GiftsService } from '../../services/gifts';
 import { Postcard } from '../../models/postcard.model';
 import { Artwork } from '../../models/artwork.model';
 import { Postcard as PostcardCard } from '../../components/postcard/postcard';
-import { GiftsService } from '../../services/gifts';
 import { Gift } from '../../models/gift.model';
 
 @Component({
@@ -48,7 +48,9 @@ export class PostcardView implements OnInit {
     });
   }
 
-    private loadGift(postcardId: number): void {
+  // GIFT AND READING
+
+  private loadGift(postcardId: number): void {
     this.giftsService.forPostcard(postcardId).subscribe((gift) => {
       this.gift.set(gift);
       if (gift) this.museumService.getById(gift.artworkId).subscribe((artwork) => this.giftTitle.set(artwork.title));
@@ -56,9 +58,8 @@ export class PostcardView implements OnInit {
   }
 
   private markRead(postcard: Postcard): void {
-    this.postcardsService.markRead(postcard.id).subscribe({
-      next: () => this.postcardsService.refreshUnread(),
-      error: () => { },
-    });
+    this.postcardsService
+      .markRead(postcard.id)
+      .subscribe(() => this.postcardsService.refreshUnread());
   }
 }

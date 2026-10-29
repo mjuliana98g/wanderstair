@@ -18,9 +18,7 @@ import { DOOR_STYLES, MOOD_FAMILIES, MoodFamily, familyOf } from '../../models/m
 const MAX_TITLE = 40;
 const MAX_MOODS = 3;
 
-// --------------------------------------------------
 // DATES
-// --------------------------------------------------
 
 function todayText(): string {
   return formatDate(new Date(), 'yyyy-MM-dd', 'en');
@@ -30,17 +28,11 @@ function notInFuture(control: AbstractControl): ValidationErrors | null {
   return control.value > todayText() ? { future: true } : null;
 }
 
-// --------------------------------------------------
 // DEVICE
-// --------------------------------------------------
 
 function canHover(): boolean {
   return matchMedia('(hover: hover)').matches;
 }
-
-// --------------------------------------------------
-// WRITE OR EDIT A MEMORY PAGE
-// --------------------------------------------------
 
 @Component({
   selector: 'app-write',
@@ -102,9 +94,7 @@ export class Write implements OnInit {
     return this.editingId ? ['/room', this.editingId] : ['/'];
   }
 
-  // --------------------------------------------------
   // EDITING
-  // --------------------------------------------------
 
   private loadMemory(id: number): void {
     this.memoriesService.getById(id).subscribe({
@@ -124,9 +114,7 @@ export class Write implements OnInit {
     this.form.setValue({ title, date, moods, door, text });
   }
 
-  // --------------------------------------------------
   // SAVING
-  // --------------------------------------------------
 
   save(): void {
     if (this.form.invalid) return;
@@ -158,9 +146,7 @@ export class Write implements OnInit {
     return { title: title.trim(), date, text, moodIds: moodIds as number[], doorId };
   }
 
-  // --------------------------------------------------
   // MOODS
-  // --------------------------------------------------
 
   isChosen(mood: Mood): boolean {
     return this.form.controls.moods.value.includes(mood);

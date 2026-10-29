@@ -12,10 +12,6 @@ import { Gift, HungGift } from '../../models/gift.model';
 import { familyOf } from '../../models/moods';
 import { Frame } from '../../components/frame/frame';
 
-// --------------------------------------------------
-// ROOM PAGE
-// --------------------------------------------------
-
 @Component({
   selector: 'app-room',
   imports: [DatePipe, RouterLink, Frame],
@@ -60,14 +56,12 @@ export class Room implements OnInit {
     this.loadGifts(this.id);
   }
 
-  // --------------------------------------------------
   // EXHIBITION
-  // --------------------------------------------------
 
   private loadArtworks(ids: number[]): void {
     this.artworksLoading.set(true);
     this.artworksError.set('');
-    this.byIds(ids).subscribe({
+    this.museumService.getByIds(ids).subscribe({
       next: (artworks) => {
         this.artworks.set(artworks);
         this.artworksLoading.set(false);
@@ -77,11 +71,6 @@ export class Room implements OnInit {
         this.artworksLoading.set(false);
       },
     });
-  }
-
-  private byIds(ids: number[]): Observable<Artwork[]> {
-    if (!ids.length) return of([]);
-    return forkJoin(ids.map((id) => this.museumService.getById(id)));
   }
 
   takeOffWall(artwork: Artwork): void {
@@ -97,9 +86,7 @@ export class Room implements OnInit {
     });
   }
 
-  // --------------------------------------------------
-  // GIFTS
-  // --------------------------------------------------
+  // GIFTS (POSTCARDS)
 
   private loadGifts(memoryId: number): void {
     this.giftsService.forMemory(memoryId).pipe(switchMap((gifts) => this.withArtworks(gifts))).subscribe({
@@ -120,9 +107,7 @@ export class Room implements OnInit {
     });
   }
 
-  // --------------------------------------------------
-  // CLOSE THE DOOR
-  // --------------------------------------------------
+  // DELETE THE DOOR/MEMORY
 
   deleteMemory(): void {
     this.closing.set(true);

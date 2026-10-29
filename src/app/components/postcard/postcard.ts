@@ -5,10 +5,6 @@ import { Artwork } from '../../models/artwork.model';
 import { Mood } from '../../models/memory.model';
 import { familyOf } from '../../models/moods';
 
-// --------------------------------------------------
-// POSTCARD COMPONENT
-// --------------------------------------------------
-
 @Component({
   imports: [DatePipe],
   selector: 'app-postcard',

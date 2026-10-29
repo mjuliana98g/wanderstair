@@ -1,10 +1,6 @@
 import { Mood } from './memory.model';
 import { Profile } from './friend.model';
 
-// --------------------------------------------------
-// INTERFACES
-// --------------------------------------------------
-
 export interface NewPostcard {
     recipientId: string;
     memoryId: number;

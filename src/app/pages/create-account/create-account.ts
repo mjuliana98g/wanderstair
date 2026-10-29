@@ -5,10 +5,6 @@ import { AuthError } from '@supabase/supabase-js';
 import { AuthService } from '../../services/auth';
 import { passwordsMatch } from '../../validators/passwords-match';
 
-// --------------------------------------------------
-// CREATE ACCOUNT PAGE
-// --------------------------------------------------
-
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-create-account',

@@ -1,7 +1,3 @@
-// --------------------------------------------------
-// TYPES
-// --------------------------------------------------
-
 export type Mood =
   | 'happy' | 'excited' | 'grateful' | 'proud' | 'loved' | 'hopeful' | 'playful'
   | 'calm' | 'relieved' | 'content' | 'inspired' | 'curious'

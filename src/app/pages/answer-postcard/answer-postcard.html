@@ -1,4 +1,4 @@
-<a class="back" [routerLink]="['/postcards', postcardId]">↑ Back to the postcard</a>
+<a class="back-link" [routerLink]="['/postcards', postcardId]">↑ Back to the postcard</a>
 
 @if (loading()) {
 <p>Opening the postcard…</p>
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<section class="card">
+<section class="panel">
     <form [formGroup]="searchForm" (ngSubmit)="search()">
         <label for="term">Search the museum</label>
         <div class="row">

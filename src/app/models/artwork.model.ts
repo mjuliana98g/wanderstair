@@ -1,7 +1,3 @@
-// --------------------------------------------------
-// INTERFACES
-// --------------------------------------------------
-
 export interface Creator {
   description: string;
 }
@@ -25,4 +21,12 @@ export interface Artwork {
 
 export interface ApiResponse<T> {
   data: T;
+}
+
+export function artistName(artwork: Artwork): string {
+  return artwork.creators[0]?.description ?? 'Unknown artist';
+}
+
+export function shortArtistName(artwork: Artwork): string {
+  return artistName(artwork).split(' (')[0];
 }

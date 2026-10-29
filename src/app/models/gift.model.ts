@@ -1,10 +1,6 @@
 import { Profile } from './friend.model';
 import { Artwork } from './artwork.model';
 
-// --------------------------------------------------
-// INTERFACES
-// --------------------------------------------------
-
 export interface NewGift {
   postcardId: number;
   memoryId: number;
@@ -27,4 +23,3 @@ export interface GiftedArtwork {
   memoryId: number;
   artworkId: number;
 }
-

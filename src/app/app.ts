@@ -6,10 +6,6 @@ import { PostcardsService } from './services/postcards';
 const THEME_KEY = 'wanderstair-theme';
 const TOP_BUTTON_AFTER = 400;
 
-// --------------------------------------------------
-// APP
-// --------------------------------------------------
-
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
@@ -36,12 +32,10 @@ export class App implements OnInit {
   }
 
   userName(): string {
-    return this.user()?.user_metadata['name'] ?? '';
+    return this.auth.userName();
   }
 
-  // --------------------------------------------------
   // THEME
-  // --------------------------------------------------
 
   toggleTheme(): void {
     const night = !this.isNight();
@@ -54,9 +48,7 @@ export class App implements OnInit {
     document.documentElement.dataset['theme'] = night ? 'dark' : 'light';
   }
 
-  // --------------------------------------------------
   // MENU
-  // --------------------------------------------------
 
   toggleMenu(): void {
     this.menuOpen.update((open) => !open);
@@ -71,9 +63,7 @@ export class App implements OnInit {
     this.closeMenu();
   }
 
-  // --------------------------------------------------
   // BACK TO THE TOP
-  // --------------------------------------------------
 
   @HostListener('window:scroll')
   checkTopButton(): void {

@@ -8,7 +8,7 @@
         }
     </a>
     <figcaption>
-        <strong>{{ gift ? 'A gift from ' + gift : artistName() }}</strong>
+        <strong>{{ gift ? 'A gift from ' + gift : shortArtistName(artwork) }}</strong>
         <cite>{{ artwork.title }}</cite>
         <small>{{ artwork.creation_date }}</small>
     </figcaption>

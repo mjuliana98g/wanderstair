@@ -1,20 +1,13 @@
-import { Service, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable, forkJoin, map, of } from 'rxjs';
 
 import { ApiResponse, Artwork } from '../models/artwork.model';
 
-// --------------------------------------------------
-// MUSEUM SETTINGS
-// --------------------------------------------------
-
 const API_URL = 'https://openaccess-api.clevelandart.org/api/artworks';
 const FIELDS = 'id,title,creation_date,type,technique,department,description,url,creators,images';
-// --------------------------------------------------
-// MUSEUM SERVICE
-// --------------------------------------------------
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class MuseumService {
   private http = inject(HttpClient);
 
@@ -26,6 +19,7 @@ export class MuseumService {
   }
 
   getByIds(ids: number[]): Observable<Artwork[]> {
+    if (!ids.length) return of([]);
     return forkJoin(ids.map((id) => this.getById(id)));
   }
 
@@ -36,13 +30,21 @@ export class MuseumService {
       .pipe(map((response) => response.data));
   }
 
-  // --------------------------------------------------
   // PORTRAIT OF THE DAY
-  // --------------------------------------------------
 
   getPortraitOfTheDay(): Observable<Artwork | undefined> {
-    const params = { q: 'portrait', type: 'Painting', has_image: 1, cc0: 1, limit: 1, skip: this.dayOfYear() % 100, fields: FIELDS };
-    return this.http.get<ApiResponse<Artwork[]>>(API_URL, { params }).pipe(map((r) => r.data[0]));
+    const params = {
+      q: 'portrait',
+      type: 'Painting',
+      has_image: 1,
+      cc0: 1,
+      limit: 1,
+      skip: this.dayOfYear() % 100,
+      fields: FIELDS,
+    };
+    return this.http
+      .get<ApiResponse<Artwork[]>>(API_URL, { params })
+      .pipe(map((response) => response.data[0]));
   }
 
   private dayOfYear(): number {
