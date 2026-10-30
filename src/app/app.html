@@ -28,7 +28,7 @@
     <div class="tools">
       @if (user()) {
       <div class="who">
-        <a routerLink="/account" (click)="closeMenu()"><strong>{{ userName() }}</strong></a>
+        <a routerLink="/account" (click)="closeMenu()"><strong>{{ firstName() }}</strong></a>
       </div>
       }
       <button type="button" (click)="toggleTheme()" aria-label="Switch between day and night">
