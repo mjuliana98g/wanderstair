@@ -16,6 +16,7 @@ const TOP_BUTTON_AFTER = 400;
 })
 export class App implements OnInit {
   protected readonly title = 'Wanderstair';
+  protected readonly year = new Date().getFullYear();
   private auth = inject(AuthService);
   user = this.auth.user;
   postcards = inject(PostcardsService);

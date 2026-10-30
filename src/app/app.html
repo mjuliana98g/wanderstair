@@ -46,6 +46,19 @@
   <router-outlet />
 </main>
 
+<footer>
+  <p class="first-step">The first step. Everything above started here.</p>
+  <p>
+    Paintings from the
+    <a href="https://www.clevelandart.org/open-access" target="_blank" rel="noopener">Cleveland Museum of Art</a>
+    (Open Access, CC0)
+  </p>
+  <p>
+    Made by Matilde · {{ year }} ·
+    <a href="https://github.com/mjuliana98g/wanderstair" target="_blank" rel="noopener">Code on GitHub</a>
+  </p>
+</footer>
+
 @if (showTopButton()) {
 <button class="to-top" type="button" (click)="scrollToTop()" aria-label="Back to the top">↑</button>
 }

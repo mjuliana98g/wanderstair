@@ -1,3 +1,18 @@
+/* LAYOUT */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+}
+
+/* HEADER */
+
 header {
   position: sticky;
   top: 0;
@@ -120,6 +135,46 @@ nav.guest+.tools {
 
 .backdrop {
   display: none;
+}
+
+/* FOOTER */
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px 88px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  text-align: center;
+}
+
+.first-step {
+  width: 100%;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.first-step::after {
+  content: "";
+  display: block;
+  width: min(100%, 520px);
+  height: 16px;
+  margin: 16px auto 22px;
+  border-radius: 2px;
+  background: linear-gradient(var(--step), var(--step-edge));
+  box-shadow: 0 8px 0 var(--step-shadow);
+}
+
+footer a {
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+footer a:hover {
+  border-color: var(--accent);
 }
 
 /* BACK TO THE TOP */
