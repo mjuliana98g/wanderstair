@@ -12,3 +12,7 @@ export interface Friend {
   status: FriendshipStatus;
   sentByMe: boolean;
 }
+
+export function isWaitingForMe(friend: Friend): boolean {
+  return friend.status === 'pending' && !friend.sentByMe;
+}

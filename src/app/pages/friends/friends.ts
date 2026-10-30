@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs';
 
 import { FriendsService } from '../../services/friends';
 import { AuthService } from '../../services/auth';
-import { Friend } from '../../models/friend.model';
+import { Friend, isWaitingForMe } from '../../models/friend.model';
 
 @Component({
   selector: 'app-friends',
@@ -35,6 +35,7 @@ export class Friends implements OnInit {
     this.friendsService.getAll().subscribe({
       next: (friends) => {
         this.friends.set(friends);
+        this.friendsService.requests.set(this.received().length);
         this.loading.set(false);
       },
       error: () => {
@@ -45,7 +46,7 @@ export class Friends implements OnInit {
   }
 
   received(): Friend[] {
-    return this.friends().filter((friend) => friend.status === 'pending' && !friend.sentByMe);
+    return this.friends().filter(isWaitingForMe);
   }
 
   accepted(): Friend[] {

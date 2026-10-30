@@ -6,6 +6,7 @@ import { Subscription, filter } from 'rxjs';
 import { MemoriesService } from '../../services/memories';
 import { MuseumService } from '../../services/museum';
 import { PostcardsService } from '../../services/postcards';
+import { FriendsService } from '../../services/friends';
 import { Memory } from '../../models/memory.model';
 import { Artwork } from '../../models/artwork.model';
 import { Frame } from '../../components/frame/frame';
@@ -23,6 +24,7 @@ export class Stair implements OnInit, OnDestroy {
   private memoriesService = inject(MemoriesService);
   private museumService = inject(MuseumService);
   private postcardsService = inject(PostcardsService);
+  private friendsService = inject(FriendsService);
   private router = inject(Router);
   private scroller = inject(ViewportScroller);
 
@@ -42,6 +44,7 @@ export class Stair implements OnInit, OnDestroy {
     this.loadPortrait();
     this.loadMemories();
     this.postcardsService.refreshUnread();
+    this.friendsService.refreshRequests();
   }
 
   ngOnDestroy(): void {
