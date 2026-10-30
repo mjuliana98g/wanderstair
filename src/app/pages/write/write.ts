@@ -17,6 +17,7 @@ import { DOOR_STYLES, MOOD_FAMILIES, MoodFamily, familyOf } from '../../models/m
 
 const MAX_TITLE = 40;
 const MAX_MOODS = 3;
+const DRAFT_KEY = 'wanderstair-draft';
 
 // DATES
 
@@ -78,6 +79,7 @@ export class Write implements OnInit {
       error: () => this.error.set('The doors could not be loaded. Try again later.')
     });
     if (this.editingId) this.loadMemory(this.editingId);
+    else this.keepDraft();
   }
 
   hasError(field: string, error: string): boolean {
@@ -114,6 +116,20 @@ export class Write implements OnInit {
     this.form.setValue({ title, date, moods, door, text });
   }
 
+  // DRAFT
+
+  private keepDraft(): void {
+    const saved = sessionStorage.getItem(DRAFT_KEY);
+    if (saved) this.form.patchValue(JSON.parse(saved));
+    this.form.valueChanges.subscribe((value) =>
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify(value)),
+    );
+  }
+
+  clearDraft(): void {
+    if (!this.editingId) sessionStorage.removeItem(DRAFT_KEY);
+  }
+
   // SAVING
 
   save(): void {
@@ -126,8 +142,10 @@ export class Write implements OnInit {
     this.saving.set(true);
     this.error.set('');
     this.send(memory).subscribe({
-      next: (saved) => this.router.navigate(['/room', saved.id]),
-      error: () => {
+      next: (saved) => {
+        this.clearDraft();
+        this.router.navigate(['/room', saved.id]);
+      }, error: () => {
         this.error.set(this.editingId ? 'The changes could not be saved. Try again.' : 'The door would not open. Try again.');
         this.saving.set(false);
       }
