@@ -3,10 +3,10 @@
     <p>Pieces of days, sent between friends.</p>
 </header>
 <div class="tabs" role="tablist" aria-label="Postcards">
-    <button type="button" role="tab" [attr.aria-selected]="tab() === 'received'" (click)="tab.set('received')">
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'received'" (click)="showTab('received')">
         Received · {{ received().length }}
     </button>
-    <button type="button" role="tab" [attr.aria-selected]="tab() === 'sent'" (click)="tab.set('sent')">
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'sent'" (click)="showTab('sent')">
         Sent · {{ sent().length }}
     </button>
 </div>

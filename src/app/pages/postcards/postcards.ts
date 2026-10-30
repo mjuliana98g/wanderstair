@@ -6,6 +6,12 @@ import { PostcardsService } from '../../services/postcards';
 import { Postcard } from '../../models/postcard.model';
 import { familyOf } from '../../models/moods';
 
+type PostcardTab = 'received' | 'sent';
+
+const TAB_KEY = 'wanderstair-postcards-tab';
+
+// POSTCARDS PAGE
+
 @Component({
   imports: [DatePipe, RouterLink],
   selector: 'app-postcards',
@@ -19,7 +25,7 @@ export class Postcards implements OnInit {
   postcards = signal<Postcard[]>([]);
   loading = signal(true);
   error = signal('');
-  tab = signal<'received' | 'sent'>('received');
+  tab = signal<PostcardTab>(sessionStorage.getItem(TAB_KEY) === 'sent' ? 'sent' : 'received');
 
   ngOnInit(): void {
     this.postcardsService.getAll().subscribe({
@@ -32,6 +38,11 @@ export class Postcards implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  showTab(tab: PostcardTab): void {
+    this.tab.set(tab);
+    sessionStorage.setItem(TAB_KEY, tab);
   }
 
   received(): Postcard[] {
