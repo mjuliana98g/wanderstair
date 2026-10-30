@@ -82,24 +82,6 @@ src/app/
 └── validators/   custom form validators
 ```
 
-## Angular concepts used
-
-| Concept | Where |
-|---|---|
-| Components and templates | `pages/` and `components/` |
-| Interpolation, property and event binding | every page |
-| Two-way binding `[(ngModel)]` | `find`, `artwork-detail` |
-| `@if`, `@for`, `@switch` | `stair`, `room`, `write` (door descriptions) |
-| Pipes | `DatePipe` (dates), `TitleCasePipe` (`account`) |
-| `@Input`, `@Output`, `EventEmitter` | `components/frame` |
-| Services with `@Injectable` and dependency injection | `services/` |
-| Interfaces | `models/` |
-| `HttpClient` with typed responses, loading and error states | `services/museum.ts` |
-| Router, `router-outlet`, `RouterLink`, route guard | `app.routes.ts`, `guards/auth-guard.ts` |
-| Reactive Forms with validators and error messages | `sign-in`, `create-account`, `write`, `account`, `friends` |
-| `OnInit` and `OnDestroy` | `stair`, `find` |
-| `localStorage` and `sessionStorage` | theme (`app.ts`), memory draft (`write`), postcards tab (`postcards`) |
-
 ## Author
 
 Matilde Gomes
