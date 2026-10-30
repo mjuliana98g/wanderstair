@@ -6,15 +6,15 @@ import { PostcardsService } from './services/postcards';
 const THEME_KEY = 'wanderstair-theme';
 const TOP_BUTTON_AFTER = 400;
 
+// APP
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-
 export class App implements OnInit {
-
   protected readonly title = 'Wanderstair';
   private auth = inject(AuthService);
   user = this.auth.user;
@@ -31,8 +31,8 @@ export class App implements OnInit {
     this.postcards.refreshUnread();
   }
 
-  userName(): string {
-    return this.auth.userName();
+  firstName(): string {
+    return this.auth.userName().trim().split(' ')[0];
   }
 
   // THEME
