@@ -1,3 +1,5 @@
+/* PAGE */
+
 :host {
   display: flex;
   flex-direction: column;
@@ -205,13 +207,6 @@
   --i: 5;
 }
 
-.stair-end {
-  padding-top: 40px;
-  color: var(--ink-soft);
-  font-style: italic;
-  text-align: center;
-}
-
 /* SMALL SCREENS */
 
 @media (max-width: 760px) {
@@ -309,7 +304,6 @@
 /* MOTION */
 
 @media (prefers-reduced-motion: reduce) {
-
   .see,
   .write {
     transition: none;
