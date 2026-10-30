@@ -2,11 +2,10 @@ import { Component, OnInit, signal, inject, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth';
 import { PostcardsService } from './services/postcards';
+import { FriendsService } from './services/friends';
 
 const THEME_KEY = 'wanderstair-theme';
 const TOP_BUTTON_AFTER = 400;
-
-// APP
 
 @Component({
   selector: 'app-root',
@@ -20,6 +19,7 @@ export class App implements OnInit {
   private auth = inject(AuthService);
   user = this.auth.user;
   postcards = inject(PostcardsService);
+  friends = inject(FriendsService);
 
   isNight = signal(false);
   menuOpen = signal(false);
@@ -30,6 +30,7 @@ export class App implements OnInit {
     const night = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     this.applyTheme(night);
     this.postcards.refreshUnread();
+    this.friends.refreshRequests();
   }
 
   firstName(): string {

@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, map, switchMap } from 'rxjs';
 
 import { SupabaseService } from './supabase-service';
 import { AuthService } from './auth';
 import { send } from './send';
-import { Friend, FriendshipStatus, Profile } from '../models/friend.model';
+import { Friend, FriendshipStatus, Profile, isWaitingForMe } from '../models/friend.model';
 
 const COLUMNS =
   'id, status, requester_id, requester:profiles!friendships_requester_id_fkey(id, name), addressee:profiles!friendships_addressee_id_fkey(id, name)';
@@ -22,6 +22,8 @@ export class FriendsService {
   private supabase = inject(SupabaseService).supabaseClient;
   private auth = inject(AuthService);
 
+  requests = signal(0);
+
   getAll(): Observable<Friend[]> {
     return this.auth.myId().pipe(
       switchMap((me) => {
@@ -29,6 +31,13 @@ export class FriendsService {
         return send(request).pipe(map((rows) => rows.map((row) => toFriend(row, me))));
       }),
     );
+  }
+
+  refreshRequests(): void {
+    this.getAll().subscribe({
+      next: (friends) => this.requests.set(friends.filter(isWaitingForMe).length),
+      error: () => this.requests.set(0),
+    });
   }
 
   findByEmail(email: string): Observable<Profile | null> {
